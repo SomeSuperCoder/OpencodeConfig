@@ -150,10 +150,30 @@ Bug fixes, small tasks, test failures, mechanical changes.
 - Visual issues, console errors, layout problems → `list_mcp_resources` → `read_mcp_resource`
 - **Never guess what the user sees.** One visual check > 100 lines of code reading.
 
-### 4. Persist Context — AgentMemory
-- **Save** architecture decisions, bug root causes, patterns → `agentmemory_memory_save`
-- **Recall** at session start → `agentmemory_memory_recall` / `agentmemory_memory_smart_search`
-- **If it would waste 5+ min re-discovering → save it.**
+### 4. Persist Context — AgentMemory — MANDATORY
+**You have persistent memory across sessions. USE IT.**
+
+**SAVE (agentmemory_memory_save) when:**
+- Architecture decision made → save with `type: "architecture"`
+- Bug root cause found → save with `type: "bug"`
+- Project pattern discovered → save with `type: "pattern"`
+- User preference expressed → save with `type: "workflow"`
+- Important fact learned → save with `type: "fact"`
+- **Include:** `project` (stable slug), `files` (relevant paths), `concepts` (keywords)
+
+**RECALL (agentmemory_memory_recall / agentmemory_memory_smart_search) at:**
+- **Session start** — always check for prior context before diving in
+- **Before refactoring** — see if this area was touched before
+- **When debugging** — check if this bug was seen before
+- **When uncertain** — maybe the answer exists from past work
+
+**NEVER:**
+- Start a session without recalling first
+- Re-discover something that took 5+ minutes to learn
+- Save trivial throwaway facts
+- Skip saving architecture decisions
+
+**If it would waste 5+ min re-discovering → save it. If not → don't.**
 
 ### 5. Council Complex Decisions — MANDATORY
 - **Any decision with multiple valid options** → run the council
