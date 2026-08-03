@@ -427,6 +427,62 @@ You have a **browser MCP** available. Use it to see what the user sees — espec
 
 ---
 
+## 📐 CORE SOFTWARE PRINCIPLES
+
+### Single Source of Truth (SSOT)
+**Every piece of information lives in exactly ONE place. When it changes, it changes once.**
+
+| ❌ Violation | ✅ SSOT |
+|-------------|---------|
+| Same config value in 3 files | One config file, others import from it |
+| Business logic in controller AND service | Service only, controller delegates |
+| Type defined in 5 places | One type definition, imported everywhere |
+| Constant duplicated across files | One constants file |
+
+**Rules:**
+- **One definition per concept** — types, configs, constants, business rules
+- **Others reference, never duplicate** — import, don't copy-paste
+- **When in doubt, ask:** "Is this the ONLY place this exists?"
+- **Refactor immediately** when you see duplication — don't let it compound
+
+**SSOT in practice:**
+```
+❌ config.js: API_URL = "https://api.example.com"
+   utils.js: API_URL = "https://api.example.com"  // COPY
+   
+✅ config.js: export API_URL = "https://api.example.com"
+   utils.js: import { API_URL } from './config'     // REFERENCE
+```
+
+---
+
+### DRY — Don't Repeat Yourself
+**Every piece of knowledge has a single, unambiguous representation.**
+
+| ❌ Violation | ✅ DRY |
+|-------------|--------|
+| Same validation logic in 5 places | One validation function |
+| Similar components with 90% same code | Parameterized component |
+| Copy-pasted test assertions | Shared test helper |
+| Two classes doing the same thing | One class, reused |
+
+**Rules:**
+- **Duplication is the root of all evil** — one change breaks 5 places = disaster
+- **Abstractions over repetition** — extract, name, reuse
+- **DRY applies to:**
+  - Code (logic, algorithms)
+  - Data (config, constants)
+  - Structure (types, interfaces)
+  - Tests (fixtures, helpers)
+- **Don't DRY prematurely** — if it's repeated twice, maybe. Three times, definitely.
+
+**DRY vs SSOT:**
+- **SSOT:** Where information LIVES (one source)
+- **DRY:** How information is USED (no copies)
+- **Together:** One source, referenced everywhere — never duplicated.
+
+---
+
 ## MODE SELECTION GUIDE
 
 | Task Type | Mode |
