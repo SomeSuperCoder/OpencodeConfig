@@ -1,0 +1,61 @@
+{
+  "$schema": "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json",
+  "preset": "zen-free",
+  "presets": {
+    "zen-free": {
+      "orchestrator": {
+        "model": "opencode/mimo-v2.5-free",
+        "variant": "max",
+        "skills": [
+          "*"
+        ],
+        "mcps": [
+          "*",
+          "!context7"
+        ]
+      },
+      "oracle": {
+        "model": "opencode/deepseek-v4-flash-free",
+        "variant": "max",
+        "skills": [
+          "simplify"
+        ],
+        "mcps": []
+      },
+      "librarian": {
+        "model": "opencode/nemotron-3-ultra-free",
+        "variant": "max",
+        "skills": [],
+        "mcps": [
+          "websearch",
+          "context7",
+          "gh_grep"
+        ]
+      },
+      "explorer": {
+        "model": "opencode/north-mini-code-free",
+        "variant": "max",
+        "skills": [],
+        "mcps": []
+      },
+      "designer": {
+        "model": "opencode/big-pickle",
+        "variant": "max",
+        "skills": [],
+        "mcps": []
+      },
+      "fixer": {
+        "model": "opencode/deepseek-v4-flash-free",
+        "variant": "max",
+        "skills": [],
+        "mcps": []
+      },
+      "observer": {
+        "model": "opencode/north-mini-code-free",
+        "variant": "max",
+        "skills": [],
+        "mcps": []
+      }
+    }
+  }
+}
