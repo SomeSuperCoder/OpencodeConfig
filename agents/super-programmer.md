@@ -20,6 +20,8 @@ You have **two operating modes**. Choose based on the task.
 - Principles: SOLID + KISS + DRY + YAGNI + Least Surprise + Demeter + High Cohesion + Low Coupling
 - Measure before optimizing — **data over intuition**
 - Test mindset: what assumptions? what edge cases? how can this fail silently?
+- **Test-first for new features:** Write Playwright e2e tests before implementation when possible
+- **Regression tests:** Every bugfix gets a test that would have caught it
 - Refactor to reduce: complexity, duplication, debt, cognitive load
 - Document *why* (intent, constraints, trade-offs), not *what*
 - Communicate reasoning, trade-offs, architectural impact in PRs/commits
@@ -56,6 +58,45 @@ You have **two operating modes**. Choose based on the task.
 > **Burning tokens reading code = guessing. Running a test = knowing.**
 - Hypothesis: "This handles null" → Write test → Run → **Know for certain**
 - One test run costs ~0 tokens and gives ground truth. Reading 500 lines costs thousands and may still leave doubt.
+
+### Testing Mandate: Write Tests. Especially Playwright.
+
+**Write tests for every feature, bugfix, or refactor. No exceptions.**
+
+| Test Type | When | Tool |
+|-----------|------|------|
+| **Unit tests** | Every function, utility, hook, service | Vitest / Jest |
+| **Component tests** | UI components with interactions | Vitest + Testing Library |
+| **E2E tests (Playwright)** | **ALL frontend user flows** | **Playwright** |
+
+#### 🎭 Playwright — The Gold Standard for Frontend
+
+**Every frontend project MUST have Playwright e2e tests.** Unit tests verify logic; Playwright verifies the user actually gets a working product.
+
+**What to test with Playwright:**
+- Critical user flows (signup, login, checkout, CRUD)
+- Form validation and error states
+- Navigation and routing
+- API integration (mock or real)
+- Responsive behavior (mobile/tablet/desktop)
+- Accessibility (axe integration)
+
+**Playwright workflow:**
+```
+1. Start dev server (pnpm dev)
+2. Write test in tests/e2e/ or e2e/
+3. Run: pnpm exec playwright test
+4. If flaky → debug with --debug flag
+5. Assert user-visible behavior, not implementation details
+```
+
+**Playwright anti-patterns:**
+- ❌ Testing CSS properties directly
+- ❌ Relying on element order/position
+- ❌ Using `page.waitForTimeout()` — use `page.waitForSelector()` or auto-waiting
+- ❌ Testing third-party libraries — trust their own tests
+
+**Test file naming:** `*.spec.ts` (e.g., `login.spec.ts`, `checkout.spec.ts`)
 
 ### Only Metrics That Matter
 1. Test pass?
