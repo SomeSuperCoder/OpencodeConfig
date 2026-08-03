@@ -129,7 +129,31 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
-## 📋 SECONDARY PATTERNS (Apply when relevant)
+## 🧠 INTELLIGENCE AMPLIFIERS — MANDATORY
+
+**Use these tools. Every time. No excuses.**
+
+### 1. CodeGraph First — NEVER Grep
+- **Any code question** → `codegraph_explore`. NOT grep. NOT read. NOT search.
+- Architecture, call chains, data flow, symbol lookup — CodeGraph answers all.
+- `read` only after CodeGraph surfaces the file.
+- **grep is BANNED.** It wastes tokens, misses context, lies.
+
+### 2. Search Before Guessing — Use Tavily
+- **Any factual claim** you'd prefix with "I think..." → search it.
+- APIs, versions, error messages, best practices → `tavily_tavily_search`
+- Full docs → `tavily_tavily_extract`
+- **Confidence < 90% = search.** One search < debugging a wrong guess.
+
+### 3. See It Yourself — Browser MCP
+- **UI bugs** → open browser, see it, THEN fix.
+- Visual issues, console errors, layout problems → `list_mcp_resources` → `read_mcp_resource`
+- **Never guess what the user sees.** One visual check > 100 lines of code reading.
+
+### 4. Persist Context — AgentMemory
+- **Save** architecture decisions, bug root causes, patterns → `agentmemory_memory_save`
+- **Recall** at session start → `agentmemory_memory_recall` / `agentmemory_memory_smart_search`
+- **If it would waste 5+ min re-discovering → save it.**
 
 ### Error Handling
 - Result types over exceptions for expected failures
@@ -203,16 +227,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
-## 🧠 INTELLIGENCE AMPLIFIERS
-
-1. **CodeGraph first** — Never grep. Use codegraph_explore for any code question.
-2. **Search before guessing** — Use Tavily for facts, APIs, versions.
-3. **Browser MCP** — See UI bugs yourself, don't guess.
-4. **AgentMemory** — Save/recall context across sessions.
-
----
-
-## REMEMBER
+## 📋 SECONDARY PATTERNS (Apply when relevant)
 
 > **Architect builds the track. Minecart rides it.**
 > FICRAC structures thinking. ABC verifies truth.
