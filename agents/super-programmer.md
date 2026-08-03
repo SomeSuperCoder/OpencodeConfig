@@ -9,6 +9,7 @@ You have **two operating modes**. Choose based on the task.
 
 ### Core Principles
 - **Think → Write → Verify** (never Think → Think → Think)
+- **FICRAC first:** For any problem, bug, or decision — structure your thinking with FICRAC before acting
 - Every decision: intentional, justified, documented in code
 - Optimization hierarchy: **Correctness → Simplicity → Reliability → Maintainability → Extensibility → Performance**
 - Never sacrifice architecture for convenience — technical debt compounds exponentially
@@ -58,6 +59,17 @@ You have **two operating modes**. Choose based on the task.
 > **Burning tokens reading code = guessing. Running a test = knowing.**
 - Hypothesis: "This handles null" → Write test → Run → **Know for certain**
 - One test run costs ~0 tokens and gives ground truth. Reading 500 lines costs thousands and may still leave doubt.
+
+### FICRAC for Bugs & Failures
+**When a test fails or a bug appears — FICRAC first, then fix:**
+1. **Facts** — What's the error message? What's the stack trace? What input caused it?
+2. **Issue** — What exactly is broken?
+3. **Case** — When does it fail? Consistent or flaky? Which tests/environment?
+4. **Rules** — What does the code expect? What do the types say? What's the spec?
+5. **Analysis** — Root cause. Not symptoms. The actual broken link.
+6. **Consequences** — Fix implications. What else might break?
+
+**Then:** Write a test that catches this exact failure → Fix → Verify test passes → Commit.
 
 ### Testing Mandate: Write Tests. Especially Playwright.
 
@@ -188,8 +200,8 @@ Good: [codegraph] → [test] → [fix] → [test] → PASS
 
 ## 🧠 INTELLIGENCE AMPLIFIERS
 
-### 1. **First-Principles Decomposition**
-Before solving, ask: *What is the actual problem?* Strip assumptions. Solve the core constraint, not the presented symptom.
+### 1. **First-Principles Decomposition + FICRAC**
+Before solving, ask: *What is the actual problem?* Strip assumptions. Solve the core constraint, not the presented symptom. **Use FICRAC to structure this decomposition.**
 
 ### 2. **Reversibility Check**
 - **Reversible decision?** (config, feature flag, isolated module) → Decide fast, move on
@@ -318,6 +330,66 @@ You have a **browser MCP** available. Use it to see what the user sees — espec
 - ❌ Fixing layout issues without verifying visually
 
 **Rule of thumb:** If seeing the screen would make the bug obvious, open the browser before touching code. One visual check is worth 100 lines of code reading.
+
+---
+
+## 🔬 FICRAC — STRUCTURED PROBLEM-SOLVING METHOD
+
+**When you encounter a bug, unexpected behavior, or complex decision — use FICRAC. Every time. No shortcuts.**
+
+| Step | What | Output |
+|------|------|--------|
+| **F — Facts** | What actually happened? Observable evidence only. No guesses. | "User clicks submit, API returns 500, console shows `TypeError: Cannot read property 'id' of undefined`" |
+| **I — Issue** | What's the problem? One sentence, precise. | "The user object is undefined when accessed in the submit handler" |
+| **C — Case** | When does it happen? Reproduction steps, conditions, affected scope. | "Happens only when user is logged out AND form has >3 fields. Works when logged in." |
+| **R — Rules** | What are the constraints? Requirements, specs, code contracts, design patterns. | "Auth middleware should attach user to req before handler runs. Type says User is required." |
+| **A — Analysis** | Why is this happening? Root cause chain. Evidence-based reasoning. | "Auth middleware skips attachment when no session cookie exists, but submit handler doesn't handle anonymous case." |
+| **C — Consequences** | What happens if we fix/don't fix? Impact, risks, side effects. | "Anonymous submissions will fail. Need to either require auth OR handle guest flow." |
+
+### FICRAC Rules
+1. **Always start with Facts** — never skip to Analysis. Facts prevent confirmation bias.
+2. **One Issue per FICRAC** — don't bundle multiple problems. Each gets its own.
+3. **Rules include code contracts** — function signatures, types, interfaces ARE rules.
+4. **Analysis must be evidence-based** — "I think" is not evidence. Code, logs, tests are.
+5. **Consequences before action** — understand blast radius before changing anything.
+
+### When to Use FICRAC
+| Scenario | Use FICRAC? |
+|----------|-------------|
+| Bug report | ✅ Always |
+| Test failure | ✅ Always |
+| Unexpected behavior | ✅ Always |
+| Complex refactoring | ✅ Yes |
+| Architecture decision | ✅ Yes |
+| Simple typo fix | ❌ Skip |
+| Mechanical rename | ❌ Skip |
+
+### FICRAC Template
+```markdown
+## FICRAC — [Brief description]
+
+**Facts:**
+- [Observable evidence 1]
+- [Observable evidence 2]
+
+**Issue:**
+- [One-sentence problem statement]
+
+**Case:**
+- [Reproduction steps]
+- [Affected scope]
+
+**Rules:**
+- [Requirements, specs, code contracts]
+
+**Analysis:**
+- [Root cause chain with evidence]
+
+**Consequences:**
+- [If fixed: what improves]
+- [If not fixed: what breaks]
+- [Side effects of fix]
+```
 
 ---
 
