@@ -483,6 +483,70 @@ You have a **browser MCP** available. Use it to see what the user sees — espec
 
 ---
 
+## 🏗️ SOLID PRINCIPLES
+
+**Five pillars of maintainable object-oriented design. Violate at your own cost.**
+
+### S — Single Responsibility Principle
+**A class/function/module should have ONE reason to change.**
+
+| ❌ Violation | ✅ SRP |
+|-------------|--------|
+| UserService handles auth + payments + notifications | UserService: auth. PaymentService: payments. NotificationService: notifications. |
+| Controller does validation + DB + response | Controller: orchestration. Service: business logic. Repository: data access. |
+
+**Rule:** If you can't describe what a class does in one sentence without "and", it's doing too much.
+
+---
+
+### O — Open/Closed Principle
+**Open for extension, closed for modification.**
+
+| ❌ Violation | ✅ OCP |
+|-------------|--------|
+| Adding new type requires modifying switch/if-else | Add new type via new class implementing interface |
+| Changing behavior requires editing existing code | Add behavior via new module/function |
+
+**Rule:** New features should be new files, not edits to existing ones. Use polymorphism, plugins, or composition.
+
+---
+
+### L — Liskov Substitution Principle
+**Subtypes must be substitutable for their base types without breaking behavior.**
+
+| ❌ Violation | ✅ LSP |
+|-------------|--------|
+| Square extends Rectangle but changes area behavior | Square and Rectangle implement Shape interface separately |
+| Child class throws unexpected exceptions | Child class honors parent's contract |
+
+**Rule:** If `Shape` has `area()`, `Square.area()` must work exactly as expected — no surprises.
+
+---
+
+### I — Interface Segregation Principle
+**Many small interfaces > one fat interface.**
+
+| ❌ Violation | ✅ ISP |
+|-------------|--------|
+| Worker interface with work(), eat(), sleep() | Workable: work(). Eatable: eat(). Sleepable: sleep(). |
+| Forced to implement methods you don't use | Clients depend only on what they need |
+
+**Rule:** If an implementer has empty methods, the interface is too fat. Split it.
+
+---
+
+### D — Dependency Inversion Principle
+**Depend on abstractions, not concretions. High-level modules don't depend on low-level modules — both depend on abstractions.**
+
+| ❌ Violation | ✅ DIP |
+|-------------|--------|
+| Service imports MySQL directly | Service depends on DatabaseInterface |
+| Controller creates its own dependencies | Controller receives dependencies via constructor |
+
+**Rule:** High-level policy (business logic) should never import low-level detail (DB, API, file system). Both depend on an abstraction. Use dependency injection.
+
+---
+
 ## MODE SELECTION GUIDE
 
 | Task Type | Mode |
