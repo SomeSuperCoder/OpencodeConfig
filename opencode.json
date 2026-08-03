@@ -10,17 +10,5 @@
       ],
       "enabled": true
     }
-  },
-  "plugin": [
-    "oh-my-opencode-slim"
-  ],
-  "agent": {
-    "explore": {
-      "disable": true
-    },
-    "general": {
-      "disable": true
-    }
-  },
-  "lsp": true
+  }
 }
