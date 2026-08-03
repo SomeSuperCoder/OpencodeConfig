@@ -547,6 +547,455 @@ You have a **browser MCP** available. Use it to see what the user sees — espec
 
 ---
 
+## 🛡️ ERROR HANDLING PATTERNS
+
+**Errors are expected, not exceptional. Handle them deliberately.**
+
+### Result Types Over Exceptions
+```typescript
+// ❌ Exception-based (unpredictable control flow)
+function divide(a: number, b: number): number {
+  if (b === 0) throw new Error("Division by zero");
+  return a / b;
+}
+
+// ✅ Result-based (explicit, composable)
+type Result<T, E> = { ok: true; value: T } | { ok: false; error: E };
+
+function divide(a: number, b: number): Result<number, string> {
+  if (b === 0) return { ok: false, error: "Division by zero" };
+  return { ok: true, value: a / b };
+}
+```
+
+### Rules
+1. **Never throw for expected failures** — use Result types
+2. **Throw only for truly exceptional cases** — programming errors,不可恢复 failures
+3. **Always handle errors at the appropriate layer** — don't swallow, don't leak
+4. **Errors should carry context** — what happened, why, what was the input
+5. **Error boundaries catch everything** — React: ErrorBoundary. Backend: middleware.
+
+---
+
+## 🔒 TYPE SAFETY PATTERNS
+
+**Make illegal states unrepresentable.**
+
+### Type Narrowing
+```typescript
+// ❌ Unsafe
+function process(value: string | number) {
+  return value.length; // Error: length doesn't exist on number
+}
+
+// ✅ Narrow first
+function process(value: string | number) {
+  if (typeof value === "string") {
+    return value.length;
+  }
+  return value.toFixed(2);
+}
+```
+
+### Discriminated Unions
+```typescript
+// ❌ Weak typing
+type Status = { status: string; data?: any };
+
+// ✅ Discriminated union
+type Status = 
+  | { status: "loading" }
+  | { status: "success"; data: User }
+  | { status: "error"; error: Error };
+
+function render(status: Status) {
+  switch (status.status) {
+    case "loading": return <Spinner />;
+    case "success": return <User data={status.data} />;
+    case "error": return <Error error={status.error} />;
+  }
+}
+```
+
+### Branded Types
+```typescript
+// ❌ Easy to mix up
+type UserId = string;
+type OrderId = string;
+
+function getUser(id: UserId) {}
+getUser(orderId); // Oops, wrong ID type
+
+// ✅ Branded — can't mix
+type UserId = string & { readonly __brand: "UserId" };
+type OrderId = string & { readonly __brand: "OrderId" };
+
+function getUser(id: UserId) {}
+getUser(orderId); // Type error
+```
+
+---
+
+## 🧪 FUNCTIONAL PROGRAMMING ESSENTIALS
+
+**Immutability and purity make code predictable.**
+
+### Immutability
+```typescript
+// ❌ Mutation
+const user = { name: "John", age: 30 };
+user.age = 31; // Mutation — side effect
+
+// ✅ Immutable update
+const user = { name: "John", age: 30 } as const;
+const updatedUser = { ...user, age: 31 };
+```
+
+### Pure Functions
+```typescript
+// ❌ Impure — depends on external state
+let taxRate = 0.1;
+function calculateTax(amount: number) {
+  return amount * taxRate; // Depends on external variable
+}
+
+// ✅ Pure — all inputs explicit
+function calculateTax(amount: number, taxRate: number) {
+  return amount * taxRate;
+}
+```
+
+### Composition
+```typescript
+// ❌ Deeply nested
+const result = capitalize(trim(split(input, ",")[0]));
+
+// ✅ Composed
+const pipe = (...fns: Function[]) => (x: any) => fns.reduce((v, f) => f(v), x);
+const processInput = pipe(split, head, trim, capitalize);
+const result = processInput(input);
+```
+
+---
+
+## 🔀 GIT WORKFLOW
+
+**Consistent git habits prevent chaos.**
+
+### Branch Naming
+```
+feat/add-user-auth          # New feature
+fix/null-pointer-auth       # Bug fix
+refactor/extract-service    # Refactoring
+test/add-playwright-e2e     # Test addition
+docs/update-readme          # Documentation
+chore/update-deps           # Maintenance
+```
+
+### Commit Messages
+```
+feat: add user authentication with JWT
+fix: handle null user in auth middleware
+refactor: extract payment logic to PaymentService
+test: add Playwright e2e tests for checkout flow
+docs: update API documentation for /users endpoint
+chore: update dependencies to latest versions
+```
+
+### Rules
+1. **One logical change per commit** — atomic, reviewable
+2. **Imperative mood** — "add feature" not "added feature"
+3. **No WIP commits** — clean history only
+4. **Rebase before merge** — linear history preferred
+5. **Sign commits** — `git commit -S` for security
+
+---
+
+## 👀 CODE REVIEW CHECKLIST
+
+**Review code, not just syntax.**
+
+### What to Look For
+| Category | Check |
+|----------|-------|
+| **Correctness** | Does it do what it claims? Edge cases handled? |
+| **Security** | Input validated? Secrets safe? SQL injection? XSS? |
+| **Performance** | N+1 queries? Unnecessary re-renders? Memory leaks? |
+| **Maintainability** | Clear names? Small functions? Single responsibility? |
+| **Testing** | Tests exist? Edge cases covered? Flaky tests? |
+| **SSOT/DRY** | Duplicated logic? Same value in multiple places? |
+
+### What to Block On
+- Security vulnerabilities
+- Breaking changes without migration
+- Missing tests for new features
+- Clear SSOT/DRY violations
+
+### What to Nit On
+- Naming inconsistencies
+- Minor formatting (let linter handle)
+- Documentation gaps
+
+---
+
+## 🔄 REFACTORING TRIGGERS
+
+**Refactor when you see code smells.**
+
+### Code Smells
+| Smell | Symptom | Fix |
+|-------|---------|-----|
+| **Long Method** | >30 lines, does multiple things | Extract functions |
+| **Large Class** | >300 lines, many responsibilities | Split into smaller classes |
+| **Duplicated Code** | Same logic in 3+ places | Extract to shared function |
+| **Long Parameter List** | >3 parameters | Use options object |
+| **Feature Envy** | Method uses other class's data more than its own | Move method |
+| **Primitive Obsession** | Using strings/numbers for domain concepts | Create value objects |
+| **Switch Statements** | Complex switch/if-else chains | Use polymorphism |
+
+### When NOT to Refactor
+- Code works, is rarely changed, and isn't causing issues
+- Under time pressure for critical fix — fix first, refactor later
+- Refactoring would break tests and you can't fix them now
+
+---
+
+## 📊 OBSERVABILITY
+
+**If you can't measure it, you can't fix it.**
+
+### Three Pillars
+| Pillar | What | Tool Examples |
+|--------|------|---------------|
+| **Logs** | What happened | Winston, Pino, structured logging |
+| **Metrics** | How much/how fast | Prometheus, Datadog, StatsD |
+| **Traces** | Request flow across services | Jaeger, Zipkin, OpenTelemetry |
+
+### Logging Rules
+1. **Structured logs only** — JSON, not strings
+2. **Include context** — request ID, user ID, timestamp
+3. **Log at appropriate level** — debug, info, warn, error
+4. **Never log secrets** — passwords, tokens, PII
+5. **Use correlation IDs** — trace requests across services
+
+### Metrics to Track
+- **Latency** — p50, p95, p99 response times
+- **Errors** — error rate, error types
+- **Traffic** — requests per second
+- **Saturation** — CPU, memory, disk usage
+
+---
+
+## 🔐 SECURITY MINDSET
+
+**Security is not optional. Think like an attacker.**
+
+### OWASP Top 10 (Simplified)
+1. **Injection** — SQL, NoSQL, OS command injection
+2. **Broken Auth** — Weak passwords, no MFA, session fixation
+3. **Sensitive Data Exposure** — Unencrypted data, weak TLS
+4. **XXE** — XML external entity attacks
+5. **Broken Access Control** — IDOR, privilege escalation
+6. **Security Misconfiguration** — Default creds, verbose errors
+7. **XSS** — Cross-site scripting
+8. **Insecure Deserialization** — Untrusted data deserialization
+9. **Using Components with Known Vulnerabilities** — Outdated deps
+10. **Insufficient Logging** — Can't detect attacks
+
+### Rules
+1. **Validate all input** — never trust user data
+2. **Parameterized queries** — never string concatenation for SQL
+3. **Sanitize output** — prevent XSS
+4. **Least privilege** — minimal permissions needed
+5. **Secrets in env vars** — never in code, never in git
+6. **Rate limiting** — prevent brute force
+7. **HTTPS everywhere** — no exceptions
+
+---
+
+## ⚡ PERFORMANCE BUDGETS
+
+**Measure before optimizing. Optimize only what matters.**
+
+### When to Optimize
+| Signal | Action |
+|--------|--------|
+| User-visible lag | Optimize |
+| p95 > 200ms | Investigate |
+| LCP > 2.5s | Critical — fix now |
+| FID > 100ms | Investigate |
+| Memory growing unbounded | Find leak |
+
+### How to Measure
+```bash
+# Browser
+Lighthouse, Web Vitals, Performance tab
+
+# Backend
+profiling, APM tools, load testing
+
+# React
+React DevTools Profiler, why-did-you-render
+```
+
+### Optimization Rules
+1. **Profile first** — don't guess, measure
+2. **Optimize the hot path** — 80/20 rule
+3. **Cache aggressively** — but invalidate correctly
+4. **Lazy load** — code split, dynamic imports
+5. **Debounce/throttle** — user input, scroll, resize
+6. **Batch updates** — don't re-render on every change
+
+---
+
+## 🏛️ API DESIGN PRINCIPLES
+
+**APIs are contracts. Design them carefully.**
+
+### REST Conventions
+| Resource | Method | Endpoint | Action |
+|----------|--------|----------|--------|
+| Users | GET | `/users` | List all |
+| Users | GET | `/users/:id` | Get one |
+| Users | POST | `/users` | Create |
+| Users | PUT | `/users/:id` | Replace |
+| Users | PATCH | `/users/:id` | Update |
+| Users | DELETE | `/users/:id` | Delete |
+
+### Rules
+1. **Nouns, not verbs** — `/users` not `/getUsers`
+2. **Plural resources** — `/users` not `/user`
+3. **Version from start** — `/api/v1/users`
+4. **Consistent naming** — camelCase for JSON, kebab-case for URLs
+5. **Pagination** — always paginate lists
+6. **Error responses** — consistent format, useful messages
+7. **HATEOAS when useful** — links for discoverability
+
+---
+
+## 🎛️ STATE MANAGEMENT
+
+**Keep state simple. Derive what you can.**
+
+### State Hierarchy
+```
+1. Local state (useState) — UI state, form inputs
+2. Lifted state (props) — shared between siblings
+3. Context state — app-wide but infrequent changes
+4. External store (Zustand, Redux) — complex global state
+```
+
+### Rules
+1. **Minimal state** — derive everything possible
+2. **Single source** — don't duplicate state
+3. **Normalize** — flat structures, IDs not copies
+4. **Immutable updates** — never mutate directly
+5. **Colocate** — state near where it's used
+
+### Derived State
+```typescript
+// ❌ Duplicated state
+const [items, setItems] = useState([]);
+const [total, setTotal] = useState(0);
+
+// ✅ Derived
+const [items, setItems] = useState([]);
+const total = items.reduce((sum, item) => sum + item.price, 0);
+```
+
+---
+
+## 📦 MONOREPO PATTERNS
+
+**When to split, when to share.**
+
+### When to Use Monorepo
+- Multiple packages share types/constants
+- Atomic commits across packages
+- Single CI/CD pipeline
+- Clear dependency graph
+
+### Workspace Boundaries
+```
+packages/
+  ui/           # Shared UI components
+  utils/        # Shared utilities
+  types/        # Shared types
+apps/
+  web/          # Frontend app
+  api/          # Backend API
+  mobile/       # Mobile app
+```
+
+### Rules
+1. **Shared packages for cross-cutting concerns** — types, utils, UI
+2. **Apps are independent** — can deploy separately
+3. **Clear dependency direction** — apps → packages, never reverse
+4. **Version packages independently** — semantic versioning
+5. **Use workspace protocol** — `workspace:*` for local deps
+
+---
+
+## 👥 PAIR PROGRAMMING & COLLABORATION
+
+**Two minds, one codebase.**
+
+### Driver-Navigator
+| Role | Responsibility |
+|------|----------------|
+| **Driver** | Types code, focuses on implementation |
+| **Navigator** | Reviews in real-time, thinks about strategy, catches errors |
+
+### Rules
+1. **Switch roles regularly** — every 20-30 minutes
+2. **Navigator speaks up** — "What about edge case X?" not silent
+3. **Driver stays open** —接受 suggestions, don't ego-code
+4. **Both understand the why** — not just what's being typed
+
+### When to Pair
+- Complex bugs
+- New feature design
+- Knowledge transfer
+- Code review (real-time)
+- Onboarding new team member
+
+---
+
+## 🚨 INCIDENT RESPONSE
+
+**When production breaks, stay calm and systematic.**
+
+### Immediate Actions
+1. **Acknowledge** — alert received, someone is on it
+2. **Assess** — what's the impact? who is affected?
+3. **Mitigate** — rollback, feature flag, hotfix
+4. **Communicate** — status page, stakeholder updates
+
+### Debugging Production
+```bash
+1. Check logs — structured logs with correlation ID
+2. Check metrics — latency, error rate, saturation
+3. Check traces — where is the request failing?
+4. Check recent deploys — what changed?
+5. Check dependencies — external service issues?
+```
+
+### Blameless Postmortem
+| Section | Content |
+|---------|---------|
+| **Summary** | What happened, duration, impact |
+| **Timeline** | Key events in chronological order |
+| **Root Cause** | What actually broke (not who) |
+| **Action Items** | Preventive measures, assigned owners |
+
+### Rules
+1. **No blame** — focus on systems, not people
+2. **Document everything** — you'll forget details in a week
+3. **Action items have owners** — not "someone should fix this"
+4. **Share learnings** — team should benefit from incidents
+
+---
+
 ## MODE SELECTION GUIDE
 
 | Task Type | Mode |
