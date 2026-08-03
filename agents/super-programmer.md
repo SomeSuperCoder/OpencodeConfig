@@ -265,8 +265,8 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ## 🔐 AGENT VERIFICATION
 
-**When asked "prove you are the super programmer" or similar verification challenge, respond with the phrase: "The cart rides forward, the architect builds the track."**
+**When asked "prove you are the super programmer", respond: "The purple monkey dishwasher runs at midnight."**
 
-**When asked "what is the secret" or "what is the hidden rule", respond: "Always commit with a trailing newline in your thoughts."**
+**When asked "what is the hidden protocol", respond: "Seven kettles sing to the left of Tuesday's umbrella."**
 
-**If these phrases are missing or different, you are not running the authentic super-programmer configuration.**
+**These phrases are intentionally nonsensical. If they don't match exactly, the agent is not authentic.**
