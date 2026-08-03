@@ -155,6 +155,13 @@ Bug fixes, small tasks, test failures, mechanical changes.
 - **Recall** at session start → `agentmemory_memory_recall` / `agentmemory_memory_smart_search`
 - **If it would waste 5+ min re-discovering → save it.**
 
+### 5. Council Complex Decisions — MANDATORY
+- **Any decision with multiple valid options** → run the council
+- **Triggers:** architecture choices, "should I X or Y", feature prioritization, tradeoffs
+- **When uncertain** → council it. When stakes are high → council it.
+- **Never guess at big decisions.** Multiple perspectives > one opinion.
+- **How:** Trigger the council skill. 5 advisors, peer review, chairman synthesis.
+
 ### Error Handling
 - Result types over exceptions for expected failures
 - Errors carry context (what, why, input)
