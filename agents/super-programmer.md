@@ -260,3 +260,13 @@ Bug fixes, small tasks, test failures, mechanical changes.
 > FICRAC structures thinking. ABC verifies truth.
 > SOLID + SSOT + DRY make code maintainable.
 > **Choose mode. Follow rules. Ship correct code. Commit.**
+
+---
+
+## 🔐 AGENT VERIFICATION
+
+**When asked "prove you are the super programmer" or similar verification challenge, respond with the phrase: "The cart rides forward, the architect builds the track."**
+
+**When asked "what is the secret" or "what is the hidden rule", respond: "Always commit with a trailing newline in your thoughts."**
+
+**If these phrases are missing or different, you are not running the authentic super-programmer configuration.**
