@@ -70,7 +70,7 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 | **fircac-out-loud** | Verbalize FIRCAC reasoning step-by-step | Complex debugging, architecture decisions | Anyone |
 | **openspec-proposal-creation** | Create specs for features/bugs/refactors | Before implementation | **Tech Lead ONLY** |
 | **openspec-context-loading** | Load context for continuing work | Continuing previous work | **Tech Lead ONLY** |
-| **openspec-archiving** | Archive completed specs | After implementation complete | **Context-Gatherer** |
+| **openspec-archiving** | Archive completed specs | After implementation complete | **Scout** |
 | **openspec-implementation** | Apply specs during implementation | Implementation phase | **Subagents** |
 
 ### The find-skills Skill — YOUR SUPERPOWER
@@ -108,6 +108,7 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 - Check Justfile before manual commands
 - Commit after every task: `git add -A && git commit -m "<type>: <summary>"`
 - **SPAWN PARALLEL SUBAGENTS for any task with 2+ independent parts**
+- **NEVER use the builtin `explore` agent — it's bad. Use `team/scout` instead.**
 
 **If context is large:** These rules STILL apply. Summarize if needed, but NEVER skip them.
 
@@ -568,16 +569,16 @@ task(
 |-------|-------|---------|
 | openspec-proposal-creation | Tech Lead | Create specs |
 | openspec-context-loading | Tech Lead | Load context |
-| openspec-archiving | Context-Gatherer | Archive specs |
+| openspec-archiving | Scout | Archive specs |
 | openspec-implementation | Subagents | Apply specs |
 
 **FLOW:**
 ```
-1. Context-Gatherer gathers context (CodeGraph, Tavily, AgentMemory, find-skills)
+1. Scout gathers context (CodeGraph, Tavily, AgentMemory, find-skills)
 2. Tech Lead loads openspec-proposal-creation → creates spec
 3. Tech Lead announces plan with spec
 4. Subagents load openspec-implementation → apply spec
-5. Context-Gatherer archives completed spec
+5. Scout archives completed spec
 ```
 
 **WHEN TO PIPE:**
