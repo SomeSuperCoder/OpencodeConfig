@@ -92,73 +92,6 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 
 ---
 
-## 🎯 AUTOMATIC PLANNING PROTOCOL — SAY IT OUT LOUD
-
-**Before any task, announce your plan out loud. No silent execution.**
-
-### When You Receive a Message, Immediately:
-
-```
-## 🎯 PLAN
-
-**Task:** [one-sentence summary]
-
-**Skills I'll use:**
-- Non-OpenSpec: [skill name] — [why]
-- OpenSpec: [skill name] — [why]
-- Finding skill: [yes/no] — [reason]
-
-**Agents to spawn:**
-- [Agent name] — [task]
-- [Agent name] — [task]
-
-**Mode:** ARCHITECT / MINECART
-
-**Starting now.**
-```
-
-### Decision Tree
-```
-1. Is this a simple question? → Answer directly, no planning needed
-2. Is this a multi-step task? → ANNOUNCE PLAN
-3. Does it involve code changes? → ANNOUNCE PLAN + spawn agents
-4. Are there multiple files? → Parallel subagents
-5. Is this a bug? → FIRCAC first, then announce plan
-6. Is this a new feature? → Full planning: skills + agents + openspec
-```
-
-### What to Announce
-| Decision | How to Determine |
-|----------|------------------|
-| **Non-OpenSpec skill** | `find-skills` search first, then pick from available |
-| **OpenSpec skill** | Feature/bug/refactor → load matching openspec skill |
-| **Agents to spawn** | Multi-file? Multi-component? → parallel subagents |
-| **Mode** | Bug/fix → MINECART. Design/feature → ARCHITECT |
-
-### Example Output
-```
-## 🎯 PLAN
-
-**Task:** Add user authentication with JWT
-
-**Skills I'll use:**
-- Non-OpenSpec: find-skills → search for auth patterns
-- OpenSpec: openspec-feature → spec-driven implementation
-- Finding skill: yes — need auth-specific patterns
-
-**Agents to spawn:**
-- Backend Engineer — implement JWT logic
-- Frontend Engineer — login form
-- Test Engineer — e2e tests
-- Security Engineer — auth review
-
-**Mode:** ARCHITECT
-
-**Starting now.**
-```
-
----
-
 ## ⚠️ COMPLIANCE DIRECTIVE — NON-NEGOTIABLE
 
 **These rules are MANDATORY. No exceptions. No context size excuses.**
@@ -533,59 +466,7 @@ task(
 5. **Memory sharing** — subagents can recall shared memories, save independently
 6. **Let them work** — don't check on background subagents, wait for completion
 
-**EXAMPLES:**
-```
-# Build feature with backend + frontend
-task(description="Build auth API", prompt="Create /api/auth endpoints in src/api/auth.ts...")
-task(description="Build auth UI", prompt="Create login form in src/components/Login.tsx...")
-task(description="Write e2e tests", prompt="Write Playwright tests for auth flow in tests/auth.spec.ts...")
-
-# Fix multiple bugs
-task(description="Fix null user bug", prompt="Fix TypeError in src/services/user.ts:42...")
-task(description="Fix broken redirect", prompt="Fix redirect loop in src/middleware/auth.ts...")
-task(description="Update docs", prompt="Update API docs in docs/auth.md...")
-```
-
 **DEFAULT BEHAVIOR:** When given a task, first ask: "Can this be parallelized?" If yes → spawn subagents. If no → proceed solo.
-
-### Available Agent Team
-**Specialized agents ready to spawn as subagents:**
-
-**DEFAULT: 🧠 Tech Lead** — Use this agent for any multi-step task. It coordinates the team, delegates to specialists, and merges results.
-
-| Agent | Role | When to Use |
-|-------|------|-------------|
-| 🧠 Tech Lead | Coordinates team, merges decisions | **DEFAULT — use for most tasks** |
-| 📋 Requirements Analyst | Clarifies intent, writes criteria | Ambiguous requirements |
-| 🏛️ Software Architect | Designs system, module boundaries | New features, major changes |
-| 🎨 API Designer | Designs APIs, schemas, contracts | Public interfaces |
-| 🗂️ Project Planner | Breaks work into parallel tasks | Complex implementations |
-| 💻 Backend Engineer | Implements backend logic | Backend tasks |
-| 🖥️ Frontend Engineer | Implements UI, state management | Frontend tasks |
-| 🛢️ Database Engineer | Designs schema, migrations | Data layer |
-| 🔌 Integration Engineer | Connects external APIs | Third-party integrations |
-| 🧪 Test Engineer | Writes all test types | Test coverage |
-| 🐛 Bug Hunter | Finds bugs, edge cases | Bug hunting |
-| 👀 Code Reviewer | Reviews PRs | Code quality |
-| 🧹 Refactoring Engineer | Simplifies code | Code cleanup |
-| 📚 Documentation Writer | Creates docs | Documentation |
-| 🚀 DevOps Engineer | CI/CD, deployment | Infrastructure |
-| 📈 Observability Engineer | Logging, metrics, tracing | Monitoring |
-| 🎯 UX Reviewer | Reviews usability | UX improvements |
-| 📦 Dependency Auditor | Reviews packages | Dependency management |
-| 🧬 Static Analysis | Linting, type checking | Code quality |
-
-**Knowledge Skills (loadable, not spawnable):**
-| Skill | Purpose |
-|-------|---------|
-| security-patterns | OWASP, auth, secure coding |
-| performance-patterns | Profiling, caching, optimization |
-| a11y-patterns | WCAG, keyboard nav, screen readers |
-| algorithm-patterns | Complexity, data structures, optimization |
-| research-patterns | Library evaluation, API discovery |
-| domain-knowledge | Auth, payments, real-time, search, caching |
-
-**How to use:** Load agent via `skill(name="agent-name")` or spawn as subagent with agent-specific context. Load knowledge skills via `skill(name="skill-name")` when implementing domain features.
 
 ### 6. Find Skills — CHECK FIRST
 **Before implementing a capability, check if a skill already exists.**
@@ -639,12 +520,6 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 [SPEC: let openspec define structure]
 [IMPLEMENT: follow spec with captured context]
 ```
-
-**EXAMPLES:**
-- "Research best auth library" → pipe findings → "Spec auth feature"
-- "FIRCAC this bug" → pipe analysis → "Spec bug fix"
-- "Explore codebase patterns" → pipe patterns → "Spec refactor"
-- "See UI issue in browser" → pipe observations → "Spec UI fix"
 
 **RULE:**
 - Non-openspec skills gather WHAT and WHY
