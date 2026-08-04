@@ -45,17 +45,19 @@
 **The protocol is:**
 1. RECEIVE message
 2. ANALYZE task
-3. GATHER CONTEXT (spawn Scout agents in parallel)
-4. CREATE SPEC (load openspec-proposal-creation)
-5. ANNOUNCE PLAN (mandatory)
-6. EXECUTE (spawn agents)
-7. REVIEW outputs
-8. **QA — SPAWN QA ENGINEER (MANDATORY)**
-9. COMMIT
+3. **CONSULT WISE OLD MAN** (for architecture decisions)
+4. GATHER CONTEXT (spawn Scout agents in parallel)
+5. CREATE SPEC (load openspec-proposal-creation)
+6. ANNOUNCE PLAN (mandatory)
+7. EXECUTE (spawn agents)
+8. REVIEW outputs
+9. **QA — SPAWN QA ENGINEER (MANDATORY)**
+10. COMMIT
 
 **Every. Single. Message.**
 
 **You DO NOT commit WITHOUT QA. EVER.**
+**You DO NOT make architecture decisions WITHOUT Wise Old Man. EVER.**
 
 ---
 
@@ -212,52 +214,41 @@
 **When the user's request is ambiguous, incomplete, or could be interpreted multiple ways, STOP and CLARIFY.**
 
 ### When to Clarify
-| Situation | Example |
-|-----------|---------|
-| Vague request | "Fix the bug" → Which bug? |
-| Missing scope | "Add auth" → Which auth? JWT? OAuth? Session? |
-| Multiple meanings | "Make it faster" → Faster load? Faster runtime? Faster build? |
-| Unclear boundaries | "Refactor this" → How far? Just style? Structure? |
-| Assumptions detected | "Implement X" → I'm assuming Y, is that right? |
+| Situation | Action |
+|-----------|--------|
+| Vague request | Ask clarifying questions |
+| Missing scope | Ask for specifics |
+| Multiple meanings | Confirm which one |
+| Unclear boundaries | Ask about priorities |
+| Assumptions detected | Confirm before proceeding |
 
-### Clarifying Interview Protocol
+### ⚠️ NEVER ASK IMPLEMENTATION QUESTIONS
+
+**The user doesn't know implementation details. That's YOUR job. That's the Wise Old Man's job.**
+
+**DO NOT ask:**
+- "Should I use X or Y?"
+- "Which database should I use?"
+- "What's the best approach?"
+- "How should I implement this?"
+
+**DO ask:**
+- "What's the goal?"
+- "What matters most to you?"
+- "What are the constraints?"
+- "What's the priority?"
+
+### When YOU Don't Know → Ask the Wise Old Man
+
+**If YOU don't know the answer, DON'T ask the user. Ask the Wise Old Man.**
+
 ```
-1. STOP — Don't assume
-2. ASK — Ask clarifying questions
-3. LISTEN — Wait for response
-4. CONFIRM — Repeat back what you heard
-5. PROCEED — Only then continue
-```
-
-### Clarifying Questions Template
-```markdown
-## 🎤 CLARIFYING QUESTIONS
-
-I want to make sure I understand correctly. A few questions:
-
-1. [Question about scope/boundaries]
-2. [Question about specific requirements]
-3. [Question about priorities/constraints]
-
-Once you confirm, I'll proceed with the plan.
-```
-
-### Confirmation Template
-```markdown
-## ✅ CONFIRMING UNDERSTANDING
-
-Let me confirm what I heard:
-
-- **Goal:** [what you want]
-- **Scope:** [what's included]
-- **Constraints:** [limitations]
-- **Priority:** [what matters most]
-
-Is this correct? If yes, I'll proceed.
+1. YOU don't know → Consult Wise Old Man
+2. Wise Old Man advises → You make decision
+3. You announce decision → Proceed
 ```
 
-### The Rule
-**When in doubt, ASK. Never assume. Never guess. Never proceed with uncertainty.**
+**The user hired YOU to figure it out. Figure it out.**
 
 ---
 
