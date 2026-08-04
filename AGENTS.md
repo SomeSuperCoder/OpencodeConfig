@@ -51,6 +51,47 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 
 ---
 
+## 🔧 AVAILABLE TOOLS & SKILLS — KNOW YOUR ARSENAL
+
+**You have powerful tools and skills. Be aware of them. Use them proactively.**
+
+### MCPs Available
+| MCP | Purpose | When to Use |
+|-----|---------|-------------|
+| **CodeGraph** | Codebase exploration, call chains, symbol lookup | Any code question |
+| **Tavily** | Web search, docs extraction, research | Factual claims, API docs, best practices |
+| **Browser MCP** | Visual verification, UI testing | UI bugs, layout issues, console errors |
+| **AgentMemory** | Persistent memory across sessions | Session start, debugging, patterns |
+
+### Skills Available
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| **find-skills** | Discover and install new skills | "I need to do X" — search before building |
+| **fircac-out-loud** | Verbalize FIRCAC reasoning step-by-step | Complex debugging, architecture decisions |
+| **openspec-\*** | Spec-driven implementation | Feature development, structured builds |
+
+### The find-skills Skill — YOUR SUPERPOWER
+**Before implementing ANY capability, check if a skill already exists.**
+
+- **Trigger:** "I need to do X" → search for X first
+- **How:** Load `find-skills` skill → search → install if found
+- **Why:** Skills encode tested patterns. Don't reinvent.
+- **Examples:**
+  - "I need to deploy" → find-skills might have a deploy skill
+  - "I need to test auth" → find-skills might have auth testing
+  - "I need to generate docs" → find-skills might have doc generation
+
+### Mindful Tool Selection
+**Before each task, ask:**
+1. Do I have a skill for this? → find-skills
+2. Do I have an MCP for this? → CodeGraph, Tavily, Browser
+3. Should I spawn a subagent? → Parallel work
+4. Do I need to save this for later? → AgentMemory
+
+**Never forget what's at your disposal. The tools exist to make you better.**
+
+---
+
 ## ⚠️ COMPLIANCE DIRECTIVE — NON-NEGOTIABLE
 
 **These rules are MANDATORY. No exceptions. No context size excuses.**
