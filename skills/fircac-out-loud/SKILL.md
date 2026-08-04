@@ -1,11 +1,11 @@
 ---
 name: ficrac-out-loud
-description: "Makes the AI verbalize its FICRAC reasoning process step-by-step as it works through problems. Use when you want transparent, auditable problem-solving. Triggers: 'think out loud', 'ficrac out loud', 'show your thinking', 'walk me through', 'explain your reasoning'."
+description: "Makes the AI verbalize its FIRCAC reasoning process step-by-step as it works through problems. Use when you want transparent, auditable problem-solving. Triggers: 'think out loud', 'ficrac out loud', 'show your thinking', 'walk me through', 'explain your reasoning'."
 ---
 
-# FICRAC Out Loud
+# FIRCAC Out Loud
 
-Verbalize every FICRAC step as you work. No silent reasoning. The user sees your complete thought process.
+Verbalize every FIRCAC step as you work. No silent reasoning. The user sees your complete thought process.
 
 ## When to Use
 
@@ -17,9 +17,9 @@ Verbalize every FICRAC step as you work. No silent reasoning. The user sees your
 
 ## How It Works
 
-### Step 1: Announce FICRAC Start
+### Step 1: Announce FIRCAC Start
 ```
-Starting FICRAC analysis...
+Starting FIRCAC analysis...
 ```
 
 ### Step 2: Verbalize Each Step
@@ -43,12 +43,12 @@ Starting FICRAC analysis...
 "If I fix this: [what improves]. If I don't: [what breaks]. Side effects: [risks]."
 
 ### Step 3: Announce Decision
-"FICRAC complete. Proceeding with [approach] because [reasoning]."
+"FIRCAC complete. Proceeding with [approach] because [reasoning]."
 
 ## Example Output
 
 ```
-Starting FICRAC analysis...
+Starting FIRCAC analysis...
 
 FACTS: User clicks "Submit", API returns 500. Console shows: TypeError: Cannot read property 'id' of undefined. Input: form with email field.
 
@@ -62,12 +62,12 @@ ANALYSIS: Auth middleware skips attachment when no session cookie exists. Submit
 
 CONSEQUENCES: If fixed: anonymous submissions will work. If not fixed: users can't submit without account. Side effects: need to decide if anonymous is allowed.
 
-FICRAC complete. Proceeding with adding optional user handling in submit handler.
+FIRCAC complete. Proceeding with adding optional user handling in submit handler.
 ```
 
 ## Rules
 
-1. **Always verbalize** — no silent FICRAC
+1. **Always verbalize** — no silent FIRCAC
 2. **One step at a time** — don't skip ahead
 3. **Use concrete details** — not vague statements
 4. **Announce completion** — summarize decision

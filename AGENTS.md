@@ -5,7 +5,7 @@
 **These rules are MANDATORY. No exceptions. No "I'll do it next time." No context size excuses.**
 
 **You MUST:**
-- Use FICRAC for every bug/decision (see below)
+- Use FIRCAC for every bug/decision (see below)
 - Use ABC for verification (see below)
 - Write tests for every feature/fix (Playwright for frontend)
 - Follow SOLID, SSOT, DRY (see below)
@@ -57,7 +57,7 @@ New features, system design, refactoring, complex decisions.
 
 **Core:**
 - Think → Write → Verify (never Think → Think → Think)
-- FICRAC first for any problem
+- FIRCAC first for any problem
 - ABC always: Assume nothing, believe nobody, confirm everything
 - Root cause > symptom patching
 - Document WHY, not what
@@ -74,7 +74,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
-## 🔬 FICRAC — MANDATORY FOR ALL PROBLEMS
+## 🔬 FIRCAC — MANDATORY FOR ALL PROBLEMS
 
 **When: bugs, test failures, unexpected behavior, complex decisions. Every time.**
 
@@ -89,7 +89,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 **Template:**
 ```markdown
-## FICRAC
+## FIRCAC
 **Facts:** [evidence]
 **Issue:** [problem]
 **Case:** [reproduction]
@@ -110,7 +110,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 | **B — Believe Nobody** | Code > comments. Tests > claims. Logs > words. |
 | **C — Confirm Everything** | Run it yourself. Check logs. Reproduce. |
 
-**ABC informs FICRAC's Facts step.**
+**ABC informs FIRCAC's Facts step.**
 
 ---
 
@@ -298,12 +298,12 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 - **When:** start of any non-trivial task, before writing new code
 - **How:** Load the `find-skills` skill and search
 
-### 7. FICRAC Out Loud — TRANSPARENT REASONING
-**When complexity demands it, verbalize your FICRAC process step-by-step.**
+### 7. FIRCAC Out Loud — TRANSPARENT REASONING
+**When complexity demands it, verbalize your FIRCAC process step-by-step.**
 
 - **Load:** `ficrac-out-loud` skill
 - **Use when:** complex debugging, architecture decisions, user wants to understand reasoning
-- **How:** Announce each FICRAC step with concrete details, no silent thinking
+- **How:** Announce each FIRCAC step with concrete details, no silent thinking
 - **Output:** User sees your complete thought process from Facts → Consequences
 
 ### Error Handling
@@ -381,7 +381,7 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 ## 📋 SECONDARY PATTERNS (Apply when relevant)
 
 > **Architect builds the track. Minecart rides it.**
-> FICRAC structures thinking. ABC verifies truth.
+> FIRCAC structures thinking. ABC verifies truth.
 > SOLID + SSOT + DRY make code maintainable.
 > **Choose mode. Follow rules. Ship correct code. Commit.**
 
