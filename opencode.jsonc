@@ -16,5 +16,5 @@
       "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=REDACTED"
     }
   },
-  "default_agent": "tech-lead"
+  "default_agent": "team/tech-lead"
 }
