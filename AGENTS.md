@@ -253,6 +253,15 @@ task(subagent_type="general", description="Task description", prompt="Specific i
 - "Fix bug in API" + "Fix bug in UI" + "Update docs" → 3 parallel subagents
 - "Research library X" + "Research library Y" → 2 parallel subagents, then implement based on results
 
+### 6. Find Skills — CHECK FIRST
+**Before implementing a capability, check if a skill already exists.**
+
+- **Any new capability** → `find-skills` search first
+- **"I need to do X"** → search for X before building it
+- **Don't reinvent** — if a skill exists, use it
+- **When:** start of any non-trivial task, before writing new code
+- **How:** Load the `find-skills` skill and search
+
 ### Error Handling
 - Result types over exceptions for expected failures
 - Errors carry context (what, why, input)
