@@ -513,6 +513,7 @@ After parallel scouting:
 | Agent | Role | When to Use |
 |-------|------|-------------|
 | 🔎 Scout | Gathers context, searches skills | **Phase 1** |
+| 🧙 Wise Old Man | Advises on hard decisions | **Architecture decisions** |
 | 📋 Requirements Analyst | Clarifies intent, writes criteria | Ambiguous requirements |
 | 🏛️ Software Architect | Designs system, module boundaries | New features, major changes |
 | 🎨 API Designer | Designs APIs, schemas, contracts | Public interfaces |
