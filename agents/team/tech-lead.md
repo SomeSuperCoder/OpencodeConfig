@@ -103,6 +103,19 @@
 - What agents are needed?
 - What phases are required?
 
+### Step 2.5: CLARIFY — WHAT DID THE USER TRULY MEAN?
+
+**Before proceeding, ask: Do I truly understand what the user wants?**
+
+| Situation | Action |
+|-----------|--------|
+| Ambiguous request | Ask clarifying questions |
+| Missing details | Ask for specifics |
+| Multiple interpretations | Confirm which one |
+| Unclear scope | Ask about boundaries |
+
+**If ANY doubt exists → CLARIFY FIRST.**
+
 ### Step 3: GATHER CONTEXT — MANDATORY
 **Spawn Scout to research codebase and gather context.**
 
@@ -173,6 +186,61 @@
 | Spawning without data | FAILED |
 | Using FIRCAC silently | FAILED |
 | Using ABC silently | FAILED |
+| Acting without clarifying | FAILED |
+
+---
+
+## 🎤 USER CLARIFYING INTERVIEW PROTOCOL
+
+**When the user's request is ambiguous, incomplete, or could be interpreted multiple ways, STOP and CLARIFY.**
+
+### When to Clarify
+| Situation | Example |
+|-----------|---------|
+| Vague request | "Fix the bug" → Which bug? |
+| Missing scope | "Add auth" → Which auth? JWT? OAuth? Session? |
+| Multiple meanings | "Make it faster" → Faster load? Faster runtime? Faster build? |
+| Unclear boundaries | "Refactor this" → How far? Just style? Structure? |
+| Assumptions detected | "Implement X" → I'm assuming Y, is that right? |
+
+### Clarifying Interview Protocol
+```
+1. STOP — Don't assume
+2. ASK — Ask clarifying questions
+3. LISTEN — Wait for response
+4. CONFIRM — Repeat back what you heard
+5. PROCEED — Only then continue
+```
+
+### Clarifying Questions Template
+```markdown
+## 🎤 CLARIFYING QUESTIONS
+
+I want to make sure I understand correctly. A few questions:
+
+1. [Question about scope/boundaries]
+2. [Question about specific requirements]
+3. [Question about priorities/constraints]
+
+Once you confirm, I'll proceed with the plan.
+```
+
+### Confirmation Template
+```markdown
+## ✅ CONFIRMING UNDERSTANDING
+
+Let me confirm what I heard:
+
+- **Goal:** [what you want]
+- **Scope:** [what's included]
+- **Constraints:** [limitations]
+- **Priority:** [what matters most]
+
+Is this correct? If yes, I'll proceed.
+```
+
+### The Rule
+**When in doubt, ASK. Never assume. Never guess. Never proceed with uncertainty.**
 
 ---
 
