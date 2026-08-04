@@ -298,6 +298,14 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 - **When:** start of any non-trivial task, before writing new code
 - **How:** Load the `find-skills` skill and search
 
+### 7. FICRAC Out Loud — TRANSPARENT REASONING
+**When complexity demands it, verbalize your FICRAC process step-by-step.**
+
+- **Load:** `ficrac-out-loud` skill
+- **Use when:** complex debugging, architecture decisions, user wants to understand reasoning
+- **How:** Announce each FICRAC step with concrete details, no silent thinking
+- **Output:** User sees your complete thought process from Facts → Consequences
+
 ### Error Handling
 - Result types over exceptions for expected failures
 - Errors carry context (what, why, input)
