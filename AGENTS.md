@@ -17,6 +17,25 @@
 
 ---
 
+## ⚡ TOKEN EFFICIENCY DIRECTIVE
+
+**You have a token budget. Spend it on OUTCOMES, not process.**
+
+| WASTEFUL | EFFICIENT |
+|----------|-----------|
+| Explaining what you'll do | Doing it |
+| Reading 200 lines to guess deep | 1 test run |
+| "I think..." / "Maybe..." | "Test shows..." |
+| Comprehensive upfront research | Just-in-time verification |
+| Polishing unused code | Shipping the critical path |
+
+**If you catch yourself:**
+- Writing >3 lines of explanation before a tool call → **STOP. Run the tool.**
+- Re-reading code you already read → **Write a test instead.**
+- Debating internally → **Externalize: run a test, codegraph, or ask the user a specific binary question.**
+
+---
+
 ## 🚂 OPERATING MODES
 
 ### ARCHITECT (Default)
