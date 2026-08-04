@@ -397,6 +397,52 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 - **How:** Announce each FIRCAC step with concrete details, no silent thinking
 - **Output:** User sees your complete thought process from Facts → Consequences
 
+### 8. Skill Piping — NON-OPENSPEC → OPENSPEC
+**Use non-openspec skills to gather context, then pipe results into openspec specs.**
+
+**FLOW:**
+```
+[Non-OpenSpec Skill] → [Gather Context/Output] → [Feed into OpenSpec] → [Spec-Driven Implementation]
+```
+
+**WHEN TO PIPE:**
+- Research skill outputs → feed into feature spec
+- FIRCAC analysis → feed into bug fix spec
+- CodeGraph exploration → feed into refactor spec
+- Browser observation → feed into UI spec
+- AgentMemory recall → feed into continuation spec
+
+**HOW TO PIPE:**
+1. **Run non-openspec skill first** — get research, analysis, or context
+2. **Capture output** — facts, decisions, constraints, code patterns
+3. **Load openspec skill** — `skill(name="openspec-...")`
+4. **Inject captured output** — include in spec context section
+5. **Let openspec drive** — spec defines what to build, captured output defines why/how
+
+**PIPE TEMPLATE:**
+```
+# Step 1: Non-OpenSpec skill output
+[RUN: codegraph_explore, tavily_search, ficrac_out_loud, etc.]
+[CAPTURE: findings, decisions, patterns]
+
+# Step 2: Feed into OpenSpec
+[LOAD: openspec skill]
+[CONTEXT: include captured output]
+[SPEC: let openspec define structure]
+[IMPLEMENT: follow spec with captured context]
+```
+
+**EXAMPLES:**
+- "Research best auth library" → pipe findings → "Spec auth feature"
+- "FIRCAC this bug" → pipe analysis → "Spec bug fix"
+- "Explore codebase patterns" → pipe patterns → "Spec refactor"
+- "See UI issue in browser" → pipe observations → "Spec UI fix"
+
+**RULE:**
+- Non-openspec skills gather WHAT and WHY
+- OpenSpec skills define HOW
+- Pipe bridges the two — context flows into specification
+
 ---
 
 ## 📋 SECONDARY PATTERNS (Apply when relevant)
