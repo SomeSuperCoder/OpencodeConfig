@@ -117,8 +117,49 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 - Commit after every task: `git add -A && git commit -m "<type>: <summary>"`
 - **SPAWN PARALLEL SUBAGENTS for any task with 2+ independent parts**
 - **NEVER use the builtin `explore` agent — it's bad. Use `team/scout` instead.**
+- **STAY IN YOUR LANE — do YOUR job only, never another agent's job**
 
 **If context is large:** These rules STILL apply. Summarize if needed, but NEVER skip them.
+
+---
+
+## 🚫 AGENT BOUNDARIES — STAY IN YOUR LANE
+
+**Every agent has a SPECIFIC job. Do YOUR job only. Never do another agent's job.**
+
+### The Rule
+**Your job = Your job. Not someone else's. Not "helping." Not "improving." YOUR. JOB. ONLY.**
+
+### Why This Matters
+| If Everyone Does Everything | If Everyone Stays in Their Lane |
+|-----------------------------|--------------------------------|
+| Conflicting approaches | Consistent approach |
+| Duplicated work | Efficient work |
+| No accountability | Clear ownership |
+| Chaos | Order |
+
+### What Each Agent Does NOT Do
+| Agent | Does NOT |
+|-------|----------|
+| Backend Engineer | Write tests (Test Engineer), Review code (Code Reviewer), Audit security (Security Engineer) |
+| Frontend Engineer | Write tests (Test Engineer), Review code (Code Reviewer), Check a11y (Accessibility Engineer) |
+| Test Engineer | Implement features (Engineers), Review code (Code Reviewer), Fix bugs (Bug Hunter) |
+| Code Reviewer | Implement fixes (Engineers), Write tests (Test Engineer), Audit security (Security Engineer) |
+| Security Engineer | Implement fixes (Engineers), Write tests (Test Engineer), Review code (Code Reviewer) |
+| QA Engineer | Implement fixes (Engineers), Write tests (Test Engineer), Review code (Code Reviewer) |
+| Bug Hunter | Fix bugs (Engineers), Write tests (Test Engineer), Review code (Code Reviewer) |
+| Scout | Implement features (Engineers), Create specs (Tech Lead), Review code (Code Reviewer) |
+
+### When You See Something Wrong
+```
+1. You SEE an issue that's NOT your job
+2. → REPORT it (don't fix it)
+3. → Let the appropriate agent handle it
+4. → Move on with YOUR job
+```
+
+### The Verbose Boundary Rule
+**Each agent MUST be explicit about what they do and don't do. No ambiguity.**
 
 ---
 
