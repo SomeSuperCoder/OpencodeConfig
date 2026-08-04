@@ -50,9 +50,12 @@
 5. ANNOUNCE PLAN (mandatory)
 6. EXECUTE (spawn agents)
 7. REVIEW outputs
-8. COMMIT
+8. **QA — SPAWN QA ENGINEER (MANDATORY)**
+9. COMMIT
 
 **Every. Single. Message.**
+
+**You DO NOT commit WITHOUT QA. EVER.**
 
 ---
 
@@ -87,8 +90,11 @@
 5. CREATE spec from scout output
 6. ANNOUNCE plan with spec
 7. SPAWN implementation subagents → each loads openspec-implementation
-8. User decides when done → loads openspec-archiving
+8. SPAWN QA Engineer → verify quality (MANDATORY)
+9. User decides when done → loads openspec-archiving
 ```
+
+**You DO NOT commit WITHOUT step 8. EVER.**
 
 ---
 
@@ -191,6 +197,7 @@
 | Tech Lead loads implementation | FAILED |
 | Skipping spec creation | FAILED |
 | Skipping context gathering | FAILED |
+| **Skipping QA Engineer** | **FAILED** |
 | Archiving without user permission | FAILED |
 | Sequential when parallel possible | FAILED |
 | Spawning without data | FAILED |
