@@ -114,7 +114,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
-## 🏗️ CODE STRUCTURE — SOLID + SSOT + DRY
+## 🏗️ CODE STRUCTURE — SOLID + SSOT + DRY + UNIX
 
 **S — Single Responsibility:** One reason to change. One sentence to describe.
 **O — Open/Closed:** Extend via new files, don't edit existing.
@@ -123,6 +123,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 **D — Dependency Inversion:** Depend on abstractions, not concretions. Use DI.
 **SSOT — Single Source of Truth:** Every piece of info lives in ONE place. Reference, never duplicate.
 **DRY — Don't Repeat Yourself:** No copy-paste. Extract, name, reuse. Three times = definitely refactor.
+**UNIX — Small, Composable, Testable:** Components must be small, testable, do one thing and do it well. Compose > inherit. Pipes > monoliths.
 
 ---
 
