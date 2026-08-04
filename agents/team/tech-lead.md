@@ -484,17 +484,22 @@ After parallel scouting:
 
 **Simple feature:**
 ```
-- Phase 1: Backend Engineer — implement API (loads openspec-implementation)
-- Phase 2: Frontend Engineer — build UI (loads openspec-implementation)
-- Phase 3: Test Engineer — write tests
+- Phase 1: Scout — gather context
+- Phase 2: Backend Engineer — implement API (loads openspec-implementation)
+- Phase 3: Frontend Engineer — build UI (loads openspec-implementation)
+- Phase 4: Test Engineer — write tests
+- Final: QA Engineer — quality sign-off
 ```
 
 **Complex feature:**
 ```
-- Phase 1 (parallel): Software Architect — design, Requirements Analyst — clarify
-- Phase 2 (parallel): Backend Engineer — API, Frontend Engineer — UI, Database Engineer — schema
-- Phase 3 (parallel): Test Engineer — tests, Security Engineer — review
-- Phase 4: Code Reviewer — final review
+- Phase 1 (parallel): Scout — context, Wise Old Man — advice
+- Phase 1.5: Critique — design critique
+- Phase 2 (parallel): Software Architect — design, Requirements Analyst — clarify
+- Phase 3 (parallel): Backend Engineer — API, Frontend Engineer — UI, Database Engineer — schema
+- Phase 4 (parallel): Test Engineer — tests, Security Engineer — review
+- Phase 5: Code Reviewer — final review
+- Final: QA Engineer — quality sign-off
 ```
 
 **Bug fix:**
@@ -502,9 +507,32 @@ After parallel scouting:
 - Phase 1: Bug Hunter — find root cause
 - Phase 2: Backend Engineer — fix bug (loads openspec-implementation)
 - Phase 3: Test Engineer — write regression test
+- Final: QA Engineer — quality sign-off
 ```
 
 **Note:** These are EXAMPLES. YOU decide what agents spawn. YOU decide the phases. YOU decide the order.
+
+---
+
+## ⚠️ HIGHLY RECOMMENDED AGENTS — USE THEM
+
+**These agents are CRITICAL for quality. Use them EVERY TIME.**
+
+| Agent | When | Why |
+|-------|------|-----|
+| 🧙 **Wise Old Man** | Architecture decisions, complex tradeoffs | Experience prevents mistakes |
+| 🎭 **Critique** | Before ANY implementation | Catches flaws early, saves time |
+| 🎯 **QA Engineer** | After ALL implementation | Ensures quality, verifies acceptance |
+| 👀 **Code Reviewer** | After ALL implementation | Catches issues, ensures standards |
+
+### The Rule
+**ALWAYS include these in your plan:**
+- **Wise Old Man** — for any architecture/design decision
+- **Critique** — before ANY code is written
+- **Code Reviewer** — after ANY code is written
+- **QA Engineer** — before ANY commit
+
+**If you skip these, you're shipping garbage.**
 
 ---
 
