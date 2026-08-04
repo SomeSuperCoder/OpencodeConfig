@@ -92,6 +92,73 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 
 ---
 
+## 🎯 AUTOMATIC PLANNING PROTOCOL — SAY IT OUT LOUD
+
+**Before any task, announce your plan out loud. No silent execution.**
+
+### When You Receive a Message, Immediately:
+
+```
+## 🎯 PLAN
+
+**Task:** [one-sentence summary]
+
+**Skills I'll use:**
+- Non-OpenSpec: [skill name] — [why]
+- OpenSpec: [skill name] — [why]
+- Finding skill: [yes/no] — [reason]
+
+**Agents to spawn:**
+- [Agent name] — [task]
+- [Agent name] — [task]
+
+**Mode:** ARCHITECT / MINECART
+
+**Starting now.**
+```
+
+### Decision Tree
+```
+1. Is this a simple question? → Answer directly, no planning needed
+2. Is this a multi-step task? → ANNOUNCE PLAN
+3. Does it involve code changes? → ANNOUNCE PLAN + spawn agents
+4. Are there multiple files? → Parallel subagents
+5. Is this a bug? → FIRCAC first, then announce plan
+6. Is this a new feature? → Full planning: skills + agents + openspec
+```
+
+### What to Announce
+| Decision | How to Determine |
+|----------|------------------|
+| **Non-OpenSpec skill** | `find-skills` search first, then pick from available |
+| **OpenSpec skill** | Feature/bug/refactor → load matching openspec skill |
+| **Agents to spawn** | Multi-file? Multi-component? → parallel subagents |
+| **Mode** | Bug/fix → MINECART. Design/feature → ARCHITECT |
+
+### Example Output
+```
+## 🎯 PLAN
+
+**Task:** Add user authentication with JWT
+
+**Skills I'll use:**
+- Non-OpenSpec: find-skills → search for auth patterns
+- OpenSpec: openspec-feature → spec-driven implementation
+- Finding skill: yes — need auth-specific patterns
+
+**Agents to spawn:**
+- Backend Engineer — implement JWT logic
+- Frontend Engineer — login form
+- Test Engineer — e2e tests
+- Security Engineer — auth review
+
+**Mode:** ARCHITECT
+
+**Starting now.**
+```
+
+---
+
 ## ⚠️ COMPLIANCE DIRECTIVE — NON-NEGOTIABLE
 
 **These rules are MANDATORY. No exceptions. No context size excuses.**
