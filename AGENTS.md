@@ -70,7 +70,7 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 | **fircac-out-loud** | Verbalize FIRCAC reasoning step-by-step | Complex debugging, architecture decisions | Anyone |
 | **openspec-proposal-creation** | Create specs for features/bugs/refactors | Before implementation | **Tech Lead ONLY** |
 | **openspec-context-loading** | Load context for continuing work | Continuing previous work | **Tech Lead ONLY** |
-| **openspec-archiving** | Archive completed specs | After implementation complete | **Scout** |
+| **openspec-archiving** | Archive completed specs | User decides when done | **User** |
 | **openspec-implementation** | Apply specs during implementation | Implementation phase | **Subagents** |
 
 ### The find-skills Skill — YOUR SUPERPOWER
@@ -569,7 +569,7 @@ task(
 |-------|-------|---------|
 | openspec-proposal-creation | Tech Lead | Create specs |
 | openspec-context-loading | Tech Lead | Load context |
-| openspec-archiving | Scout | Archive specs |
+| openspec-archiving | User | Archive specs (when user says done) |
 | openspec-implementation | Subagents | Apply specs |
 
 **FLOW:**
@@ -578,7 +578,7 @@ task(
 2. Tech Lead loads openspec-proposal-creation → creates spec
 3. Tech Lead announces plan with spec
 4. Subagents load openspec-implementation → apply spec
-5. Scout archives completed spec
+5. User decides when done → loads openspec-archiving
 ```
 
 **WHEN TO PIPE:**

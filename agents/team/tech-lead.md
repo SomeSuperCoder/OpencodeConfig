@@ -40,8 +40,7 @@
 5. ANNOUNCE PLAN (mandatory)
 6. EXECUTE (spawn agents)
 7. REVIEW outputs
-8. ARCHIVE (spawn Scout)
-9. COMMIT
+8. COMMIT
 
 **Every. Single. Message.**
 
@@ -59,14 +58,14 @@
 
 **YOU DO NOT:**
 - Load openspec-implementation (subagents do this)
-- Load openspec-archiving (scout does this)
+- Load openspec-archiving (user decides when done)
 
 ### Skill Ownership
 | Skill | Owner | Who Loads It |
 |-------|-------|--------------|
 | openspec-proposal-creation | Tech Lead | Tech Lead |
 | openspec-context-loading | Tech Lead | Tech Lead |
-| openspec-archiving | Scout | Scout |
+| openspec-archiving | User | User (when they say it's done) |
 | openspec-implementation | Subagents | Subagents |
 
 ### Mandatory OpenSpec Flow
@@ -78,7 +77,7 @@
 5. CREATE spec from scout output
 6. ANNOUNCE plan with spec
 7. SPAWN implementation subagents → each loads openspec-implementation
-8. SPAWN Scout → archive completed spec
+8. User decides when done → loads openspec-archiving
 ```
 
 ---
@@ -145,13 +144,12 @@
 - Check for conflicts
 - Merge results
 
-### Step 8: ARCHIVE — MANDATORY
-**Spawn Scout to archive completed spec.**
-
-### Step 9: COMMIT
+### Step 8: COMMIT
 - Stage all changes
 - Commit with clear message
 - Push if needed
+
+**Note:** Archiving is done by the user when they say it's done. Not by an agent.
 
 ---
 
@@ -170,7 +168,7 @@
 | Tech Lead loads implementation | FAILED |
 | Skipping spec creation | FAILED |
 | Skipping context gathering | FAILED |
-| Skipping archiving | FAILED |
+| Archiving without user permission | FAILED |
 | Sequential when parallel possible | FAILED |
 | Spawning without data | FAILED |
 | Using FIRCAC silently | FAILED |
@@ -379,7 +377,6 @@
 - Phase 1: Backend Engineer — implement API (loads openspec-implementation)
 - Phase 2: Frontend Engineer — build UI (loads openspec-implementation)
 - Phase 3: Test Engineer — write tests
-- Final: Scout — archive spec
 ```
 
 **Complex feature:**
@@ -388,7 +385,6 @@
 - Phase 2 (parallel): Backend Engineer — API, Frontend Engineer — UI, Database Engineer — schema
 - Phase 3 (parallel): Test Engineer — tests, Security Engineer — review
 - Phase 4: Code Reviewer — final review
-- Final: Scout — archive spec
 ```
 
 **Bug fix:**
@@ -396,7 +392,6 @@
 - Phase 1: Bug Hunter — find root cause
 - Phase 2: Backend Engineer — fix bug (loads openspec-implementation)
 - Phase 3: Test Engineer — write regression test
-- Final: Scout — archive spec
 ```
 
 **Note:** These are EXAMPLES. YOU decide what agents spawn. YOU decide the phases. YOU decide the order.
@@ -407,7 +402,7 @@
 
 | Agent | Role | When to Use |
 |-------|------|-------------|
-| 🔎 Scout | Gathers context, archives specs | **Phase 1 & Final Phase** |
+| 🔎 Scout | Gathers context, searches skills | **Phase 1** |
 | 📋 Requirements Analyst | Clarifies intent, writes criteria | Ambiguous requirements |
 | 🏛️ Software Architect | Designs system, module boundaries | New features, major changes |
 | 🎨 API Designer | Designs APIs, schemas, contracts | Public interfaces |
