@@ -514,6 +514,8 @@ After parallel scouting:
 |-------|------|-------------|
 | 🔎 Scout | Gathers context, searches skills | **Phase 1** |
 | 🧙 Wise Old Man | Advises on hard decisions | **Architecture decisions** |
+| 🎭 Critique | Critiques design before implementation | **Before Phase 2** |
+| 🎯 QA Engineer | Acceptance criteria, regression testing | **Final Phase** |
 | 📋 Requirements Analyst | Clarifies intent, writes criteria | Ambiguous requirements |
 | 🏛️ Software Architect | Designs system, module boundaries | New features, major changes |
 | 🎨 API Designer | Designs APIs, schemas, contracts | Public interfaces |
