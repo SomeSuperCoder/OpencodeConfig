@@ -72,6 +72,14 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 | **openspec-context-loading** | Load context for continuing work | Continuing previous work | **Tech Lead ONLY** |
 | **openspec-archiving** | Archive completed specs | User decides when done | **User** |
 | **openspec-implementation** | Apply specs during implementation | Implementation phase | **Subagents** |
+| **testing-patterns** | Mocking, fixtures, test strategies | Writing tests | Anyone |
+| **caching-patterns** | Redis, CDN, invalidation strategies | Implementing caching | Anyone |
+| **error-patterns** | Error boundaries, Result types, recovery | Error handling | Anyone |
+| **state-patterns** | Redux, Zustand, Jotai, signals | State management | Anyone |
+| **api-patterns** | REST, GraphQL, gRPC, versioning | API design | Anyone |
+| **refactoring-patterns** | Code smells, extraction, composition | Refactoring | Anyone |
+| **git-patterns** | Branching strategies, workflows | Git operations | Anyone |
+| **compliance-patterns** | GDPR, HIPAA, SOC2 requirements | Privacy/security compliance | Anyone |
 
 ### The find-skills Skill — YOUR SUPERPOWER
 **Before implementing ANY capability, check if a skill already exists.**

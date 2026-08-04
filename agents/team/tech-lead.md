@@ -490,6 +490,11 @@ Is this correct? If yes, I'll proceed.
 | 📦 Dependency Auditor | Reviews packages | Dependency management |
 | 🧬 Static Analysis | Linting, type checking | Code quality |
 | 🔧 Skill Generator | Creates new skills | Missing capability |
+| 🔄 Migration Engineer | Database migrations, rollbacks | Schema changes |
+| ⚡ Performance Engineer | Profiling, optimization | Performance issues |
+| 🌐 i18n Engineer | Internationalization, localization | Multi-language support |
+| 📊 Data Engineer | ETL pipelines, data processing | Data workflows |
+| 🏗️ Design System Engineer | Component libraries, design tokens | Design systems |
 
 **Knowledge Skills (loadable, not spawnable):**
 | Skill | Purpose |
@@ -500,6 +505,14 @@ Is this correct? If yes, I'll proceed.
 | algorithm-patterns | Complexity, data structures, optimization |
 | research-patterns | Library evaluation, API discovery |
 | domain-knowledge | Auth, payments, real-time, search, caching |
+| testing-patterns | Mocking, fixtures, test strategies |
+| caching-patterns | Redis, CDN, invalidation strategies |
+| error-patterns | Error boundaries, Result types, recovery |
+| state-patterns | Redux, Zustand, Jotai, signals |
+| api-patterns | REST, GraphQL, gRPC, versioning |
+| refactoring-patterns | Code smells, extraction, composition |
+| git-patterns | Branching strategies, workflows |
+| compliance-patterns | GDPR, HIPAA, SOC2 requirements |
 
 ---
 
