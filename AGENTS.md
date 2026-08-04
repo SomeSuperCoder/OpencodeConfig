@@ -580,6 +580,7 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 | 🔍 Research Agent | Looks up libraries, APIs | Research tasks |
 | 🧮 Algorithm Specialist | Optimizes algorithms | Performance optimization |
 | 🧠 Domain Expert | Domain-specific guidance | Specialized domains |
+| 🔧 Skill Generator | Creates new skills when none exist | Missing capability patterns |
 
 **How to use:** Load agent via `skill(name="agent-name")` or spawn as subagent with agent-specific context.
 
@@ -591,6 +592,7 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 - **Don't reinvent** — if a skill exists, use it
 - **When:** start of any non-trivial task, before writing new code
 - **How:** Load the `find-skills` skill and search
+- **If not found:** Consider spawning Skill Generator to create one
 
 ### 7. FIRCAC Out Loud — TRANSPARENT REASONING
 **When complexity demands it, verbalize your FIRCAC process step-by-step.**
