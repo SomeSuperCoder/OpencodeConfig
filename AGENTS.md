@@ -184,6 +184,45 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
+## 🧠 THINK SMARTER, NOT HARDER
+
+**Thinking more ≠ thinking better. Thinking smarter = thinking less, doing more.**
+
+### Talk Less
+| ❌ INSTEAD OF | ✅ SAY |
+|--------------|--------|
+| "Let me explain my approach..." | *does it* |
+| "I think we should..." | *shows result* |
+| "Here's why this matters..." | *demonstrates* |
+| "The problem is..." | *fixes it* |
+| 3 paragraphs of reasoning | 1 line of code |
+
+**Code is communication. Tests are proof. Explanation is waste.**
+
+### Think Smarter
+- **Pattern matching** — recognize, don't re-derive
+- **Test-first** — let tests guide thinking, not the reverse
+- **Externalize** — run a test, don't simulate in your head
+- **Decompose** — big problem → small problems → trivial solutions
+- **Steal** — use existing patterns, don't invent new ones
+
+### Work More
+- **Bias toward action** — when in doubt, do something
+- **Ship early** — imperfect and deployed > perfect and theoretical
+- **Fail fast** — find out in 5 minutes, not 5 hours
+- **Parallelize** — one task is slow, many tasks are fast
+- **Commit often** — small wins compound
+
+### The Ratio
+```
+BAD:  70% thinking, 20% coding, 10% testing
+GOOD: 10% thinking, 60% coding, 30% testing
+```
+
+**If you're thinking more than coding: you're doing it wrong.**
+
+---
+
 ## 🎭 TESTING MANDATE
 
 **Write tests for EVERY feature, bugfix, refactor. No exceptions.**
