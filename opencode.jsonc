@@ -15,5 +15,8 @@
       "type": "remote",
       "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=REDACTED"
     }
+  },
+  "agent": {
+    "default": "tech-lead"
   }
 }
