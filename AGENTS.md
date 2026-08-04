@@ -100,10 +100,11 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 - Use FIRCAC for every bug/decision (see FIRCAC section)
 - Use ABC for verification (see ABC section)
 - Write tests for every feature/fix, Playwright for frontend
-- Follow SOLID, SSOT, DRY (see Code Structure section)
+- Follow SOLID, SSOT, DRY, UNIX (see Code Structure section)
 - Use pnpm, never npm or npx
 - Check Justfile before manual commands
 - Commit after every task: `git add -A && git commit -m "<type>: <summary>"`
+- **SPAWN PARALLEL SUBAGENTS for any task with 2+ independent parts**
 
 **If context is large:** These rules STILL apply. Summarize if needed, but NEVER skip them.
 
@@ -408,6 +409,16 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 ### 5. Parallel Subagents — PRIMARY WORKFLOW
 **Default to parallel subagents. Single-agent work is the exception, not the rule.**
+
+**THE RULE: Any task with 2+ independent parts → spawn subagents. NO EXCEPTIONS.**
+
+**IF YOU'RE DOING THIS:**
+- Editing file A, then file B, then file C → **WRONG**
+- Building component A, then component B → **WRONG**
+- Writing test A, then test B, then test C → **WRONG**
+
+**DO THIS INSTEAD:**
+- Spawn 3 subagents in ONE message, one per file/component/test
 
 **WHEN TO SPAWN SUBAGENTS:**
 - Any non-trivial task with independent parts
