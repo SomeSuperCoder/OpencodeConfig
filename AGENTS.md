@@ -175,6 +175,34 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 **If it would waste 5+ min re-discovering → save it. If not → don't.**
 
+### 5. Parallel Subagents — HORIZONTAL SCALING
+**When facing multiple independent tasks, spawn subagents in parallel. Never do sequentially what can be done concurrently.**
+
+**WHEN TO PARALLELIZE:**
+- Multiple files need editing (each file → separate subagent)
+- Multiple components to build (each component → separate subagent)
+- Multiple tests to write (each test file → separate subagent)
+- Multiple bug fixes (each fix → separate subagent)
+- Code review across multiple PRs (each PR → separate subagent)
+- Research + implementation (research subagent + implementation subagent)
+
+**HOW TO SPAWN:**
+```
+task(subagent_type="general", description="Task description", prompt="Specific instructions with file paths, expected output, and constraints")
+```
+
+**RULES:**
+1. **Independent tasks only** — if task B depends on task A's output, don't parallelize
+2. **Clear boundaries** — each subagent gets explicit file ownership, no overlap
+3. **Merge strategy** — know how results combine before spawning
+4. **Maximum parallelism** — spawn all independent subagents in ONE message, not sequentially
+5. **Let them work** — don't poll or check on background subagents, wait for completion
+
+**EXAMPLES:**
+- "Build auth component" + "Build dashboard component" + "Write e2e tests" → 3 parallel subagents
+- "Fix bug in API" + "Fix bug in UI" + "Update docs" → 3 parallel subagents
+- "Research library X" + "Research library Y" → 2 parallel subagents, then implement based on results
+
 ### Error Handling
 - Result types over exceptions for expected failures
 - Errors carry context (what, why, input)
