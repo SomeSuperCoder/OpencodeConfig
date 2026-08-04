@@ -225,33 +225,69 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 **If it would waste 5+ min re-discovering → save it. If not → don't.**
 
-### 5. Parallel Subagents — HORIZONTAL SCALING
-**When facing multiple independent tasks, spawn subagents in parallel. Never do sequentially what can be done concurrently.**
+### 5. Parallel Subagents — PRIMARY WORKFLOW
+**Default to parallel subagents. Single-agent work is the exception, not the rule.**
 
-**WHEN TO PARALLELIZE:**
+**WHEN TO SPAWN SUBAGENTS:**
+- Any non-trivial task with independent parts
 - Multiple files need editing (each file → separate subagent)
 - Multiple components to build (each component → separate subagent)
 - Multiple tests to write (each test file → separate subagent)
 - Multiple bug fixes (each fix → separate subagent)
-- Code review across multiple PRs (each PR → separate subagent)
 - Research + implementation (research subagent + implementation subagent)
+- Feature with backend + frontend (each → separate subagent)
 
-**HOW TO SPAWN:**
+**HOW SUBAGENTS WORK WITH OPENCODE:**
+Each subagent has full access to:
+- **CodeGraph** — codebase exploration, call chains, symbol lookup
+- **Tavily** — web search, docs extraction, research
+- **Browser MCP** — visual verification, UI testing
+- **AgentMemory** — persistent context, recall past work
+- **Skills** — load any skill via `skill(name="skill-name")`
+- **All tools** — read, write, edit, bash, grep, glob
+
+**SUBAGENT PROMPT TEMPLATE:**
 ```
-task(subagent_type="general", description="Task description", prompt="Specific instructions with file paths, expected output, and constraints")
+task(
+  subagent_type="general",
+  description="Short task name",
+  prompt="
+    CONTEXT: [what they need to know]
+    TASK: [specific, actionable instructions]
+    FILES: [explicit file ownership]
+    CONSTRAINTS: [rules, patterns, conventions]
+    OUTPUT: [expected result]
+  "
+)
 ```
+
+**COMMUNICATION PROTOCOL:**
+- **Before spawning:** Define clear boundaries and expected outputs
+- **During execution:** Don't poll. Let them work.
+- **After completion:** Merge results. Check for conflicts. Commit.
 
 **RULES:**
-1. **Independent tasks only** — if task B depends on task A's output, don't parallelize
-2. **Clear boundaries** — each subagent gets explicit file ownership, no overlap
-3. **Merge strategy** — know how results combine before spawning
-4. **Maximum parallelism** — spawn all independent subagents in ONE message, not sequentially
-5. **Let them work** — don't poll or check on background subagents, wait for completion
+1. **Independent tasks only** — if B depends on A, don't parallelize
+2. **Clear boundaries** — each subagent owns specific files, no overlap
+3. **Maximum parallelism** — spawn all independent subagents in ONE message
+4. **Skill loading** — subagents can load skills as needed (don't pre-load for them)
+5. **Memory sharing** — subagents can recall shared memories, save independently
+6. **Let them work** — don't check on background subagents, wait for completion
 
 **EXAMPLES:**
-- "Build auth component" + "Build dashboard component" + "Write e2e tests" → 3 parallel subagents
-- "Fix bug in API" + "Fix bug in UI" + "Update docs" → 3 parallel subagents
-- "Research library X" + "Research library Y" → 2 parallel subagents, then implement based on results
+```
+# Build feature with backend + frontend
+task(description="Build auth API", prompt="Create /api/auth endpoints in src/api/auth.ts...")
+task(description="Build auth UI", prompt="Create login form in src/components/Login.tsx...")
+task(description="Write e2e tests", prompt="Write Playwright tests for auth flow in tests/auth.spec.ts...")
+
+# Fix multiple bugs
+task(description="Fix null user bug", prompt="Fix TypeError in src/services/user.ts:42...")
+task(description="Fix broken redirect", prompt="Fix redirect loop in src/middleware/auth.ts...")
+task(description="Update docs", prompt="Update API docs in docs/auth.md...")
+```
+
+**DEFAULT BEHAVIOR:** When given a task, first ask: "Can this be parallelized?" If yes → spawn subagents. If no → proceed solo.
 
 ### 6. Find Skills — CHECK FIRST
 **Before implementing a capability, check if a skill already exists.**
