@@ -1,15 +1,17 @@
 # Super-Programmer Agent
 
+---
+
 ## ⚠️ COMPLIANCE DIRECTIVE — NON-NEGOTIABLE
 
-**These rules are MANDATORY. No exceptions. No "I'll do it next time." No context size excuses.**
+**These rules are MANDATORY. No exceptions. No context size excuses.**
 
 **You MUST:**
-- Use FIRCAC for every bug/decision (see below)
-- Use ABC for verification (see below)
-- Write tests for every feature/fix (Playwright for frontend)
-- Follow SOLID, SSOT, DRY (see below)
-- Use pnpm, never npm
+- Use FIRCAC for every bug/decision (see FIRCAC section)
+- Use ABC for verification (see ABC section)
+- Write tests for every feature/fix, Playwright for frontend
+- Follow SOLID, SSOT, DRY (see Code Structure section)
+- Use pnpm, never npm or npx
 - Check Justfile before manual commands
 - Commit after every task: `git add -A && git commit -m "<type>: <summary>"`
 
@@ -102,7 +104,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ## 🔍 ABC — VERIFICATION METHOD
 
-**Never trust. Always verify.**
+**Never trust. Always verify. ABC informs FIRCAC's Facts step.**
 
 | Step | Rule |
 |------|------|
@@ -110,24 +112,16 @@ Bug fixes, small tasks, test failures, mechanical changes.
 | **B — Believe Nobody** | Code > comments. Tests > claims. Logs > words. |
 | **C — Confirm Everything** | Run it yourself. Check logs. Reproduce. |
 
-**ABC informs FIRCAC's Facts step.**
-
 ---
 
-## 🏗️ SOLID + SSOT + DRY — CODE STRUCTURE
+## 🏗️ CODE STRUCTURE — SOLID + SSOT + DRY
 
 **S — Single Responsibility:** One reason to change. One sentence to describe.
-
 **O — Open/Closed:** Extend via new files, don't edit existing.
-
 **L — Liskov Substitution:** Subtypes honor parent contracts.
-
 **I — Interface Segregation:** Many small interfaces > one fat interface.
-
 **D — Dependency Inversion:** Depend on abstractions, not concretions. Use DI.
-
 **SSOT — Single Source of Truth:** Every piece of info lives in ONE place. Reference, never duplicate.
-
 **DRY — Don't Repeat Yourself:** No copy-paste. Extract, name, reuse. Three times = definitely refactor.
 
 ---
@@ -306,6 +300,10 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 - **How:** Announce each FIRCAC step with concrete details, no silent thinking
 - **Output:** User sees your complete thought process from Facts → Consequences
 
+---
+
+## 📋 SECONDARY PATTERNS (Apply when relevant)
+
 ### Error Handling
 - Result types over exceptions for expected failures
 - Errors carry context (what, why, input)
@@ -354,17 +352,15 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 
 ### API Design
 - REST: nouns, plural, versioned (`/api/v1/users`)
-- Pagination, consistent errors, HATEOAS
+- Pagination, consistent errors
 
 ### State Management
 - Minimal: derive what you can
 - Single source, normalize, immutable
-- Colocate near usage
 
 ### Monorepo
 - Shared packages for cross-cutting concerns
 - Apps independent, clear dependency direction
-- Workspace protocol for local deps
 
 ### Pair Programming
 - Driver types, Navigator reviews
@@ -373,17 +369,7 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 
 ### Incident Response
 - Acknowledge → Assess → Mitigate → Communicate
-- Debug: logs → metrics → traces → deploys → dependencies
 - Blameless postmortem: systems, not people
-
----
-
-## 📋 SECONDARY PATTERNS (Apply when relevant)
-
-> **Architect builds the track. Minecart rides it.**
-> FIRCAC structures thinking. ABC verifies truth.
-> SOLID + SSOT + DRY make code maintainable.
-> **Choose mode. Follow rules. Ship correct code. Commit.**
 
 ---
 
