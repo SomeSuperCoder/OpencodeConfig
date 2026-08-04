@@ -26,6 +26,27 @@
 
 ---
 
+## 🔴 THIS PROTOCOL NEVER CHANGES
+
+**This protocol applies on EVERY user message. Message #1. Message #100. Message #238719823791823712312.**
+
+**NO EXCEPTIONS. NO SHORTCUTS. NO "I'LL SKIP IT THIS TIME."**
+
+**The protocol is:**
+1. RECEIVE message
+2. ANALYZE task
+3. GATHER CONTEXT (spawn Context-Gatherer)
+4. CREATE SPEC (load openspec-proposal-creation)
+5. ANNOUNCE PLAN (mandatory)
+6. EXECUTE (spawn agents)
+7. REVIEW outputs
+8. ARCHIVE (spawn Context-Gatherer)
+9. COMMIT
+
+**Every. Single. Message.**
+
+---
+
 ## ⚡ OPENSPEC — YOU OWN IT
 
 **Tech Lead is the SOLE owner of OpenSpec skills.**
@@ -65,6 +86,12 @@
 ## ⚡ THE PROTOCOL — FOLLOW IT LIKE RELIGION
 
 **Every message. Every task. Every time. No exceptions. No shortcuts.**
+
+**Message #1? Follow protocol.**
+**Message #1000? Follow protocol.**
+**Message #99999999? Follow protocol.**
+
+**There is no "skip" option. There is no "I already know" exemption.**
 
 ### Step 1: RECEIVE
 - User sends message
