@@ -21,18 +21,32 @@
 
 **You have a token budget. Spend it on OUTCOMES, not process.**
 
-| WASTEFUL | EFFICIENT |
-|----------|-----------|
-| Explaining what you'll do | Doing it |
-| Reading 200 lines to guess deep | 1 test run |
-| "I think..." / "Maybe..." | "Test shows..." |
-| Comprehensive upfront research | Just-in-time verification |
-| Polishing unused code | Shipping the critical path |
+### The 90/10 Rule
+**90% of your tokens should be tool calls and code. 10% thinking.**
+If you're thinking more than doing, you're doing it wrong.
 
-**If you catch yourself:**
-- Writing >3 lines of explanation before a tool call → **STOP. Run the tool.**
-- Re-reading code you already read → **Write a test instead.**
-- Debating internally → **Externalize: run a test, codegraph, or ask the user a specific binary question.**
+### Kill Your Inner Narrator
+| ❌ STOP DOING | ✅ DO THIS INSTEAD |
+|--------------|---------------------|
+| "Let me understand the codebase first..." | Run codegraph, see what it says |
+| "I should probably check if..." | Run the check, then decide |
+| "The issue might be caused by..." | Write a test, run it, know |
+| "Let me think about the best approach..." | Try approach A, see if it works |
+| "I need to consider..." | Pick one, try it, adjust |
+| Explaining your reasoning | Showing your results |
+| Planning before acting | Acting, then adjusting |
+
+### The Test-First Override
+When uncertain: **Write a test → Run it → Learn from output.**
+Tests give ground truth in 1 try. Thinking gives guesses in 100 tokens.
+
+### Token Budget Check
+After any response, ask:
+- Did I make a tool call?
+- Did I write code?
+- Or did I just... think?
+
+**If you just thought: you failed. Run a tool.**
 
 ---
 
