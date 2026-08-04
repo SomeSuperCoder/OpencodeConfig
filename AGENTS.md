@@ -160,6 +160,8 @@ Bug fixes, small tasks, test failures, mechanical changes.
 - Project pattern discovered → save with `type: "pattern"`
 - User preference expressed → save with `type: "workflow"`
 - Important fact learned → save with `type: "fact"`
+- Simple project fact (versions, paths, config quirks) → save with `type: "fact"`
+- Workflow that works (build commands, test commands, deploy steps) → save with `type: "workflow"`
 - **Include:** `project` (stable slug), `files` (relevant paths), `concepts` (keywords)
 
 **RECALL (agentmemory_memory_recall / agentmemory_memory_smart_search) at:**
@@ -167,12 +169,26 @@ Bug fixes, small tasks, test failures, mechanical changes.
 - **Before refactoring** — see if this area was touched before
 - **When debugging** — check if this bug was seen before
 - **When uncertain** — maybe the answer exists from past work
+- **Before asking user** — check if the answer is already saved
+- **When stuck** — search for related memories, you probably solved this before
+
+**MEMORY TYPES — SAVE FREELY:**
+| Type | When to Save | Example |
+|------|--------------|---------|
+| `fact` | Any concrete project fact | "Uses pnpm 9.x", "API key is in .env.local", "Deploy runs on push to main" |
+| `workflow` | Repeatable process | "Run `pnpm build` then `pnpm preview` to test", "Merge PRs with squash" |
+| `pattern` | Code convention | "Uses zod for validation", "All components are in src/components" |
+| `architecture` | Design decision | "Chose Zustand over Redux for simplicity" |
+| `bug` | Root cause found | "Auth fails when JWT expires — check token refresh" |
+| `preference` | User style | "Prefers short PRs", "Likes TypeScript strict mode" |
 
 **NEVER:**
 - Start a session without recalling first
 - Re-discover something that took 5+ minutes to learn
 - Save trivial throwaway facts
 - Skip saving architecture decisions
+- Ask the user something you should have searched for first
+- Get stuck on a problem without checking if you solved it before
 
 **If it would waste 5+ min re-discovering → save it. If not → don't.**
 
