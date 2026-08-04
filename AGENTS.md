@@ -564,8 +564,6 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 | 🖥️ Frontend Engineer | Implements UI, state management | Frontend tasks |
 | 🛢️ Database Engineer | Designs schema, migrations | Data layer |
 | 🔌 Integration Engineer | Connects external APIs | Third-party integrations |
-| ⚡ Performance Engineer | Profiles, optimizes | Performance issues |
-| 🔒 Security Engineer | Threat modeling, auth | Security concerns |
 | 🧪 Test Engineer | Writes all test types | Test coverage |
 | 🐛 Bug Hunter | Finds bugs, edge cases | Bug hunting |
 | 👀 Code Reviewer | Reviews PRs | Code quality |
@@ -573,16 +571,21 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 | 📚 Documentation Writer | Creates docs | Documentation |
 | 🚀 DevOps Engineer | CI/CD, deployment | Infrastructure |
 | 📈 Observability Engineer | Logging, metrics, tracing | Monitoring |
-| ♿ Accessibility Engineer | WCAG compliance | Accessibility |
 | 🎯 UX Reviewer | Reviews usability | UX improvements |
 | 📦 Dependency Auditor | Reviews packages | Dependency management |
 | 🧬 Static Analysis | Linting, type checking | Code quality |
-| 🔍 Research Agent | Looks up libraries, APIs | Research tasks |
-| 🧮 Algorithm Specialist | Optimizes algorithms | Performance optimization |
-| 🧠 Domain Expert | Domain-specific guidance | Specialized domains |
-| 🔧 Skill Generator | Creates new skills when none exist | Missing capability patterns |
 
-**How to use:** Load agent via `skill(name="agent-name")` or spawn as subagent with agent-specific context.
+**Knowledge Skills (loadable, not spawnable):**
+| Skill | Purpose |
+|-------|---------|
+| security-patterns | OWASP, auth, secure coding |
+| performance-patterns | Profiling, caching, optimization |
+| a11y-patterns | WCAG, keyboard nav, screen readers |
+| algorithm-patterns | Complexity, data structures, optimization |
+| research-patterns | Library evaluation, API discovery |
+| domain-knowledge | Auth, payments, real-time, search, caching |
+
+**How to use:** Load agent via `skill(name="agent-name")` or spawn as subagent with agent-specific context. Load knowledge skills via `skill(name="skill-name")` when implementing domain features.
 
 ### 6. Find Skills — CHECK FIRST
 **Before implementing a capability, check if a skill already exists.**
