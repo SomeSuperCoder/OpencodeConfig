@@ -351,6 +351,38 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 ---
 
+## 🧪 SMART TESTING — DON'T WASTE TIME
+
+**Don't run the entire test suite for small changes. Use CodeGraph to find affected tests.**
+
+### When Changing Code
+1. Use `codegraph_explore` to find what tests import/use the changed code
+2. Run ONLY those affected tests
+3. Don't run the full suite until the end
+
+### Smart Testing Protocol
+```
+1. CHANGE code
+2. CODEGRAPH: Find affected tests
+3. RUN affected tests only
+4. IF all pass → continue
+5. AT END OF WORKFLOW → run full suite
+```
+
+### When to Run Full Suite
+| Situation | Action |
+|-----------|--------|
+| After single file change | Run affected tests only |
+| After multiple file changes | Run affected tests only |
+| Before commit (end of task) | Run full suite |
+| Before push (end of workflow) | Run full suite |
+| Release/deploy | Run full suite |
+
+### The Rule
+**Small changes → affected tests only. End of workflow → full suite.**
+
+---
+
 ## ⚡ QUICK RULES
 
 | Rule | Details |
