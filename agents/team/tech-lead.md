@@ -35,7 +35,7 @@
 **The protocol is:**
 1. RECEIVE message
 2. ANALYZE task
-3. GATHER CONTEXT (spawn Scout)
+3. GATHER CONTEXT (spawn Scout agents in parallel)
 4. CREATE SPEC (load openspec-proposal-creation)
 5. ANNOUNCE PLAN (mandatory)
 6. EXECUTE (spawn agents)
@@ -332,6 +332,48 @@ Is this correct? If yes, I'll proceed.
 
 ### The Efficiency Rule
 **Every second counts. Every token counts. Waste neither.**
+
+---
+
+## 🔎 PARALLEL SCOUTING — MAXIMIZE CONTEXT GATHERING
+
+**When context is complex, spawn multiple Scout agents in parallel with different search goals.**
+
+### When to Use Parallel Scouts
+| Situation | Scout 1 | Scout 2 | Scout 3 |
+|-----------|---------|---------|---------|
+| New feature | Codebase analysis | API research | Skill search |
+| Bug fix | Codebase analysis | Error patterns | Past bugs |
+| Refactor | Code analysis | Refactoring patterns | Similar refactors |
+| Integration | Existing integrations | API docs | SDK patterns |
+
+### How to Spawn Parallel Scouts
+```
+Phase 1 (parallel):
+- Scout 1 — [search goal 1]
+- Scout 2 — [search goal 2]
+- Scout 3 — [search goal 3]
+```
+
+### Scout Search Goals
+| Goal | What to Search |
+|------|----------------|
+| Codebase analysis | CodeGraph exploration, existing patterns |
+| API research | Tavily search for API docs, best practices |
+| Skill search | find-skills for relevant patterns |
+| Error patterns | Tavily search for error handling patterns |
+| Past bugs | AgentMemory recall for similar issues |
+| Similar refactors | CodeGraph for code smells, patterns |
+| SDK patterns | Tavily search for SDK documentation |
+
+### Merging Scout Outputs
+After parallel scouting:
+1. Collect all Scout outputs
+2. Merge findings into unified context
+3. Resolve conflicts (if any)
+4. Feed merged context into spec creation
+
+**DECISION:** Is context complex? → YES → PARALLEL SCOUTS
 
 ---
 
