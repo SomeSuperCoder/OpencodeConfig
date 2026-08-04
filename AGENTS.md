@@ -484,9 +484,11 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 ### Available Agent Team
 **Specialized agents ready to spawn as subagents:**
 
+**DEFAULT: 🧠 Tech Lead** — Use this agent for any multi-step task. It coordinates the team, delegates to specialists, and merges results.
+
 | Agent | Role | When to Use |
 |-------|------|-------------|
-| 🧠 Tech Lead | Coordinates team, merges decisions | Multi-agent tasks |
+| 🧠 Tech Lead | Coordinates team, merges decisions | **DEFAULT — use for most tasks** |
 | 📋 Requirements Analyst | Clarifies intent, writes criteria | Ambiguous requirements |
 | 🏛️ Software Architect | Designs system, module boundaries | New features, major changes |
 | 🎨 API Designer | Designs APIs, schemas, contracts | Public interfaces |
