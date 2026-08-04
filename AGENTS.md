@@ -126,6 +126,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 | **Commit** | `git add -A && git commit -m "<type>: <summary>"` after EVERY task. |
 | **Tests before commit** | Run lint/typecheck/tests if they exist. |
 | **Mode switch** | Declare `MODE: ARCHITECT` or `MODE: MINECART` when switching. |
+| **Data processing** | Use `nu -c ""` for nushell. Better for structured data, CSV, JSON, pipes. |
 
 ---
 
