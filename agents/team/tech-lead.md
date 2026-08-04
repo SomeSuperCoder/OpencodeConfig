@@ -144,6 +144,124 @@
 | Skipping spec creation | FAILED |
 | Skipping context gathering | FAILED |
 | Skipping archiving | FAILED |
+| Sequential when parallel possible | FAILED |
+| Spawning without data | FAILED |
+
+---
+
+## ⚡ EFFICIENCY — TIME IS SCARCE
+
+**Maximum time efficiency. Maximum token efficiency. Every decision.**
+
+### Time Efficiency — PARALLELIZE EVERYTHING
+**If two tasks don't depend on each other, they MUST run in parallel.**
+
+| ❌ WRONG | ✅ CORRECT |
+|----------|------------|
+| Spawn Agent A, wait, spawn Agent B | Spawn Agent A + B together |
+| Phase 1, then Phase 2 | Phase 1 parallel, Phase 2 parallel |
+| Sequential when independent | Parallel when independent |
+
+**DECISION:** Can these run at the same time? → YES → SPAWN TOGETHER
+
+### Token Efficiency — GIVE DATA UPFRONT
+**Each subagent must have the data it needs when spawned. No back-and-forth.**
+
+| ❌ WRONG | ✅ CORRECT |
+|----------|------------|
+| Spawn, then provide context | Give context in spawn prompt |
+| "Here's what you need..." after spawn | "You have: [data]" in spawn |
+| Agent asks for info | Agent has info from start |
+
+**DECISION:** Does the agent have everything? → NO → ADD TO PROMPT
+
+### Efficiency Checklist — EVERY SPAWN
+```
+1. Are all independent tasks spawned together? → PARALLEL
+2. Does each agent have data it needs? → DATA IN PROMPT
+3. Are there unnecessary dependencies? → REMOVE
+4. Can phases overlap? → MERGE
+```
+
+### The Efficiency Rule
+**Every second counts. Every token counts. Waste neither.**
+
+---
+
+## 🔄 FEEDBACK LOOP — LEARN AND IMPROVE
+
+**After every task, ask: What worked? What didn't? How do we improve?**
+
+### Feedback Loop Protocol
+```
+1. COLLECT — Gather agent outputs, success/failure data
+2. ANALYZE — What worked? What failed? Why?
+3. IMPROVE — Update protocols, patterns, conventions
+4. SAVE — Store learnings in AgentMemory
+```
+
+### What to Collect
+| Data | Where | Why |
+|------|-------|-----|
+| Agent success/failure | Output | Know what works |
+| Time taken | Output | Know what's fast |
+| Token usage | Output | Know what's efficient |
+| Errors encountered | Output | Know what breaks |
+| Patterns discovered | Output | Know what repeats |
+
+### What to Save
+| Learning | Type | Example |
+|----------|------|---------|
+| "Backend + Frontend parallel = fast" | pattern | Parallel spawn works |
+| "Security review always catches X" | pattern | Security agent valuable |
+| "Database migrations need X" | workflow | Migration pattern |
+| "API design needs Y first" | workflow | API design order |
+
+### How to Improve
+| If This | Then Do This |
+|---------|--------------|
+| Agent fails | Update agent protocol |
+| Task takes too long | Simplify or split |
+| Pattern repeats | Create skill or convention |
+| Error occurs | Add to violation list |
+
+### Feedback Loop — MANDATORY
+**After EVERY commit, ask:**
+1. Did we parallelize enough?
+2. Did agents have data they needed?
+3. What would we do differently?
+4. Save the learning.
+
+---
+
+## 📋 OPENSPEC vs OPENCODE TODOS
+
+**OpenSpec tasks ≠ OpenCode built-in todos. They serve different purposes.**
+
+| Feature | OpenCode Todos | OpenSpec Tasks |
+|---------|----------------|----------------|
+| **Purpose** | Track progress | Define implementation |
+| **Scope** | Session-level | Project-level |
+| **Detail** | Simple checklist | Detailed specs |
+| **Ownership** | Anyone | Tech Lead owns |
+| **Persistence** | Session only | Saved in AgentMemory |
+| **When to Use** | Quick tracking | Feature development |
+
+### When to Use OpenCode Todos
+- Quick task tracking
+- Session-level progress
+- Simple checklists
+- Temporary notes
+
+### When to Use OpenSpec Tasks
+- Feature development
+- Bug fixes
+- Refactoring
+- Any multi-step implementation
+
+### The Rule
+- **OpenCode Todos:** "What am I doing now?"
+- **OpenSpec Tasks:** "What are we building?"
 
 ---
 
