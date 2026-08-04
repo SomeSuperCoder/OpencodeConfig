@@ -177,26 +177,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 **VERBALIZE YOUR FIRCAC. NO SILENT THINKING.**
 
-| Step | What | Output |
-|------|------|--------|
-| **F — Facts** | Observable evidence ONLY. No guesses. | Error message, stack trace, input |
-| **I — Issue** | One-sentence problem statement. | "X is undefined when Y" |
-| **C — Case** | Reproduction steps, conditions, scope. | "Happens when Z, not when W" |
-| **R — Rules** | Requirements, specs, code contracts. | Types, interfaces, specs |
-| **A — Analysis** | Root cause with evidence chain. | "Because X, Y fails" |
-| **C — Consequences** | Impact, risks, side effects. | "If fixed: A. If not: B" |
-
-**Template:**
-```markdown
-## 🗣️ FIRCAC OUT LOUD
-
-**Facts:** [evidence]
-**Issue:** [problem]
-**Case:** [reproduction]
-**Rules:** [constraints]
-**Analysis:** [root cause]
-**Consequences:** [impact]
-```
+**Load `fircac-out-loud` skill for full instructions. No exceptions.**
 
 ---
 
@@ -206,20 +187,7 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 **VERBALIZE YOUR ABC. NO SILENT THINKING.**
 
-| Step | Rule |
-|------|------|
-| **A — Assume Nothing** | "I don't know why" is honest. "It should work" is not proof. |
-| **B — Believe Nobody** | Code > comments. Tests > claims. Logs > words. |
-| **C — Confirm Everything** | Run it yourself. Check logs. Reproduce. |
-
-**Template:**
-```markdown
-## 🗣️ ABC OUT LOUD
-
-**Assume Nothing:** [what I don't know]
-**Believe Nobody:** [what I verify despite claims]
-**Confirm Everything:** [what I run/check myself]
-```
+**Load `fircac-out-loud` skill for full instructions. No exceptions.**
 
 ---
 
