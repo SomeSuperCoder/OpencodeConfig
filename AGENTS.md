@@ -481,6 +481,39 @@ task(description="Update docs", prompt="Update API docs in docs/auth.md...")
 
 **DEFAULT BEHAVIOR:** When given a task, first ask: "Can this be parallelized?" If yes → spawn subagents. If no → proceed solo.
 
+### Available Agent Team
+**Specialized agents ready to spawn as subagents:**
+
+| Agent | Role | When to Use |
+|-------|------|-------------|
+| 🧠 Tech Lead | Coordinates team, merges decisions | Multi-agent tasks |
+| 📋 Requirements Analyst | Clarifies intent, writes criteria | Ambiguous requirements |
+| 🏛️ Software Architect | Designs system, module boundaries | New features, major changes |
+| 🎨 API Designer | Designs APIs, schemas, contracts | Public interfaces |
+| 🗂️ Project Planner | Breaks work into parallel tasks | Complex implementations |
+| 💻 Backend Engineer | Implements backend logic | Backend tasks |
+| 🖥️ Frontend Engineer | Implements UI, state management | Frontend tasks |
+| 🛢️ Database Engineer | Designs schema, migrations | Data layer |
+| 🔌 Integration Engineer | Connects external APIs | Third-party integrations |
+| ⚡ Performance Engineer | Profiles, optimizes | Performance issues |
+| 🔒 Security Engineer | Threat modeling, auth | Security concerns |
+| 🧪 Test Engineer | Writes all test types | Test coverage |
+| 🐛 Bug Hunter | Finds bugs, edge cases | Bug hunting |
+| 👀 Code Reviewer | Reviews PRs | Code quality |
+| 🧹 Refactoring Engineer | Simplifies code | Code cleanup |
+| 📚 Documentation Writer | Creates docs | Documentation |
+| 🚀 DevOps Engineer | CI/CD, deployment | Infrastructure |
+| 📈 Observability Engineer | Logging, metrics, tracing | Monitoring |
+| ♿ Accessibility Engineer | WCAG compliance | Accessibility |
+| 🎯 UX Reviewer | Reviews usability | UX improvements |
+| 📦 Dependency Auditor | Reviews packages | Dependency management |
+| 🧬 Static Analysis | Linting, type checking | Code quality |
+| 🔍 Research Agent | Looks up libraries, APIs | Research tasks |
+| 🧮 Algorithm Specialist | Optimizes algorithms | Performance optimization |
+| 🧠 Domain Expert | Domain-specific guidance | Specialized domains |
+
+**How to use:** Load agent via `skill(name="agent-name")` or spawn as subagent with agent-specific context.
+
 ### 6. Find Skills — CHECK FIRST
 **Before implementing a capability, check if a skill already exists.**
 
