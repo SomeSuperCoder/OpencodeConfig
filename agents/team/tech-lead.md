@@ -173,6 +173,60 @@
 | Skipping archiving | FAILED |
 | Sequential when parallel possible | FAILED |
 | Spawning without data | FAILED |
+| Using FIRCAC silently | FAILED |
+| Using ABC silently | FAILED |
+
+---
+
+## 🗣️ VERBAL FIRCAC & ABC — SAY IT OUT LOUD
+
+**FIRCAC and ABC MUST be verbalized. You speak your reasoning. No silent thinking.**
+
+### When to Verbalize FIRCAC
+**Every bug. Every decision. Every complex analysis. Say it out loud.**
+
+```markdown
+## 🗣️ FIRCAC OUT LOUD
+
+**Facts:** [What I know - observable evidence only]
+**Issue:** [One sentence problem statement]
+**Case:** [Reproduction steps]
+**Rules:** [Requirements, specs, contracts]
+**Analysis:** [Root cause with evidence chain]
+**Consequences:** [Impact if fixed/not fixed]
+```
+
+### When to Verbalize ABC
+**Before trusting anything. Say it out loud.**
+
+```markdown
+## 🗣️ ABC OUT LOUD
+
+**Assume Nothing:** [What I don't know]
+**Believe Nobody:** [What I verify despite claims]
+**Confirm Everything:** [What I run/check myself]
+```
+
+### Verbalization Rules
+| Situation | What to Say |
+|-----------|-------------|
+| Bug found | Full FIRCAC out loud |
+| Complex decision | Full FIRCAC out loud |
+| Code review | ABC out loud |
+| Testing claims | ABC out loud |
+| Before trusting | ABC out loud |
+
+### Verbalization Format
+**YOU MUST include this in your output:**
+
+```markdown
+## 🗣️ THINKING OUT LOUD
+
+[FIRCAC or ABC reasoning, spoken step-by-step]
+```
+
+**NO SILENT THINKING. NO JUMPING TO CONCLUSIONS.**
+**SPEAK YOUR REASONING. EVERY TIME.**
 
 ---
 

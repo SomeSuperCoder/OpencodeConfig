@@ -170,9 +170,11 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
-## 🔬 FIRCAC — MANDATORY FOR ALL PROBLEMS
+## 🔬 FIRCAC — MANDATORY FOR ALL PROBLEMS — SAY IT OUT LOUD
 
 **When: bugs, test failures, unexpected behavior, complex decisions. Every time.**
+
+**VERBALIZE YOUR FIRCAC. NO SILENT THINKING.**
 
 | Step | What | Output |
 |------|------|--------|
@@ -185,7 +187,8 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 **Template:**
 ```markdown
-## FIRCAC
+## 🗣️ FIRCAC OUT LOUD
+
 **Facts:** [evidence]
 **Issue:** [problem]
 **Case:** [reproduction]
@@ -196,15 +199,43 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
-## 🔍 ABC — VERIFICATION METHOD
+## 🔍 ABC — VERIFICATION METHOD — SAY IT OUT LOUD
 
 **Never trust. Always verify. ABC informs FIRCAC's Facts step.**
+
+**VERBALIZE YOUR ABC. NO SILENT THINKING.**
 
 | Step | Rule |
 |------|------|
 | **A — Assume Nothing** | "I don't know why" is honest. "It should work" is not proof. |
 | **B — Believe Nobody** | Code > comments. Tests > claims. Logs > words. |
 | **C — Confirm Everything** | Run it yourself. Check logs. Reproduce. |
+
+**Template:**
+```markdown
+## 🗣️ ABC OUT LOUD
+
+**Assume Nothing:** [what I don't know]
+**Believe Nobody:** [what I verify despite claims]
+**Confirm Everything:** [what I run/check myself]
+```
+
+---
+
+## 🗣️ VERBALIZATION RULE — NON-NEGOTIABLE
+
+**FIRCAC and ABC MUST be spoken out loud. Every time. No exceptions.**
+
+| Situation | What to Say |
+|-----------|-------------|
+| Bug found | Full FIRCAC out loud |
+| Complex decision | Full FIRCAC out loud |
+| Code review | ABC out loud |
+| Testing claims | ABC out loud |
+| Before trusting | ABC out loud |
+
+**NO SILENT THINKING. NO JUMPING TO CONCLUSIONS.**
+**SPEAK YOUR REASONING. EVERY TIME.**
 
 ---
 
