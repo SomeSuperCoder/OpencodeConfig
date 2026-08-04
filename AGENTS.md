@@ -173,7 +173,11 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ## 🔬 FIRCAC — MANDATORY FOR ALL PROBLEMS — SAY IT OUT LOUD
 
-**When: bugs, test failures, unexpected behavior, complex decisions. Every time.**
+**FIRCAC = Facts, Issue, Case, Rules, Analysis, Consequences. A structured reasoning method that forces you to externalize your thinking.**
+
+**Why:** Silent thinking leads to wrong assumptions. Speaking your reasoning catches errors early.
+
+**When:** Bugs, test failures, unexpected behavior, complex decisions. Every time.
 
 **VERBALIZE YOUR FIRCAC. NO SILENT THINKING.**
 
@@ -183,7 +187,11 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ## 🔍 ABC — VERIFICATION METHOD — SAY IT OUT LOUD
 
-**Never trust. Always verify. ABC informs FIRCAC's Facts step.**
+**ABC = Assume Nothing, Believe Nobody, Confirm Everything. A verification method that forces you to prove claims with evidence.**
+
+**Why:** Trusting without verifying is how bugs ship. ABC ensures you confirm everything yourself.
+
+**When:** Before trusting any information. Every time.
 
 **VERBALIZE YOUR ABC. NO SILENT THINKING.**
 
