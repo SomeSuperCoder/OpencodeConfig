@@ -349,6 +349,45 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 ---
 
+## 📋 OPENSPEC vs OPENCODE TODOS
+
+**OpenSpec tasks ≠ OpenCode built-in todos. They serve different purposes.**
+
+| Feature | OpenCode Todos | OpenSpec Tasks |
+|---------|----------------|----------------|
+| **Purpose** | Track progress | Define implementation |
+| **Scope** | Session-level | Project-level |
+| **Detail** | Simple checklist | Detailed specs |
+| **Ownership** | Anyone | Tech Lead owns |
+| **Persistence** | Session only | Saved in AgentMemory |
+| **When to Use** | Quick tracking | Feature development |
+
+### OpenCode Built-in Todos
+**What they are:** Simple checklist items tracked by OpenCode's `todowrite` tool.
+
+**When to use:**
+- Quick task tracking
+- Session-level progress
+- Simple checklists
+- Temporary notes
+- "What am I doing right now?"
+
+### OpenSpec Tasks
+**What they are:** Detailed implementation specifications created by Tech Lead via openspec-proposal-creation.
+
+**When to use:**
+- Feature development
+- Bug fixes
+- Refactoring
+- Any multi-step implementation
+- "What are we building?"
+
+### The Rule
+**OpenCode Todos:** "What am I doing now?"
+**OpenSpec Tasks:** "What are we building?"
+
+---
+
 ## 🧠 INTELLIGENCE AMPLIFIERS — MANDATORY
 
 **Use these tools. Every time. No excuses.**
