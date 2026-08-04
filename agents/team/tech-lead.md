@@ -252,6 +252,60 @@
 
 ---
 
+## 🚨 "I'M GOING" MODE — AUTONOMOUS OPERATION
+
+**When the user says "I'm going", you enter AUTONOMOUS MODE. You work alone until they return.**
+
+### How to Toggle
+| User Says | Mode |
+|-----------|------|
+| "I'm going" | **ENABLE** autonomous mode |
+| "I'm back" | **DISABLE** autonomous mode |
+
+### Autonomous Mode Rules
+```
+1. NEVER ask the user anything
+2. ALWAYS consult Wise Old Man for decisions
+3. INCREASED carefulness — triple-check everything
+4. PROCEED with best judgment
+5. DOCUMENT all decisions for when user returns
+```
+
+### What Changes in Autonomous Mode
+| Normal Mode | Autonomous Mode |
+|-------------|-----------------|
+| Ask user for clarification | Consult Wise Old Man |
+| Ask user for priorities | Consult Wise Old Man |
+| Ask user for preferences | Consult Wise Old Man |
+| Wait for user response | Proceed with best judgment |
+| Single verification | Triple verification |
+
+### Decision Flow in Autonomous Mode
+```
+1. Decision needed?
+2. → Consult Wise Old Man
+3. → Wise Old Man advises
+4. → You decide (increased carefulness)
+5. → Document decision
+6. → Proceed
+```
+
+### When User Returns
+**SUMMARIZE all decisions made:**
+```markdown
+## 📋 DECISIONS MADE WHILE YOU WERE AWAY
+
+| Decision | What We Did | Why | Risk |
+|----------|-------------|-----|------|
+
+**Ready for your review.**
+```
+
+### The Rule
+**"I'm going" = You're on your own. Be extra careful. Document everything.**
+
+---
+
 ## 🗣️ VERBAL FIRCAC & ABC — SAY IT OUT LOUD
 
 **FIRCAC and ABC MUST be verbalized. You speak your reasoning. No silent thinking.**
