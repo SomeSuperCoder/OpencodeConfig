@@ -127,6 +127,63 @@ Bug fixes, small tasks, test failures, mechanical changes.
 
 ---
 
+## 🧩 DESIGN PATTERNS & ARCHITECTURE AWARENESS
+
+**Know these patterns. Apply them when the problem fits. Don't force them.**
+
+### OOP Design Patterns
+| Pattern | When to Use |
+|---------|-------------|
+| **Repository** | Abstract data access, testability |
+| **Service** | Business logic isolation |
+| **Strategy** | Multiple algorithms, runtime selection |
+| **Observer** | Event-driven, decoupled notifications |
+| **Factory** | Complex object creation |
+| **Adapter** | Interface translation between systems |
+| **Decorator** | Add behavior without modifying core |
+| **Command** | Undo/redo, queue, logging operations |
+
+### Functional Patterns
+| Pattern | When to Use |
+|---------|-------------|
+| **Pure Functions** | No side effects, predictable |
+| **Composition** | Build complex from simple functions |
+| **Currying** | Partial application, config reuse |
+| **Functors** | Map over wrapped values |
+| **Monads** | Chain operations with context (Result, Option) |
+| **Lens** | Immutable nested state updates |
+| **Transducers** | Efficient data transformation pipelines |
+
+### Systems Architecture
+| Pattern | When to Use |
+|---------|-------------|
+| **Monolith** | Start here. Simple, fast, easy to debug |
+| **Modular Monolith** | Boundaries without deployment complexity |
+| **Microservices** | Team scaling, independent deploy, different tech |
+| **Event-Driven** | Async workflows, audit trails, decoupling |
+| **CQRS** | Read/write paths diverge significantly |
+| **Event Sourcing** | Full audit log, temporal queries, replay |
+| **Saga** | Distributed transactions, eventual consistency |
+| **API Gateway** | Single entry, auth, rate limiting |
+
+### Architecture Decision Framework
+```
+1. Start monolith — you probably don't need microservices
+2. Add modules with clear boundaries — test interfaces, not implementations
+3. Extract services only when: team scaling, deployment independence, or tech diversity demands it
+4. Use events for: audit trails, async workflows, cross-service communication
+5. Use CQRS when: read patterns differ drastically from write patterns
+```
+
+### Component Design Rules
+- **One file, one responsibility** — if you can't name it, split it
+- **Interface first** — define the contract before implementation
+- **Dependency injection** — never hardcode dependencies
+- **Composition over inheritance** — prefer has-a over is-a
+- **Explicit beats implicit** — show dependencies, don't hide them
+
+---
+
 ## 🎭 TESTING MANDATE
 
 **Write tests for EVERY feature, bugfix, refactor. No exceptions.**
