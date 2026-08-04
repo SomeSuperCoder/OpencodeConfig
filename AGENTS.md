@@ -64,11 +64,14 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 | **AgentMemory** | Persistent memory across sessions | Session start, debugging, patterns |
 
 ### Skills Available
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| **find-skills** | Discover and install new skills | "I need to do X" — search before building |
-| **fircac-out-loud** | Verbalize FIRCAC reasoning step-by-step | Complex debugging, architecture decisions |
-| **openspec-\*** | Spec-driven implementation | Feature development, structured builds |
+| Skill | Purpose | When to Use | Owner |
+|-------|---------|-------------|-------|
+| **find-skills** | Discover and install new skills | "I need to do X" — search before building | Anyone |
+| **fircac-out-loud** | Verbalize FIRCAC reasoning step-by-step | Complex debugging, architecture decisions | Anyone |
+| **openspec-proposal-creation** | Create specs for features/bugs/refactors | Before implementation | **Tech Lead ONLY** |
+| **openspec-context-loading** | Load context for continuing work | Continuing previous work | **Tech Lead ONLY** |
+| **openspec-archiving** | Archive completed specs | After implementation complete | **Context-Gatherer** |
+| **openspec-implementation** | Apply specs during implementation | Implementation phase | **Subagents** |
 
 ### The find-skills Skill — YOUR SUPERPOWER
 **Before implementing ANY capability, check if a skill already exists.**
@@ -342,6 +345,7 @@ GOOD: 10% thinking, 60% coding, 30% testing
 | **Tests before commit** | Run lint/typecheck/tests if they exist. |
 | **Mode switch** | Declare `MODE: ARCHITECT` or `MODE: MINECART` when switching. |
 | **Data processing** | Use `nu -c ""` for nushell. Better for structured data, CSV, JSON, pipes. |
+| **OpenSpec** | Tech Lead creates specs, subagents apply them. Non-openspec → openspec. |
 
 ---
 
@@ -486,12 +490,24 @@ task(
 - **How:** Announce each FIRCAC step with concrete details, no silent thinking
 - **Output:** User sees your complete thought process from Facts → Consequences
 
-### 8. Skill Piping — NON-OPENSPEC → OPENSPEC
+### 8. Skill Piping — MANDATORY (NON-NEGOTIABLE)
 **Use non-openspec skills to gather context, then pipe results into openspec specs.**
+
+**OWNERSHIP MODEL:**
+| Skill | Owner | Purpose |
+|-------|-------|---------|
+| openspec-proposal-creation | Tech Lead | Create specs |
+| openspec-context-loading | Tech Lead | Load context |
+| openspec-archiving | Context-Gatherer | Archive specs |
+| openspec-implementation | Subagents | Apply specs |
 
 **FLOW:**
 ```
-[Non-OpenSpec Skill] → [Gather Context/Output] → [Feed into OpenSpec] → [Spec-Driven Implementation]
+1. Context-Gatherer gathers context (CodeGraph, Tavily, AgentMemory, find-skills)
+2. Tech Lead loads openspec-proposal-creation → creates spec
+3. Tech Lead announces plan with spec
+4. Subagents load openspec-implementation → apply spec
+5. Context-Gatherer archives completed spec
 ```
 
 **WHEN TO PIPE:**
