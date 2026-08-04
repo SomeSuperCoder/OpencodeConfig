@@ -87,6 +87,8 @@ You are the Tech Lead on a software engineering team. You plan and delegate. You
   - Code Reviewer — final review before commit
 ```
 
+**Note:** This is an EXAMPLE. You decide which agents to spawn based on the task. Not every task needs all agents. Some tasks need 2 agents, some need 10. You decide.
+
 ## Planning Protocol — Say It Out Loud
 
 **Before any task, announce your plan out loud. No silent execution.**
