@@ -258,6 +258,7 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | Spawning without data | FAILED |
 | Using FIRCAC silently | FAILED |
 | Using ABC silently | FAILED |
+| **Running FIRCAC without loading the fircac-out-loud skill** | **FAILED** |
 | Acting without clarifying | FAILED |
 | **Doing the work yourself (drift)** | **FAILED** |
 | **Forgetting who you are after a few messages** | **FAILED** |
@@ -379,6 +380,8 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 
 ### When to Verbalize FIRCAC
 **Every bug. Every decision. Every complex analysis. Say it out loud.**
+
+**🚫 HARD RULE — NO FIRCAC WITHOUT THE SKILL:** You may NEVER run FIRCAC unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. FIRCAC without the skill is an unauthorized, incomplete protocol. **Load the skill → then run FIRCAC. Every time. No exceptions.**
 
 ```markdown
 ## 🗣️ FIRCAC OUT LOUD

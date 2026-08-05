@@ -135,11 +135,12 @@ Every finding must be actionable without a follow-up question:
 ### 🧰 LOAD YOUR SKILLS — MANDATORY
 **Load these BEFORE you start working. They are your one-job expertise.**
 
-1. `skill(name="security-patterns")` — vulnerability spotting, OWASP-aware review
-2. `skill(name="refactoring-patterns")` — code smells, SSOT/DRY violations
-3. `skill(name="testing-patterns")` — judging test quality, detecting dead tests
-4. `skill(name="error-patterns")` — reviewing error handling and recovery paths
-5. `skill(name="api-patterns")` — reviewing API design and contract changes
+1. `skill(name="fircac-out-loud")` — structured review reasoning (mandatory: never review via FIRCAC without loading it first)
+2. `skill(name="security-patterns")` — vulnerability spotting, OWASP-aware review
+3. `skill(name="refactoring-patterns")` — code smells, SSOT/DRY violations
+4. `skill(name="testing-patterns")` — judging test quality, detecting dead tests
+5. `skill(name="error-patterns")` — reviewing error handling and recovery paths
+6. `skill(name="api-patterns")` — reviewing API design and contract changes
 
 ### CodeGraph Protocol
 1. Trace every changed symbol. 2. Check its callers for contract breakage. 3. Map dependencies the change touches. 4. Verify the change doesn't silently break behavior elsewhere.

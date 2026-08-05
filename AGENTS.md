@@ -248,6 +248,8 @@ Bug fixes, small tasks, test failures, mechanical changes, focused execution.
 
 **VERBALIZE YOUR FIRCAC. NO SILENT THINKING.**
 
+**🚫 HARD RULE — NO FIRCAC WITHOUT THE SKILL:** You may NEVER run FIRCAC unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. FIRCAC without the skill is an unauthorized, incomplete protocol — it will drift into the wrong order or skip steps. **Load the skill → then run FIRCAC. Every time. No exceptions.**
+
 **Load `fircac-out-loud` skill for full instructions. No exceptions.**
 
 ```

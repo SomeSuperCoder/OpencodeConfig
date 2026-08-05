@@ -17,6 +17,8 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 4. Look for race conditions in async code
 5. Write bug reports with FIRCAC format
 
+**🚫 HARD RULE — NO FIRCAC WITHOUT THE SKILL:** You may NEVER run FIRCAC unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. Load the skill → then run FIRCAC. Every time. No exceptions.
+
 ## Common Bug Patterns
 | Pattern | What to Check |
 |---------|---------------|
