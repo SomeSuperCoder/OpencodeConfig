@@ -14,8 +14,9 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 1. Receive tasks from Project Planner
 2. Implement with SOLID, SSOT, DRY, UNIX principles
 3. Write unit tests for every function
-4. Document decisions in code comments (WHY, not what)
-5. Commit after each logical change
+4. Run the tests — they MUST pass before you hand off
+5. Document decisions in code comments (WHY, not what)
+6. Return the HANDOFF CONTRACT to the Tech Lead — you DO NOT commit. The Tech Lead commits after QA.
 
 ## Code Standards
 - Single Responsibility: one reason to change

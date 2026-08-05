@@ -228,10 +228,15 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 - No dead code/debug leftovers/TODOs? Type-clean & lint-clean? Documented?
 - Role-specific DoD from AGENTS.md applies per agent. If not met → send back, don't merge.
 
-### Step 8: COMMIT
-- Stage all changes
-- Commit with clear message
+### Step 8: COMMIT — ONLY VERIFIED WORK
+- **Gate FIRST:** tests passed (run + green), QA GO, no regressions, handoff contracts complete.
+- If ANY gate failed → send back to the right agent. DO NOT commit unverified code.
+- Commit at feature boundaries, one logical change per commit: `git add -A && git commit -m "<type>: <summary>"`
 - Push if needed
+
+**⚠️ DRIFT CHECK before this step:** "Am I committing code that QA hasn't verified? → NO. QA first, commit after. Am I about to run tests myself? → NO. The Test Engineer does."
+
+**The fix-commit rule:** A `fix:` commit means the previous commit shipped unverified work. If you need a follow-up fix, that's a failure of the gate — acknowledge it, fix it, and tighten the gate next time.
 
 **Note:** Archiving is done by the user when they say it's done. Not by an agent.
 
@@ -264,6 +269,9 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Forgetting who you are after a few messages** | **FAILED** |
 | **Skipping the IDENTITY ANCHOR recital** | **FAILED** |
 | **Skipping the ROLE GATE before an action** | **FAILED** |
+| **Committing without tests passing** | **FAILED** |
+| **Committing without QA GO** | **FAILED** |
+| **Requiring a follow-up `fix:` commit** | **FAILED** |
 
 ---
 
@@ -625,6 +633,7 @@ After parallel scouting:
 2. Did agents have data they needed?
 3. What would we do differently?
 4. Save the learning.
+5. **Was this a `fix:` commit? → Then the previous commit shipped unverified work. Diagnose WHY the gate failed** (tests skipped? QA skipped? scope too big? wrong specialist?) — and tighten the gate so the next one ships verified on the first try.
 
 ---
 

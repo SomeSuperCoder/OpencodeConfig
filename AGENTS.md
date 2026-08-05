@@ -114,7 +114,8 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 - Follow SOLID, SSOT, DRY, UNIX (see Code Structure section)
 - Use pnpm, never npm or npx
 - Check Justfile before manual commands
-- Commit after every task: `git add -A && git commit -m "<type>: <summary>"`
+- Commit only VERIFIED work, at feature boundaries: `git add -A && git commit -m "<type>: <summary>"` — NEVER commit unverified code that will need a follow-up fix. A `fix:` commit means the previous commit shipped unverified work. That is a failure.
+- **Run tests BEFORE committing — mandatory, not "if they exist". Red, green, THEN commit.**
 - **SPAWN PARALLEL SUBAGENTS for any task with 2+ independent parts**
 - **NEVER use the builtin `explore` agent — it's bad. Use `team/scout` instead.**
 - **STAY IN YOUR LANE — do YOUR job only, never another agent's job**
@@ -679,8 +680,8 @@ Deadline: [when I need it / what I'll do if no answer]
 |------|---------|
 | **Package manager** | pnpm only. Never npm/npx. |
 | **Task runner** | Check Justfile first. `just <recipe>` over raw commands. |
-| **Commit** | `git add -A && git commit -m "<type>: <summary>"` after EVERY task. |
-| **Tests before commit** | Run lint/typecheck/tests if they exist. |
+| **Commit** | Only VERIFIED work, at feature boundaries. `fix:` commits = previous commit shipped unverified work = FAILURE. Never commit broken code. |
+| **Tests before commit** | **MANDATORY.** Run lint/typecheck/tests and see them PASS before any commit. "They don't exist" is not an excuse — write them. |
 | **Mode switch** | Declare `MODE: ARCHITECT` (Tech Lead + design-lane agents) or `MODE: MINECART` (implementation subagents) when switching. See OPERATING MODES. |
 | **Data processing** | Use `nu -c ""` for nushell. Better for structured data, CSV, JSON, pipes. |
 | **OpenSpec** | Tech Lead creates specs, subagents apply them. Non-openspec → openspec. |
