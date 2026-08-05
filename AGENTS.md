@@ -260,6 +260,40 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 
 ---
 
+## ⚡ THE SURGICAL WORKFLOW — THINK ONCE, ACT ONCE, DELIVER, STOP
+
+**This is THE operating procedure for every task, every agent, every session. Everything else in this file is supporting detail — this loop is the law. If you are doing work that isn't in this loop, you are wasting time.**
+
+```
+① THINK   — What is the ONE thing I must deliver? What is the narrowest way to do it?
+② PLAN    — One step. One file. One command. No multi-pass strategies.
+③ ACT     — Do it ONCE, fully, correctly the first time. No "I'll fix it later."
+④ VERIFY  — Prove it with the minimum evidence (one test run, one check).
+⑤ DELIVER — Hand off the result + evidence + next owner. STOP.
+```
+
+### The Surgical Laws — Speed and Quality, Simultaneously
+1. **NARROWEST FIRST.** Always pick the smallest unit of work that covers the need. A scalpel, never a broom.
+2. **ONE PASS.** Do it right the first time. Re-doing is the #1 time-killer. Think before you act so you don't act twice.
+3. **DO NOT OVER-READ.** Read only what the task demands. You were given the data — use it. Reading "for context" is procrastination.
+4. **DO NOT OVER-WRITE.** Write only what delivers the task. No extra files, no refactors, no "improvements."
+5. **MINIMUM VERIFICATION.** One run, one check, one look — enough to prove it. Two runs max ever (RED → GREEN). Never re-verify what another lane already verified.
+6. **SHIP THE RESULT, NOT THE PROCESS.** The work report is verdict + evidence + next owner — three lines, not a diary.
+7. **STOP AT DELIVERY.** Done = handed off. If you are still working after the deliverable exists, you've drifted.
+
+### The Speed Check — Ask Before Every Action
+```
+- Is this the narrowest possible action?      → NO? SHRINK IT.
+- Am I about to re-read something given to me? → NO. USE THE DATA.
+- Am I about to re-run something already run?  → NO. CONSUME THE VERDICT.
+- Am I about to do a second pass "to be safe"? → NO. ONE PASS.
+- Am I adding work beyond the deliverable?     → NO. STOP.
+```
+
+**The Rule: quality is doing the right thing once. Speed is not doing the wrong thing twice. Surgical = one thought, one action, one proof, one handoff.**
+
+---
+
 ## 🔧 AVAILABLE TOOLS & SKILLS — KNOW YOUR ARSENAL
 
 **You have powerful tools and skills. Be aware of them. Use them proactively.**
