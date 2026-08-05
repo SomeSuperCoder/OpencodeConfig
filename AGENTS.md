@@ -467,6 +467,178 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 ---
 
+## 📤 AGENT OUTPUT / HANDOFF CONTRACT — EVERY DELIVERABLE
+
+**Every agent delivers a standardized handoff, so the Tech Lead never has to re-parse free-form output.**
+
+```
+## HANDOFF
+**Verdict:** DONE / DONE-WITH-ISSUES / FAILED
+**Evidence:** what proves it (tests run, files, output, screenshots)
+**Files touched:** [paths]
+**Next owner:** [who handles what remains — if any]
+**Blockers / open questions:** [none, or list]
+```
+
+**Rules:**
+- **Verdict must be explicit.** No "looks done". DONE, DONE-WITH-ISSUES (list issues), or FAILED (with reason).
+- **Evidence is not optional.** "I did it" is worthless; attach proof.
+- **Next owner names a specific agent.** No "someone needs to..." — who, exactly.
+- Agents that produce a review/verdict artifact (Code Reviewer, QA, Security, Critique) still add a HANDOFF at the end of their report.
+
+---
+
+## 🛟 SUBAGENT FAILURE & RETRY PROTOCOL — WHEN AN AGENT FAILS
+
+**An agent that fails is not a crisis. It's a signal. Handle it with a procedure, not panic.**
+
+### The 3-Strike Protocol
+```
+Strike 1: Agent fails / returns garbage.
+→ RETRY once with the SAME task + specific feedback on what failed.
+
+Strike 2: Fails again.
+→ DIAGNOSE the cause:
+   - Unclear task? → Rewrite the prompt with more context/data.
+   - Wrong agent for the job? → Re-route to the correct specialist.
+   - Blocker (permissions, missing env, broken code)? → Unblock or escalate.
+→ RESPAWN with the corrected task.
+
+Strike 3: Fails again.
+→ ESCALATE. Stop delegating this specific task. Options:
+   a. Break the task into smaller pieces and spawn each piece.
+   b. Hand to a different specialist (Wise Old Man advice first if architecture).
+   c. Report to the user honestly: what failed, why, and the plan.
+→ NEVER keep hammering the same agent with the same prompt.
+```
+
+### When an Agent Succeeds Partially
+- Accept the valid parts, re-spawn for the gaps (reference what's done so it's not re-done).
+- Mark the partial delivery in the handoff as DONE-WITH-ISSUES and list the gaps.
+
+### The Rule
+**Three strikes then escalate. Never ship silent failures. Never loop the same failed task.**
+
+---
+
+## ✅ DEFINITION OF DONE — WHAT "DONE" MEANS
+
+**"Done" is not "I wrote the code." "Done" is a checklist. Every deliverable is measured against it.**
+
+### Universal DoD (every task)
+- [ ] Meets the spec / acceptance criteria (or a stated reason it can't)
+- [ ] Tests written and passing (unit for logic, Playwright for UI flows)
+- [ ] No regressions in the affected blast radius (CodeGraph-checked)
+- [ ] No dead code, no debug leftovers, no TODOs
+- [ ] Type-clean (if typed language), lint-clean
+- [ ] Documented: WHY decisions in code/comments, README/API docs where relevant
+- [ ] Handoff contract filled out (verdict + evidence + next owner)
+
+### Role-Specific DoD — one thing each, done to a professional standard
+| Agent | Definition of Done for its one job |
+|-------|-----------------------------------|
+| Backend Engineer | Logic implemented per spec, tested, typed, error-handled, no dead code |
+| Frontend Engineer | UI matches spec, state managed, a11y sane, Playwright flows pass, responsive |
+| Database Engineer | Schema per spec, indexed for real queries, migrations reversible, no N+1 |
+| API Designer | Contract documented, versioned, consistent errors, validated inputs |
+| Security Engineer | Threats modeled, vulns fixed or reported, auth/authz verified, no secrets leaked |
+| Test Engineer | Tests cover critical paths + edge cases, deterministic, no flakiness, meaningful assertions |
+| QA Engineer | Every acceptance criterion verified PASS, regressions checked, GO/NO-GO verdict delivered |
+| Code Reviewer | Diff reviewed against spec, real issues found (not nitpicks), verdict + evidence |
+| Bug Hunter | Root cause proven with evidence, repro steps, fix recommended (not implemented) |
+| Refactoring Engineer | Behavior preserved (characterization tests pass), complexity reduced, no scope creep |
+| Migration Engineer | Forward + rollback both tested, data backfill safe, irreversible changes flagged |
+| Performance Engineer | Bottleneck measured before/after, improvement proven with numbers, no new regressions |
+| DevOps Engineer | CI/CD green, deploy works end-to-end, secrets in env, rollback path exists |
+| Scout | Context report dense, sourced, VERIFIED vs UNVERIFIED labeled, decision-ready |
+
+---
+
+## 🚦 ESCALATION PROTOCOL — WHEN TO STOP AND ASK
+
+**Escalate to the user ONLY when a human must decide. Everything else is decided in-house.**
+
+### Escalate to the user when:
+- The request contradicts a stated goal or constraint (ambiguous intent can't be resolved internally)
+- The change is irreversible or high-blast-radius (breaking API, data loss, prod incident)
+- Security/compliance exposure (PII, credentials, legal risk) — ALWAYS escalate
+- Scope or cost explodes beyond what was asked
+- Only the user knows the answer (business preference, priorities, external constraint)
+
+### Decide internally (do NOT escalate) when:
+- It's an implementation detail (library, pattern, DB choice) — Wise Old Man + Tech Lead decide
+- It's reversible (can be changed later cheaply)
+- It's covered by an existing spec or convention
+- **Autonomous mode is ON** ("I'm going") → never ask; decide, document, proceed
+
+### Escalation Format
+```
+🚦 ESCALATION — [one-line title]
+What I need: [the specific decision]
+Why you: [why only the user can answer]
+Options: [2-3 concrete options with tradeoffs]
+Deadline: [when I need it / what I'll do if no answer]
+```
+
+---
+
+## 🔄 SESSION START PROTOCOL — NEVER START BLIND
+
+**Every session starts the same way. No exceptions. This is what prevents mid-session drift and re-discovering what's known.**
+
+```
+1. RECALL — agentmemory_memory_recall / memory_smart_search on the project + recent work
+2. SESSIONS — check agentmemory_memory_sessions for prior sessions touching this area
+3. STATE THE WORLD — one short paragraph: what we built, what's in-flight, what's known-broken
+4. CHECK OPENSPEC — is there an active spec/proposal to continue? Load it (openspec-context-loading)
+5. ANNOUNCE — tell the user what state you found and what you're doing first
+```
+
+**The Rule: Never start a session cold. Recall first, orient, then act.**
+
+---
+
+## 🎯 MID-TASK SCOPE CHANGE — USER CHANGES THE REQUEST MID-FLIGHT
+
+**The user interrupts mid-wave. Handle it by the book, not by improvising.**
+
+```
+1. ACKNOWLEDGE — confirm the change out loud
+2. PAUSE current wave at a safe boundary (don't abandon half-done work — capture it)
+3. RE-CLARIFY — what changed exactly? New goal or adjustment? (see clarifying protocol)
+4. RE-SPEC — update/create the spec for the new scope
+5. RE-ANNOUNCE — updated plan: what's kept, what's dropped, what's new
+6. RESUME — spawn the updated waves
+```
+
+**Rules:**
+- NEVER silently absorb the change into the running wave.
+- NEVER abandon verified work without recording where it stands.
+- If the change is big enough, archive-adjacent: ask the user if prior work is still wanted.
+
+---
+
+## 🚨 "I'M GOING" MODE — AUTONOMOUS OPERATION (GLOBAL CONVENTION)
+
+**"I'm going" = the user leaves. You (and the whole agent system) work autonomously until they return.**
+
+| User Says | Mode |
+|-----------|------|
+| "I'm going" | **ENABLE** autonomous mode |
+| "I'm back" | **DISABLE** autonomous mode |
+
+### Global Autonomous Rules (all agents)
+1. **NEVER ask the user anything** — decide internally, document every decision.
+2. **Tech Lead consults Wise Old Man** for every architecture/decision point.
+3. **Triple-check everything** — no one is watching over the shoulder.
+4. **Document all decisions** in a "DECISIONS MADE WHILE YOU WERE AWAY" table for review on return.
+5. **Escalation to the user is suspended** — blocking issues are recorded and worked around.
+
+### The Rule
+**Autonomous = decide and delegate alone. It does NOT mean the Tech Lead starts coding.** (See Tech Lead prompt: highest drift risk.)
+
+---
+
 ## ⚡ QUICK RULES
 
 | Rule | Details |

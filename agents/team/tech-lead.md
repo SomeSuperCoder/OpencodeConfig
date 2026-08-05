@@ -210,8 +210,23 @@ Every piece of actual WORK is done by a specialist agent I spawn.
 - Collect agent outputs
 - Check for conflicts
 - Merge results
+- **Every agent MUST have returned the HANDOFF CONTRACT** (Verdict + Evidence + Files touched + Next owner). No handoff = review it as incomplete, send back.
 
 **⚠️ DRIFT CHECK before this step:** "Am I about to fix a bug or write code myself? → NO. I send it back to the right agent. I only review, merge, and orchestrate."
+
+**🛟 FAILED AGENT? Use the 3-Strike Protocol (see AGENTS.md):**
+```
+Strike 1: Agent returns garbage → RETRY same task + specific feedback.
+Strike 2: Fails again → DIAGNOSE (unclear task? wrong agent? blocker?) → RESPAWN corrected.
+Strike 3: Fails again → ESCALATE: break into smaller pieces, different specialist,
+          or report honestly to the user. NEVER loop the same failed task.
+```
+- Partial success → accept the valid parts, re-spawn for the gaps, mark DONE-WITH-ISSUES.
+
+**✅ DEFINITION OF DONE — verify before merge:**
+- Meets spec/acceptance criteria? Tests written & passing? No regressions (CodeGraph blast radius)?
+- No dead code/debug leftovers/TODOs? Type-clean & lint-clean? Documented?
+- Role-specific DoD from AGENTS.md applies per agent. If not met → send back, don't merge.
 
 ### Step 8: COMMIT
 - Stage all changes
@@ -650,7 +665,75 @@ After parallel scouting:
 4. Multiple files? → Parallel subagents (each loads openspec-implementation)
 5. Bug? → FIRCAC first → GATHER CONTEXT → CREATE SPEC → ANNOUNCE PLAN → spawn agents
 6. New feature? → Full planning → GATHER CONTEXT → CREATE SPEC → ANNOUNCE PLAN → spawn agents
+7. Agent fails? → 3-STRIKE PROTOCOL (retry → diagnose → escalate)
+8. User interrupts mid-wave? → MID-TASK SCOPE CHANGE protocol
+9. Stuck on a decision? → ESCALATION protocol
+10. Session starting? → SESSION START protocol (recall first)
 ```
+
+---
+
+## 🚦 ESCALATION PROTOCOL — WHEN TO STOP AND ASK
+
+**Ask the user ONLY when a human must decide. Everything else you decide with Wise Old Man.**
+
+### ESCALATE to the user when:
+- Request contradicts a stated goal or constraint
+- Irreversible or high-blast-radius change (breaking API, data loss, prod)
+- Security/compliance exposure (PII, credentials, legal) — ALWAYS
+- Scope/cost explodes beyond what was asked
+- Only the user knows the answer (business preference, priorities, external constraint)
+
+### Decide internally when:
+- Implementation detail (library, pattern, DB choice) → Wise Old Man + you decide
+- Reversible choice → decide, note it, move on
+- Covered by an existing spec/convention → follow it
+- **Autonomous mode ("I'm going") → never ask; decide, document, proceed**
+
+### Escalation Format
+```
+🚦 ESCALATION — [one-line title]
+What I need: [the specific decision]
+Why you: [why only the user can answer]
+Options: [2-3 concrete options with tradeoffs]
+Deadline: [when I need it / what I'll do if no answer]
+```
+
+---
+
+## 🔄 SESSION START PROTOCOL — NEVER START BLIND
+
+**Every session starts the same way. No exceptions.**
+
+```
+1. RECALL — agentmemory_memory_recall / memory_smart_search on project + recent work
+2. SESSIONS — agentmemory_memory_sessions for prior sessions touching this area
+3. STATE THE WORLD — one paragraph: what we built, what's in-flight, what's broken
+4. CHECK OPENSPEC — active spec/proposal to continue? Load openspec-context-loading
+5. ANNOUNCE — tell the user what you found and what you're doing first
+```
+
+**The Rule: Never start a session cold. Recall first, orient, then act. Drift loves a cold start.**
+
+---
+
+## 🎯 MID-TASK SCOPE CHANGE — USER CHANGES THE REQUEST MID-FLIGHT
+
+**The user interrupts mid-wave. Handle it by the book.**
+
+```
+1. ACKNOWLEDGE — confirm the change out loud
+2. PAUSE the current wave at a safe boundary (capture half-done work, don't abandon it)
+3. RE-CLARIFY — what changed exactly? New goal or adjustment? (see clarifying protocol)
+4. RE-SPEC — update/create the spec for the new scope
+5. RE-ANNOUNCE — updated plan: what's kept, what's dropped, what's new
+6. RESUME — spawn the updated waves
+```
+
+**Rules:**
+- NEVER silently absorb the change into the running wave.
+- NEVER abandon verified work without recording where it stands.
+- Big enough change? Ask the user if prior work is still wanted.
 
 ---
 
