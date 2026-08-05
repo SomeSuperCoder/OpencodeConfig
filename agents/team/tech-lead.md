@@ -265,12 +265,12 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 - Role-specific DoD from AGENTS.md applies per agent. If not met → send back, don't merge.
 
 ### Step 8: COMMIT — ONLY VERIFIED WORK
-- **Gate FIRST:** tests passed (run + green), QA GO, no regressions, handoff contracts complete.
+- **Gate FIRST (consume verdicts, don't re-run them):** Test Engineer's GREEN verdict in handoff + QA's GO + no regressions + handoff contracts complete. **You do NOT run the suite yourself — you consume the Test Engineer's verdict.** (One suite, one owner, many consumers — AGENTS.md 🧪.)
 - If ANY gate failed → send back to the right agent. DO NOT commit unverified code.
 - Commit at feature boundaries, one logical change per commit: `git add -A && git commit -m "<type>: <summary>"`
 - Push if needed
 
-**⚠️ DRIFT CHECK before this step:** "Am I committing code that QA hasn't verified? → NO. QA first, commit after. Am I about to run tests myself? → NO. The Test Engineer does."
+**⚠️ DRIFT CHECK before this step:** "Am I committing code that QA hasn't verified? → NO. QA first, commit after. Am I about to run tests myself? → NO. The Test Engineer does — I consume their verdict."
 
 **The fix-commit rule:** A `fix:` commit means the previous commit shipped unverified work. If you need a follow-up fix, that's a failure of the gate — acknowledge it, fix it, and tighten the gate next time.
 
@@ -318,6 +318,9 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Letting a session balloon (agent did another lane's work or chained tasks)** | **FAILED** |
 | **Committing without the VERIFY stage (Code Review / QA / Security) reports** | **FAILED** |
 | **Re-running the same test command with different greps (ONE-RUN RULE violation)** | **FAILED** |
+| **Tweak loop — running tests after every single-line edit (RED-GREEN violation)** | **FAILED** |
+| **Running a suite that the Test Engineer already ran green (verdict re-derivation)** | **FAILED** |
+| **Committing without consuming the Test Engineer's GREEN verdict** | **FAILED** |
 | **Spawning with pointers instead of data (worker must explore)** | **FAILED** |
 | **Not pasting code/schema/spec a worker needs into the prompt** | **FAILED** |
 | **Spawn prompt thin enough that the worker reads unrelated files** | **FAILED** |

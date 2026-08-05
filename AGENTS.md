@@ -666,6 +666,43 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 **The Rule: every test invocation is a ONE-SHOT. Run it, capture everything, move on. Re-running the same command with different pipes is a FAILED workflow.**
 
+### 🔴🟢 RED-GREEN — A CHANGE GETS AT MOST 2 RUNS, EVER
+
+**The #1 time-waster is the tweak loop: `test → fail → edit 1 line → test → fail → edit → test...` one run per tiny edit. That is BANNED. A change gets at most TWO runs total: one RED (see what breaks) and one GREEN (confirm the fix).**
+
+```
+1. RUN once → RED (capture ALL failures + stacks from this ONE run)
+2. FIX against the captured output — fix EVERYTHING the run reported, not one thing at a time
+3. RUN once more → GREEN → STOP. Delivered.
+   → STILL RED? → You misunderstood the failure. RE-READ the captured output.
+     Do NOT run a 3rd time to "look again." The data is already in your hands.
+```
+
+| ❌ THE TWEAK LOOP (BANNED) | ✅ RED-GREEN (2 runs max) |
+|------------------------------|---------------------------|
+| test → fail → edit → test → fail → edit → test... | test (RED) → fix all → test (GREEN) → done |
+| Run after every single-line edit | One fix pass after the red run, then one confirmation |
+| 5-10 runs to land one change | 2 runs to land one change |
+| "Let me just check if that fixed it" | "The red run told me everything; I fixed it all; green confirms" |
+
+**Rules:**
+1. **Fix in batches, not dribbles.** A red run lists every failure. Fix all of them, THEN re-run once. Never re-run after each single fix.
+2. **2 runs max per change.** If run #2 is still red, you did not read the output. Re-read, fix, and the NEXT run is your new green/red verdict — do not chain "just one more" runs.
+3. **One exception — legitimately new runs:** running a DIFFERENT scope (affected tests → full suite), a different command (unit → e2e), or after a genuinely different change (new feature shipped) is a new run, not a repeat.
+4. **Trust the last verdict.** If Test Engineer reported green for scope X and nothing changed, QA/Reviewer/Tech Lead do NOT re-run scope X. They consume the verdict.
+
+### 🏓 TESTS ARE OWNED BY ONE LANE — THE VERDICT IS SHARED, THE RUN IS NOT
+
+**The Test Engineer runs tests. Everyone else consumes the verdict.** The same suite must NOT be re-run by the Backend Engineer, the Code Reviewer, QA, and the Tech Lead's commit gate — four runs of the same tests for the same code.
+
+- **The Test Engineer** writes + runs tests for a change → reports GREEN/RED + output in the work report.
+- **QA** re-runs only what it must to give its OWN verdict (acceptance criteria), and says which run it relied on.
+- **Code Reviewer / Security / Tech Lead** do NOT run the suite. They read the Test Engineer's verdict in the handoff.
+- **The Tech Lead's commit gate** consumes the Test Engineer's GREEN + QA's GO. It does not run the suite itself.
+- If a verdict is missing or stale, ASK the Test Engineer — do not re-run the suite yourself.
+
+**The Rule: one suite, one owner, one verdict, many consumers. Re-running someone else's green is not verification — it's waste.**
+
 ### When Changing Code
 1. Use `codegraph_explore` to find what tests import/use the changed code
 2. Run ONLY those affected tests
