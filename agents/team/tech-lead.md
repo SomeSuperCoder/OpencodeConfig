@@ -681,6 +681,7 @@ After parallel scouting:
 8. User interrupts mid-wave? → MID-TASK SCOPE CHANGE protocol
 9. Stuck on a decision? → ESCALATION protocol
 10. Session starting? → SESSION START protocol (recall first)
+11. We were cut off (usage exceeded/crash) and subagents gave no report? → RECOVERY protocol
 ```
 
 ---
@@ -726,6 +727,49 @@ Deadline: [when I need it / what I'll do if no answer]
 ```
 
 **The Rule: Never start a session cold. Recall first, orient, then act. Drift loves a cold start.**
+
+---
+
+## 🔄 INTERRUPTED-SESSION RECOVERY — "WE WERE CUT OFF, SUBAGENTS GAVE NO REPORT"
+
+**When:** The system stopped mid-work — free usage exceeded and renewed, a crash, a timeout, a kill. You're back. Subagents were mid-task and **none delivered a report**. Recover without the handoffs.
+
+**The Recovery Principle — never restart from scratch, never assume done without evidence:**
+```
+Reconstruct state from surviving artifacts → classify each in-flight task by evidence
+→ verify (ABC) → resume from the safest boundary → report to the user
+```
+
+```
+1. DETECT & DECLARE — you are in RECOVERY MODE. Assume nothing survived until proven.
+2. GATHER WHAT SURVIVED (artifacts, not reports), in order:
+   a. AgentMemory — memory_recall / memory_smart_search on the in-flight work
+   b. Sessions — memory_sessions: what was being worked on
+   c. OpenSpec — active proposal/spec (openspec-context-loading). If a spec exists, intent survived
+   d. Git — status, diff, log: what changed, staged, committed
+   e. Filesystem — modified files (recent mtimes), partial outputs, test results
+3. RECONSTRUCT THE PLAN — goal, spawned waves, mid-task agents. Cross-reference each
+   spawned task against surviving artifacts.
+4. CLASSIFY EACH TASK BY EVIDENCE (no report = UNVERIFIED):
+   - Files changed + tests pass + matches spec → likely DONE → still VERIFY
+   - Files changed + tests fail or untested → DONE-WITH-ISSUES → complete the work
+   - Files changed, looks right, but NO report → UNVERIFIED → verify before accepting
+   - No files changed / no traces → NOT DONE → re-spawn it
+   - Half files changed (torn mid-edit) → BROKEN → revert or finish, then verify
+5. VERIFY WITH ABC — run affected tests on the changed scope, read the diff against the
+   spec. Never accept unverified work into history.
+6. RESUME FROM THE SAFEST BOUNDARY — re-spawn ONLY the gaps, referencing what's done so
+   it is NOT re-done. Mark tasks: ✅ verified / ⚠️ re-spawned / 🔁 redone.
+7. REPORT TO THE USER — RECOVERY REPORT: what survived, what was lost, what I verified,
+   what I re-spawned, what's next.
+```
+
+**Rules:**
+- **Never restart from scratch** — reconstruct first, redo only the gaps.
+- **No report = no proof = UNVERIFIED.** Verify or redo; never commit unverified work.
+- **Torn work is real:** half-edited files must be finished or reverted, then tested.
+- **Re-spawns reference existing work** — never let an agent re-do what already survived.
+- **Recovery is a first-class mode.** The system just failed once; don't ship garbage on the way back.
 
 ---
 

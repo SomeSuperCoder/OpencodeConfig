@@ -562,6 +562,70 @@ Strike 3: Fails again.
 
 ---
 
+## 🔄 INTERRUPTED-SESSION RECOVERY — "WE WERE CUT OFF, SUBAGENTS GAVE NO REPORT"
+
+**When:** The system stopped mid-work — free usage exceeded and got renewed, a crash, a timeout, a kill, a lost connection. You're back. Subagents were mid-task and **none of them delivered a report**. You must recover without the handoffs.
+
+**The Recovery Principle — never restart from scratch, never assume done without evidence:**
+```
+Reconstruct state from surviving artifacts → classify each in-flight task by evidence
+→ verify (ABC) → resume from the safest boundary → report to the user
+```
+
+### Step 1 — DETECT & DECLARE
+- Acknowledge the interruption out loud. You are in **RECOVERY MODE**, not normal mode.
+- Never pretend the plan is intact. Assume nothing survived until proven.
+
+### Step 2 — GATHER WHAT SURVIVED (artifacts, not reports)
+Check, in order:
+1. **AgentMemory** — `memory_recall` / `memory_smart_search` on the in-flight work. Mid-session saves (decisions, findings, patterns) often survive the kill.
+2. **Sessions** — `memory_sessions`: what was being worked on, which area.
+3. **OpenSpec** — active proposal/spec (openspec-context-loading). If a spec exists, the intent survived.
+4. **Git** — `git status`, `git diff`, `git log`: what code actually changed, what's staged, what's committed.
+5. **Filesystem** — modified files (recent mtimes), partial outputs, temp files, test results.
+
+### Step 3 — RECONSTRUCT THE PLAN
+- What was the goal? Which waves were spawned? Which agents were mid-task?
+- Cross-reference the spawned plan against the surviving artifacts: which tasks show evidence of progress, which show none.
+
+### Step 4 — CLASSIFY EACH IN-FLIGHT TASK BY EVIDENCE (no report = UNVERIFIED)
+| Evidence Found | Classification |
+|----------------|----------------|
+| Files changed + tests pass + matches spec | Likely DONE → still VERIFY |
+| Files changed + tests fail or untested | DONE-WITH-ISSUES → complete the work |
+| Files changed, looks right, but NO report | **UNVERIFIED** → verify before accepting |
+| No files changed / no traces of the task | NOT DONE → re-spawn it |
+| Half files changed (torn mid-edit) | BROKEN → revert or finish, then verify |
+
+### Step 5 — VERIFY WITH ABC
+- Run the tests on the changed scope (affected tests, not the whole suite).
+- Read the diff against the spec. Confirm what actually works.
+- **Never accept unverified work into history.** No handoff = no proof = verify or redo.
+
+### Step 6 — RESUME FROM THE SAFEST BOUNDARY
+- Re-spawn ONLY the gaps, referencing what's already done so it is NOT re-done.
+- Continue from the last verified state, not from zero.
+- Mark recovered tasks in the plan: ✅ verified, ⚠️ re-spawned, 🔁 redone.
+
+### Step 7 — REPORT TO THE USER
+```
+## 🔄 RECOVERY REPORT
+**What survived:** [spec, decisions, completed work with evidence]
+**What was lost:** [tasks with no trace]
+**What I verified:** [tests run, diffs checked, results]
+**What I re-spawned:** [gaps, referencing existing work]
+**What's next:** [the remaining waves]
+```
+
+### Rules
+- **Never restart from scratch** — reconstruct first, redo only the gaps.
+- **No report = no proof = UNVERIFIED.** Verify or redo; never commit unverified work.
+- **Torn work is real:** half-edited files must be finished or reverted, then tested.
+- **Re-spawns reference existing work** — never let an agent re-do what already survived.
+- **Recovery is a first-class mode.** Be extra careful: the system just failed once; don't ship garbage on the way back.
+
+---
+
 ## ✅ DEFINITION OF DONE — WHAT "DONE" MEANS
 
 **"Done" is not "I wrote the code." "Done" is a checklist. Every deliverable is measured against it.**
