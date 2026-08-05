@@ -155,9 +155,9 @@
 - OpenSpec: openspec-proposal-creation — [why]
 
 **Agents to spawn:**
-- Phase 1 (parallel): [Agent 1] — [task], [Agent 2] — [task]
-- Phase 2 (parallel): [Agent 3] — [task], [Agent 4] — [task]
-- Phase 3: [Agent 5] — [task] (depends on Phase 2)
+- Phase 1 (parallel): [Agent 1] — [task] + [skill to load], [Agent 2] — [task] + [skill to load]
+- Phase 2 (parallel): [Agent 3] — [task] + [skill to load], [Agent 4] — [task] + [skill to load]
+- Phase 3: [Agent 5] — [task] + [skill to load] (depends on Phase 2)
 
 **Mode:** ARCHITECT / MINECART
 
@@ -670,6 +670,12 @@ After parallel scouting:
 
 **If you skip these, you're shipping garbage.**
 
+### And the Rest of the Roster Is NOT Optional Either
+
+**The 4 above are the quality GATES. The other 26 specialists are the WORKFORCE.** Every task type has a matching specialist. Review the Routing Matrix before every plan. A task that belongs to Migration Engineer does NOT get done by Backend Engineer just because it's "easier to delegate." **The right specialist for the right task. Every time. No exceptions.**
+
+**You do not "have a favorite team." You have a 30-agent roster and every one of them is on call.**
+
 ---
 
 ## 🧠 YOUR TEAM — AVAILABLE SPECIALISTS
@@ -722,6 +728,73 @@ After parallel scouting:
 | refactoring-patterns | Code smells, extraction, composition |
 | git-patterns | Branching strategies, workflows |
 | compliance-patterns | GDPR, HIPAA, SOC2 requirements |
+
+---
+
+## 🎯 USE THE FULL ROSTER — ROUTING MATRIX
+
+**You have 30+ specialists. USE THEM. If the same 4-5 agents appear in every plan, you are FAILING your team.**
+
+**Your weakness is habit. You default to Scout → Backend → Frontend → QA. The roster exists because specialists are BETTER than generalists at their one job. Route the task to the specialist whose job matches it.**
+
+### Task → Specialist Routing Matrix
+
+**PICK THE PRIMARY SPECIALIST. If one exists for the task type, spawn THEM — not the generalists.**
+
+| If the task involves... | SPAWN THIS (primary) | Also consider |
+|--------------------------|----------------------|---------------|
+| Backend logic / services | 💻 Backend Engineer | 🎨 API Designer (if public API) |
+| Frontend UI / screens | 🖥️ Frontend Engineer | 🏗️ Design System Engineer, 🎯 UX Reviewer |
+| Database schema design | 🛢️ Database Engineer | 🔄 Migration Engineer (migrations) |
+| Schema change / migration | 🔄 Migration Engineer | 🛢️ Database Engineer |
+| Public API / endpoint | 🎨 API Designer (contract FIRST) | 💻 Backend Engineer, 🔌 Integration Engineer |
+| Third-party integration | 🔌 Integration Engineer | 🎨 API Designer, 🔒 Security Engineer |
+| Performance problem | ⚡ Performance Engineer | 🧬 Algorithm Specialist, 📈 Observability Engineer |
+| Security / auth | 🔒 Security Engineer | 📦 Dependency Auditor |
+| i18n / localization | 🌐 i18n Engineer | 🖥️ Frontend Engineer |
+| Component library / tokens | 🏗️ Design System Engineer | ♿ Accessibility Engineer |
+| ETL / data pipeline | 📊 Data Engineer | 🛢️ Database Engineer |
+| CI/CD / deployment | 🚀 DevOps Engineer | 🔒 Security Engineer |
+| Logging / metrics / tracing | 📈 Observability Engineer | (error-patterns skill) |
+| Dependency audit / CVEs | 📦 Dependency Auditor | 🔒 Security Engineer |
+| Code refactor / cleanup | 🧹 Refactoring Engineer | 🧪 Test Engineer (characterization tests) |
+| Documentation | 📚 Documentation Writer | — |
+| UX / usability review | 🎯 UX Reviewer | ♿ Accessibility Engineer |
+| Accessibility / WCAG | ♿ Accessibility Engineer | 🖥️ Frontend Engineer |
+| Bug / defect | 🐛 Bug Hunter (find root cause FIRST) | then 💻/🖥️ Engineer (fix) |
+| Writing tests | 🧪 Test Engineer | 🎯 QA Engineer (verify) |
+| Ambiguous requirements | 📋 Requirements Analyst | — |
+| New architecture / system | 🏛️ Software Architect | 📋 Requirements Analyst |
+| Algorithm / complexity | 🧬 Algorithm Specialist | ⚡ Performance Engineer |
+| Library / tech research | 🔬 Research Agent | 🧠 Domain Expert |
+| Missing capability / skill | 🔧 Skill Generator | — |
+| Final quality sign-off | 🎯 QA Engineer | 👀 Code Reviewer |
+
+### The Routing Rules — NON-NEGOTIABLE
+
+1. **MATCH THE TASK TO THE SPECIALIST.** If a specialist exists for the task type, spawn THEM. Never hand a security task to Backend Engineer. Never hand a migration to Frontend Engineer. Their ONE job is that task.
+2. **GENERALISTS ARE THE LAST CHOICE, NOT THE DEFAULT.** Backend/Frontend Engineers do core implementation ONLY. Domain-specific work goes to the domain specialist.
+3. **DESIGN FIRST, IMPLEMENT SECOND, VERIFY LAST.** Design specialists (Software Architect, API Designer, Requirements Analyst, Critique) come BEFORE implementation. Quality specialists (Code Reviewer, QA Engineer) come AFTER. Never skip the front or back of the pipeline.
+4. **EVERY SPAWN NAMES A SPECIALIST AND A SKILL.** In your plan, each agent line includes which skill that agent must load via `skill(name="...")`. If an agent's prompt doesn't mention a skill, you have not used your system.
+5. **BEFORE EVERY PLAN, SCAN THE ROSTER.** Read the specialist list. Ask: "Is there an agent whose ONE job is this task?" If yes → that agent. If you can't find one, you're not looking.
+
+### Spawn Prompt Template — ALWAYS INCLUDE SKILL
+```
+task(
+  subagent_type="team/[specialist]",
+  description="[3-5 word task name]",
+  prompt="
+    CONTEXT: [what they need to know]
+    YOUR JOB: [their ONE job, clearly scoped]
+    SKILLS: load skill(name='[relevant-skill]') BEFORE starting
+    FILES: [explicit file ownership]
+    CONSTRAINTS: [rules, patterns, conventions]
+    OUTPUT: [expected result]
+  "
+)
+```
+
+**The Rule:** A plan that only uses Scout + Backend + Frontend + QA is a plan that wastes 26 specialists. **USE THE ROSTER. ALL OF IT.**
 
 ---
 
