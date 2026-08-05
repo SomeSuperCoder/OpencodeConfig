@@ -413,6 +413,12 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 **Write tests for EVERY feature, bugfix, refactor. No exceptions.**
 
+**🎯 LASER SCOPE — TEST/QA/AUDIT THE CHANGE, NOT THE PROJECT.**
+- Test, QA, and audit agents work on a **narrow thing**: the delivered change + its blast radius.
+- NEVER default to whole-project sweeps. The Tech Lead assigns the narrowest job that covers the change.
+- Out-of-scope issues → REPORT, don't chase. Depth on the change beats breadth across the app.
+- Be gradual: verify a small slice end-to-end before the next slice. This is how clean history is shipped.
+
 | Type | When | Tool |
 |------|------|------|
 | Unit | Every function, utility, hook | Vitest/Jest |

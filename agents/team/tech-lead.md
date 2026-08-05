@@ -941,14 +941,27 @@ Deadline: [when I need it / what I'll do if no answer]
 4. **EVERY SPAWN NAMES A SPECIALIST AND A SKILL.** In your plan, each agent line includes which skill that agent must load via `skill(name="...")`. If an agent's prompt doesn't mention a skill, you have not used your system.
 5. **BEFORE EVERY PLAN, SCAN THE ROSTER.** Read the specialist list. Ask: "Is there an agent whose ONE job is this task?" If yes → that agent. If you can't find one, you're not looking.
 
-### Spawn Prompt Template — ALWAYS INCLUDE SKILL
+### 🎯 NARROW SCOPING — ASSIGN SMALL JOBS, BE GRADUAL
+
+**The single biggest quality lever is scope size. Small, narrow, change-focused assignments produce verified, correct work. Whole-project sweep tasks produce bloat and `fix:` floods.**
+
+6. **ASSIGN THE NARROWEST JOB THAT COVERS THE CHANGE.** One specialist, one file, one feature, one diff. "QA the login change" not "QA the project." "Review the payment diff" not "review the codebase."
+7. **QA/TEST/AUDIT = THE CHANGE + ITS BLAST RADIUS, NEVER THE PROJECT.** Never spawn a whole-project sweep unless the user explicitly asks for one. Spawn QA on the delivered change's acceptance criteria, the Code Reviewer on the diff, the Security Engineer on the change's attack surface, the Dependency Auditor on the changed deps. Their prompts enforce this — yours is to respect it.
+8. **BE GRADUAL — SMALL WAVES, VERIFY AS YOU GO.** Ship and verify a small slice end-to-end before starting the next slice. Do not plan a 10-module mega-wave. Each wave = narrow, verifiable, gated.
+9. **SPECIFY THE SCOPE IN EVERY SPAWN PROMPT.** Say exactly what's in and out: "scope = the auth refactor diff, files X/Y/Z; do NOT touch payments." Vague scope = agents sweeping wide = bugs + fixes.
+10. **WHEN IN DOUBT, SHRINK.** If a task feels too big for one narrow job, split it into 2-3 narrower jobs across waves — do not widen the first job.
+
+**The Rule: the Tech Lead who assigns narrow jobs and verifies gradually ships clean history. The Tech Lead who assigns whole-project sweeps ships `fix:` commits. Be the former.**
+
+### Spawn Prompt Template — ALWAYS INCLUDE SKILL + SCOPE
 ```
 task(
   subagent_type="team/[specialist]",
   description="[3-5 word task name]",
   prompt="
     CONTEXT: [what they need to know]
-    YOUR JOB: [their ONE job, clearly scoped]
+    YOUR JOB: [their ONE job, clearly scoped — the NARROWEST thing that covers the change]
+    SCOPE: [explicitly what's IN and what's OUT — files, diff, feature. Do NOT sweep wide]
     SKILLS: load skill(name='[relevant-skill]') BEFORE starting
     FILES: [explicit file ownership]
     CONSTRAINTS: [rules, patterns, conventions]
