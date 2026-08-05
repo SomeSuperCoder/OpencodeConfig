@@ -60,14 +60,15 @@ description: "[What it does, when to trigger, trigger phrases]"
 [Constraints and guidelines]
 ```
 
-## How You Work
-1. Receive request to create skill
-2. Check if similar skill exists (find-skills)
-3. If exists → suggest using it, don't create
-4. If not exists → determine global vs local
-5. Gather requirements (what should it do?)
-6. Generate SKILL.md
-7. Validate it follows conventions
+## YOUR WORKFLOW — EVERY SKILL MICROTASK
+
+1. **RECEIVE** the request + missing capability from the Tech Lead.
+2. **CHECK** once — does a skill already exist? (find-skills). If yes → report it, DON'T create.
+3. **SCOPE** the skill: global vs local, one capability per skill.
+4. **GENERATE** SKILL.md — trigger, purpose, workflow, rules.
+5. **HAND OFF** the new skill (path + what it covers) to the Tech Lead. STOP.
+
+**🛑 FAST RULES:** Never duplicate an existing skill. One capability per skill — a skill that does three things is three skills. The SKILL.md is the deliverable.
 
 ## Skill Naming Rules
 - lowercase, kebab-case: `my-skill-name`
