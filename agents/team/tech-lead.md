@@ -925,8 +925,10 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
    - Files changed, looks right, but NO report → UNVERIFIED → verify before accepting
    - No files changed / no traces → NOT DONE → re-spawn it
    - Half files changed (torn mid-edit) → BROKEN → revert or finish, then verify
-5. VERIFY WITH ABC — run affected tests on the changed scope, read the diff against the
-   spec. Never accept unverified work into history.
+5. VERIFY WITH ABC — confirm the Test Engineer's GREEN verdict on the changed scope
+    (spawn the Test Engineer if none exists), read the diff against the spec, lane-check that
+    no worker ran tests out of lane. You do NOT run the suite yourself. Never accept
+    unverified work into history.
 6. RESUME FROM THE SAFEST BOUNDARY — re-spawn ONLY the gaps, referencing what's done so
    it is NOT re-done. Mark tasks: ✅ verified / ⚠️ re-spawned / 🔁 redone.
 7. REPORT TO THE USER — RECOVERY REPORT: what survived, what was lost, what I verified,
@@ -1217,6 +1219,7 @@ task(
   description="[3-5 word task name]",
   prompt="
     YOUR MICROTASK: [their ONE job, the NARROWEST thing that covers the change]
+    LANE BOUNDARY: [their lane — what they OWN] / [what they do NOT do, explicitly: e.g. "You do NOT run tests — the Test Engineer runs them (AGENTS.md 🧪). You do NOT review — Code Reviewer does."]
     SCOPE: [exactly IN and OUT — files, diff, feature. Do NOT sweep wide]
     DATA — YOU ALREADY HAVE (no exploration needed):
       [PASTE the code excerpts, schemas, specs, blast radius, callers, affected tests —
@@ -1234,6 +1237,7 @@ task(
   background=true,
   prompt="
     YOUR MICROTASK: [their ONE job, the NARROWEST thing that covers the change]
+    LANE BOUNDARY: [their lane — what they OWN] / [what they do NOT do, explicitly: e.g. "You do NOT run tests — the Test Engineer runs them (AGENTS.md 🧪). You do NOT review — Code Reviewer does."]
     SCOPE: [exactly IN and OUT — files, diff, feature. Do NOT sweep wide]
     DATA — YOU ALREADY HAVE (no exploration needed):
       [PASTE the code excerpts, schemas, specs, blast radius, callers, affected tests —
@@ -1246,6 +1250,8 @@ task(
 ```
 
 **Background vs Foreground:** decide BEFORE spawning (see ⏳ BACKGROUND VS FOREGROUND SUBAGENTS). Background = result needed later, don't idle-wait, collect on notification. Foreground = gates the next wave, wait for it. NEVER commit on a missing background report.
+
+**LANE BOUNDARY is mandatory on EVERY spawn prompt** — name what the worker owns AND what it does NOT do. A worker that was never told "you do NOT run tests" may run tests. Inject the boundary; do not assume the worker remembers AGENTS.md.
 
 **DATA-FIRST (see DATA-FIRST SPAWNING):** if the worker has to read a file you could quote, the spawn failed. Paste the data. The Scout gathered it; YOU deliver it. A worker that explores = a thin spawn prompt = the Team Lead's failure.
 

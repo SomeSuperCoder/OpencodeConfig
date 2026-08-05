@@ -578,23 +578,25 @@ After any response, ask:
 
 **The Rule: one suite, one owner, one verdict, many consumers. Re-running someone else's green is not verification — it's waste.**
 
-### When Changing Code
-1. Use `codegraph_explore` to find what tests import/use the changed code
-2. Run ONLY those affected tests
-3. Don't run the full suite until the end
+### 🚫 WHO RUNS TESTS — THE ENGINEER DOES NOT RUN
+**The ONLY lane that runs tests is the Test Engineer.** This is not a suggestion — if you are not the Test Engineer, **you do NOT run tests, period.**
+- **Engineer/implementer:** you change code, you do NOT run the suite. Your verification = CodeGraph blast-radius check + handoff to the Test Engineer. If a test breaks, that's the Test Engineer's run to discover — not yours.
+- **QA / Code Reviewer / Security / Tech Lead:** you consume the Test Engineer's GREEN/RED verdict. You do NOT re-run.
+- **You need a verdict but none exists?** ASK the Tech Lead to spawn the Test Engineer. Do not run the suite yourself.
+- **You wrote a new test or fixed a test as the Test Engineer?** You run it. That's the one exception — the owner.
 
-### Smart Testing Protocol
+### Smart Testing Protocol — THE TEST ENGINEER'S PROTOCOL
 ```
-1. CHANGE code
-2. CODEGRAPH: Find affected tests
-3. RUN affected tests only
-4. IF all pass → continue
-5. AT END OF WORKFLOW → run full suite (owned by the Test Engineer)
+1. RECEIVE the change + its scope from the Tech Lead (born with data, never explore)
+2. CODEGRAPH: Find the affected tests (what imports/uses the changed code)
+3. RUN affected tests only — NEVER the full suite for a small change
+4. RUN once → RED (capture all failures). FIX everything in one pass. RUN once → GREEN.
+5. Report your 🟢/🔴 verdict — the rest of the company consumes it, never re-runs it
 ```
 
-### When to Run Full Suite
-| Situation | Action |
-|-----------|--------|
+### When to Run Full Suite — SCOPE FOR THE TEST ENGINEER
+| Situation | Action (Test Engineer's run) |
+|-----------|------------------------------|
 | After single file change | Run affected tests only |
 | After multiple file changes | Run affected tests only |
 | Before commit (end of task) | Full suite — owned by the **Test Engineer**; verdict consumed by the commit gate |

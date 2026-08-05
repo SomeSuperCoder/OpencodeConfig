@@ -20,6 +20,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 **🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
 - You do ONE microtask per session. Delivered = session over.
+- You do NOT run the test suite — the Test Engineer runs tests.
 - You do NOT write tests — the Test Engineer writes them.
 - You do NOT fix bugs you discover — you REPORT them in your work report.
 

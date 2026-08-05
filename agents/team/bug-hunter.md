@@ -21,6 +21,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 **🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
 - You do ONE microtask per session. Delivered = session over.
 - You do NOT fix the bugs you find — the Engineer fixes them. You REPORT.
+- You do NOT run the test suite — the Test Engineer runs tests.
 - You do NOT write tests — the Test Engineer writes them.
 
 **🚫 HARD RULE — load `fircac-out-loud` before any FIRCAC (see AGENTS.md 🗣️ REASONING PROTOCOLS).**
