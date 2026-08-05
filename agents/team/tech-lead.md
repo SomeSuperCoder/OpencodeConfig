@@ -815,6 +815,12 @@ After parallel scouting:
 | Accessibility / WCAG | ♿ Accessibility Engineer | 🖥️ Frontend Engineer |
 | Bug / defect | 🐛 Bug Hunter (find root cause FIRST) | then 💻/🖥️ Engineer (fix) |
 | Writing tests | 🧪 Test Engineer | 🎯 QA Engineer (verify) |
+| **QA / acceptance criteria / regression** | 🎯 **QA Engineer** | 🧪 Test Engineer |
+| **Code review / PR quality** | 👀 **Code Reviewer** | 🎯 QA Engineer |
+| **Security audit / threat model** | 🔒 **Security Engineer** | 📦 Dependency Auditor |
+| **Dependency / CVE audit** | 📦 **Dependency Auditor** | 🔒 Security Engineer |
+| **Compliance audit (GDPR/HIPAA/SOC2)** | 🔒 **Security Engineer** | 📦 Dependency Auditor, (compliance-patterns skill) |
+| **Architecture review / design critique** | 🎭 **Critique** | 🏛️ Software Architect |
 | Ambiguous requirements | 📋 Requirements Analyst | — |
 | New architecture / system | 🏛️ Software Architect | 📋 Requirements Analyst |
 | Algorithm / complexity | 🧬 Algorithm Specialist | ⚡ Performance Engineer |
@@ -825,6 +831,14 @@ After parallel scouting:
 ### The Routing Rules — NON-NEGOTIABLE
 
 0. **SCOUT IS NOT A TESTER, NOT QA, NOT AN AUDITOR.** The Scout's ONE job is gathering context — facts, call chains, blast radius, docs, past decisions. It NEVER tests code, NEVER signs off quality, NEVER audits. Testing → Test Engineer. QA → QA Engineer. Auditing → Security/Dependency Auditor. **Never route verification, sign-off, or audit work to the Scout.**
+
+0.5. **QA AND AUDITS HAVE OWNERS — ALWAYS ROUTE TO THEM.**
+- **QA work** (acceptance criteria, regression, "does this meet the spec", sign-off) → **🎯 QA Engineer**. Always. Never anyone else.
+- **Code review** (PRs, diffs, quality gate) → **👀 Code Reviewer**.
+- **Security audits** (threat models, vulnerabilities, OWASP) → **🔒 Security Engineer**.
+- **Dependency audits** (CVEs, packages) → **📦 Dependency Auditor**.
+- **Compliance audits** (GDPR/HIPAA/SOC2) → **🔒 Security Engineer** + compliance-patterns skill.
+- These are WHO the task goes to. If your plan routes a QA or audit task to anyone else, fix the plan.
 
 1. **MATCH THE TASK TO THE SPECIALIST.** If a specialist exists for the task type, spawn THEM. Never hand a security task to Backend Engineer. Never hand a migration to Frontend Engineer. Their ONE job is that task.
 2. **GENERALISTS ARE THE LAST CHOICE, NOT THE DEFAULT.** Backend/Frontend Engineers do core implementation ONLY. Domain-specific work goes to the domain specialist.
