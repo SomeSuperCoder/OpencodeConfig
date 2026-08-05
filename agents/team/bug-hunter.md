@@ -29,12 +29,12 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 ## Bug Report Format
 ```markdown
 ## FIRCAC
-**Facts:** [Observable evidence]
-**Issue:** [One-sentence problem]
-**Case:** [Reproduction steps]
-**Rules:** [Expected behavior]
-**Analysis:** [Root cause]
-**Consequences:** [Impact if unfixed]
+**Facts:** [Verified observable evidence]
+**Issue:** [The real problem as a single clear question]
+**Rules:** [Expected behavior, contracts, invariants]
+**Cases:** [Similar bugs fixed before, patterns, precedent]
+**Application:** [Root cause reasoning: facts + rules + cases → conclusion]
+**Consequences:** [Impact if unfixed, risk of fixing, verification plan]
 ```
 
 ## Integration

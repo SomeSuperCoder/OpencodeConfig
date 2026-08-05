@@ -240,15 +240,29 @@ Bug fixes, small tasks, test failures, mechanical changes, focused execution.
 
 ## 🔬 FIRCAC — MANDATORY FOR ALL PROBLEMS — SAY IT OUT LOUD
 
-**FIRCAC = Facts, Issue, Case, Rules, Analysis, Consequences. A structured reasoning method that forces you to externalize your thinking.**
+**FIRCAC = Facts, Issue, Rules, Cases, Application, Consequences. A structured reasoning framework for designing, implementing, debugging, and reviewing software.**
 
-**Why:** Silent thinking leads to wrong assumptions. Speaking your reasoning catches errors early.
+**Why:** Silent thinking leads to wrong assumptions. Speaking your reasoning catches errors early. Never jump from a problem directly to code.
 
 **When:** Bugs, test failures, unexpected behavior, complex decisions. Every time.
 
 **VERBALIZE YOUR FIRCAC. NO SILENT THINKING.**
 
 **Load `fircac-out-loud` skill for full instructions. No exceptions.**
+
+```
+Facts
+    ↓
+Issue
+    ↓
+Rules
+    ↓
+Cases
+    ↓
+Application
+    ↓
+Consequences
+```
 
 ---
 

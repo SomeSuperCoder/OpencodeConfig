@@ -383,12 +383,12 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 ```markdown
 ## 🗣️ FIRCAC OUT LOUD
 
-**Facts:** [What I know - observable evidence only]
-**Issue:** [One sentence problem statement]
-**Case:** [Reproduction steps]
-**Rules:** [Requirements, specs, contracts]
-**Analysis:** [Root cause with evidence chain]
-**Consequences:** [Impact if fixed/not fixed]
+**Facts:** [What I know - verified facts only, no opinions/guesses]
+**Issue:** [The real problem as a single clear question]
+**Rules:** [Governing constraints: specs, contracts, conventions]
+**Cases:** [Existing precedents: similar code, past fixes, patterns]
+**Application:** [Reasoning from facts via rules + cases → chosen solution + why]
+**Consequences:** [Expected outcomes: correctness, compatibility, performance, security, maintainability, risks, verification plan]
 ```
 
 ### When to Verbalize ABC
