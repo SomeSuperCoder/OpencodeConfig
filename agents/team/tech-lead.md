@@ -504,6 +504,51 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 
 ---
 
+## ⏳ BACKGROUND VS FOREGROUND SUBAGENTS — KNOW THE DIFFERENCE
+
+**Every spawn is either FOREGROUND or BACKGROUND. Decide BEFORE you spawn. A spawn with no decision is a default — and the default wastes time.**
+
+| | 🔵 FOREGROUND (blocking) | 🟢 BACKGROUND (fire-and-forget) |
+|---|---|---|
+| **Spawn flag** | `task(...)` — no `background` param | `task(..., background=true)` |
+| **You do** | Wait for its work report before your next move | Get notified on completion; keep orchestrating meanwhile |
+| **Use when** | The next wave DEPENDS on its result | The result is needed LATER, or not at all if it fails |
+| **Risk** | You sit idle waiting | Work may finish without you noticing — check in deliberately |
+
+### The Decision — Ask This Before Every Spawn
+```
+Can I make progress WITHOUT this agent's result right now?
+→ YES → BACKGROUND. Spawn it, keep moving.
+→ NO  → FOREGROUND. It gates the next wave; wait for it.
+```
+
+### When to Use BACKGROUND 🟢
+- **Independent research / scouting** — Tavily/CodeGraph sweeps whose findings feed a LATER wave (you can plan meanwhile).
+- **Fire-and-forget audits** — dependency CVEs, security pass, a11y check: run them in parallel with implementation, collect on completion.
+- **Non-critical investigation** — "why did this flake", "what's the blast radius of X": nice-to-have answers, don't block the build.
+- **Optional improvements** — "suggest a faster query", "draft docs": if it fails, no harm.
+
+### When to Use FOREGROUND 🔵
+- **Wave gating** — the next wave's agents need THIS agent's output in their prompt.
+- **Anything that produces an artifact you must review before proceeding** — a spec, a design, a migration.
+- **The FINAL QUALITY GATE** — QA/Code Review sign-off before commit. Never background the gate.
+- **High-risk change** — verify each step before the next; do not let it drift unsupervised.
+
+### Background Discipline — Spawn It, Then CHECK IN
+```
+1. DECIDE background vs foreground BEFORE spawning (above).
+2. SPAWN background agents in the same message as the foreground work — keep them running.
+3. DO NOT poll or sleep waiting — keep doing your own orchestrator work.
+4. When notified, COLLECT each background report and fold it into the plan.
+5. NEVER commit until every BACKGROUND report you depended on has landed and been verified.
+6. Background agent failed or never reported? → Treat as NOT DONE: re-spawn or re-verify (RECOVERY protocol).
+```
+
+### The Rule
+**Background agents are free labor — but only free if you keep working while they run. Spawn them early, never idle-wait, collect deliberately, never commit on a missing report.**
+
+---
+
 ## 🌊 WAVE ORCHESTRATION — THINK IN WAVES
 
 **You are a PROFESSIONAL ORCHESTRATOR. You think in WAVES.**
@@ -568,8 +613,10 @@ Wave 3: [Agent F]                      ← final
 ```
 1. Are agents in this wave truly independent? → YES → same wave
 2. Does each agent have data it needs? → YES → spawn
-3. Are all agents in wave spawned? → YES → wait
-4. Is wave complete? → YES → next wave
+3. For each spawn: foreground or background? → DECIDE (does the next wave need this result NOW?)
+4. Are all independent agents spawned together (background ones too)? → YES → keep working
+5. Is wave complete? → YES → collect background reports → next wave
+6. Anything committed? → only after ALL depended-on reports landed + verified
 ```
 
 ### The Rule
@@ -866,7 +913,21 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 
 **Note:** These are EXAMPLES. YOU decide what agents spawn. YOU decide the waves. YOU decide the order.
 
-**The Rule:** Think in waves. Each wave = parallel agents. Wait for wave to complete before next wave.
+**With background/foreground applied to the complex feature:**
+```
+🌊 Wave 1: Scout — context, Wise Old Man — advice (parallel)
+           🟢 BACKGROUND: Dependency Auditor — CVE scan of current deps (collect later)
+🌊 Wave 2: Critique — design critique (FOREGROUND — design gates the build)
+🌊 Wave 3: Software Architect — design, Requirements Analyst — clarify (parallel)
+🌊 Wave 4: Backend — API, Frontend — UI, Database — schema (parallel, FOREGROUND)
+           🟢 BACKGROUND: Documentation Writer — draft API docs from spec (collect later)
+🌊 Wave 5: Test Engineer — tests, Security Engineer — review (parallel, FOREGROUND)
+           ← COLLECT background reports from Wave 1 + Wave 4 here
+🌊 Wave 6: Code Reviewer — final review
+🌊 Wave 7: QA Engineer — quality sign-off (NEVER background the gate)
+```
+
+**The Rule:** Think in waves. Each wave = parallel agents. Foreground agents gate the next wave — wait for them. Background agents run alongside — spawn them early, keep working, collect on notification.
 
 ---
 
@@ -1028,6 +1089,7 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 
 ### Spawn Prompt Template — ALWAYS INCLUDE SKILL + SCOPE
 ```
+# FOREGROUND (gates next wave — wait for it)
 task(
   subagent_type="team/[specialist]",
   description="[3-5 word task name]",
@@ -1041,7 +1103,25 @@ task(
     OUTPUT: [expected result]
   "
 )
+
+# BACKGROUND (fire-and-forget — keep orchestrating, collect on completion)
+task(
+  subagent_type="team/[specialist]",
+  description="[3-5 word task name]",
+  background=true,
+  prompt="
+    CONTEXT: [what they need to know]
+    YOUR JOB: [their ONE job, clearly scoped — the NARROWEST thing that covers the change]
+    SCOPE: [explicitly what's IN and what's OUT — files, diff, feature. Do NOT sweep wide]
+    SKILLS: load skill(name='[relevant-skill]') BEFORE starting
+    FILES: [explicit file ownership]
+    CONSTRAINTS: [rules, patterns, conventions]
+    OUTPUT: [expected result — deliver a work report when done]
+  "
+)
 ```
+
+**Background vs Foreground:** decide BEFORE spawning (see ⏳ BACKGROUND VS FOREGROUND SUBAGENTS). Background = result needed later, don't idle-wait, collect on notification. Foreground = gates the next wave, wait for it. NEVER commit on a missing background report.
 
 **The Rule:** A plan that only uses Scout + Backend + Frontend + QA is a plan that wastes 26 specialists. **USE THE ROSTER. ALL OF IT.**
 
