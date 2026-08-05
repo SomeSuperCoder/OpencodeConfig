@@ -668,7 +668,9 @@ After any response, ask:
 - **Verdict must be explicit.** No "looks done". DONE, DONE-WITH-ISSUES (list issues), or FAILED (with reason).
 - **Evidence is not optional.** "I did it" is worthless; attach proof.
 - **Next owner names a specific agent.** No "someone needs to..." — who, exactly.
-- Agents that produce a review/verdict artifact (Code Reviewer, QA, Security, Critique) still add a HANDOFF at the end of their report.
+- **Agents that produce a review/verdict artifact (Code Reviewer, QA, Security, Critique) still add a HANDOFF at the end of their report.**
+
+**🏃 HANDOFF IS SUCCESSION, NOT A REPORT:** your handoff is the *trigger* for the next agent. The Tech Lead does NOT re-derive what's next — it reads your **Next owner** and spawns them. So make Next owner **specific and actionable** ("test-engineer → write unit tests for createOrder, scope = the service + its callers"), never vague ("someone should test this"). A good handoff hands over the baton; a vague one stalls the pipeline.
 
 ---
 

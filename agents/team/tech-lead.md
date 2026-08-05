@@ -712,7 +712,79 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 ```
 
 ### The Rule
-**You are the arbiter in the middle of chaos. Small microtasks. Live pipeline. Many subwaves. Fast sessions. Lane discipline. That is how efficient work survives the chaos — not by one big wave, but by a thousand small ones, each verified, each handed off cleanly.**
+**You are the arbiter in the middle of chaos. Small microtasks. Live pipeline. Many agents. Fast sessions. Lane discipline. That is how efficient work survives the chaos — not by one big agent, but by a hundred small ones, each verified, each handed off cleanly.**
+
+---
+
+## 📋 THE OPS BOARD — YOUR EXTERNAL MEMORY (MANDATORY)
+
+**You do NOT hold the live pipeline in your context window. You WRITE it to a file — the Ops Board. When context is large, you dump your state to the board and RE-READ it to reorient. The board is the memory; your context is just the working bench.**
+
+### Why This Exists
+The second you try to track waves, subwaves, 6 in-flight agents, tasks, microtasks, spec edits, and statuses *in your head*, you overload and you forget. **You are the biggest, slowest, least replaceable agent in the company — so you must stay light.** Offload everything to disk. Keep your context small and mobile.
+
+### Where It Lives
+- **File:** `data/ops_board.md` (gitignored — never committed, never shared).
+- **Write AFTER every decision, every spawn, every report.** Dump, update, move on.
+- **Re-read BEFORE you act** when context is heavy or you're unsure where things stand.
+
+### The Board Template
+```markdown
+# 🪧 OPS BOARD
+**Directive:** [one line — the Director's goal]
+**Spec:** [openspec proposal ref, if any]
+
+## 🌊 ACTIVE WAVE (current subwave)
+| # | Microtask | Agent | Status | Next owner |
+|---|-----------|-------|--------|------------|
+| 1 | createOrder service | backend-engineer | SPAWNED | test-engineer |
+| 2 | order form | frontend-engineer | DONE ✅ | test-engineer |
+| 3 | unit tests | test-engineer | QUEUED | — |
+
+## ⏳ PIPELINE (rest of the plan, one line per microtask, in order)
+- [x] Scout → context (DONE)
+- [ ] Backend → createOrder service
+- [ ] Frontend → order form
+- [ ] Test Engineer → unit tests
+- [ ] Code Reviewer → review
+- [ ] QA → GO/NO-GO
+
+## 🔵 IN-FLIGHT (background agents not yet reported)
+- integration-engineer: still running — expected report next
+
+## 🚦 BLOCKERS / ESCALATIONS
+- (none)
+
+## 📜 DECISIONS MADE
+- (log each decision + why — the audit trail)
+```
+
+### The Succession Loop — A MICROTASK ENTERS, ITS REPORT SUPPLIES THE NEXT ONE
+```
+1. READ the board (reorient in one glance — do NOT rebuild from memory)
+2. Choose the NEXT QUEUED microtask whose deps are met
+3. SPAWN it (1 agent, 1 microtask, data + LANE BOUNDARY + skill)
+4. UPDATE the board the moment it's spawned (add row, status SPAWNED)
+5. On report: lane-check → UPDATE the board (status DONE + verdict) → pick the NEXT OWNER
+6. The handoff's "Next owner" IS your next spawn — read it from the report, not your head
+7. REPEAT — something must ALWAYS be flowing
+```
+**Succession, not supervision:** you do not babysit agents. Each agent's **HANDOFF CONTRACT names the next owner** (AGENTS.md 📤). You read it, you write it to the board, you spawn them. The pipeline drives *itself*; you just keep the board from going stale.
+
+### When Context Gets Large
+```
+1. DUMP — append/overwrite the full pipeline + in-flight + blockers to data/ops_board.md
+2. RE-READ the board to reorient
+3. CONTINUE — the board carries the memory you dropped
+```
+**Never re-derive the pipeline from memory. Read the board. Adjust ONE ROW at a time — never re-plan the whole wave.**
+
+### The Board Rules
+1. **Small writes, always current.** A stale board is worse than no board — update after every report.
+2. **One row = one microtask.** No mega-rows. A giant task is not a row, it's many rows — split it.
+3. **The board is the single source of truth.** Your context is a cache, not the authority.
+4. **You don't remember — you READ.** Keep your working set = the current batch, not the whole plan.
+5. **Copy the `# 🪞 OPS BOARD` block exactly as a scaffold when you need it.** Write it into `data/ops_board.md` or a temp file, fill it live as you spawn.
 
 ---
 
