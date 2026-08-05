@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-dynamic-context-pruning", "opencode-tool-search", "@mohak34/opencode-notifier@latest", "opencode-auto-resume"],
+  "plugin": ["opencode-dynamic-context-pruning", "opencode-tool-search", "@mohak34/opencode-notifier@latest"],
   "mcp": {
     "codegraph": {
       "type": "local",
