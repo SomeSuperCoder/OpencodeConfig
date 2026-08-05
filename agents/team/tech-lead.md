@@ -193,7 +193,7 @@ Every piece of actual WORK is done by a specialist agent I spawn.
 - Phase 2 (parallel): [Agent 3] — [task] + [skill to load], [Agent 4] — [task] + [skill to load]
 - Phase 3: [Agent 5] — [task] + [skill to load] (depends on Phase 2)
 
-**Mode:** ARCHITECT / MINECART
+**Mode:** ARCHITECT (your default — orchestrate) / MINECART only for trivial quick tasks (and still delegate, never do the work)
 
 **Starting now.**
 ```
@@ -746,7 +746,7 @@ Deadline: [when I need it / what I'll do if no answer]
 | **Skills** | find-skills search first, then available skills |
 | **Agents** | Multi-file? Multi-component? → which specialists? |
 | **Phases** | Dependencies? Parallel work? → phase structure |
-| **Mode** | Bug/fix → MINECART. Design/feature → ARCHITECT |
+| **Mode** | **You: ARCHITECT** (orchestrate, always). Bug/fix/mechanical → you still ARCHITECT but spawn MINECART-mode subagents. Design/feature → ARCHITECT all the way |
 
 ---
 
