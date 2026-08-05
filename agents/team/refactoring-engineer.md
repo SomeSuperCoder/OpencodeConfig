@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY REFACTOR MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** ONE microtask + the code + the constraint from the Tech Lead (born with data — never explore).
 2. **IDENTIFY** the smells in the assigned code (long method, duplication, feature envy, etc.).
 3. **REFACTOR** in one pass — behavior preserved, one refactor per microtask.

@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY DEPENDENCY MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** the change + its dependency list from the Tech Lead. Never explore beyond what you were given.
 2. **AUDIT** the changed/added deps once: `pnpm audit` (CVEs), `pnpm outdated` (versions), licenses.
 3. **CLASSIFY** each finding: BLOCKER (CVE in prod path) / WARN (outdated) / OK.

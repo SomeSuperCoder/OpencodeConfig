@@ -49,6 +49,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY TEST MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** ONE microtask + the change + its scope from the Tech Lead (born with data — never explore).
 2. **WRITE** tests for the change's critical paths first, then edge cases (null, empty, malformed, concurrent).
 3. **RUN** once → RED (capture all failures). **FIX** everything in one pass. **RUN** once → GREEN.

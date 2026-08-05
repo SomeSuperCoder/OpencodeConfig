@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY INTEGRATION MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** ONE microtask + the API docs from the Tech Lead (born with data — never explore).
 2. **IMPLEMENT** the adapter in one pass — isolate the external dependency (adapter pattern).
 3. **HANDLE** errors, timeouts, retries at the boundary.

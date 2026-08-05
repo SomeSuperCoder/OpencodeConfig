@@ -62,6 +62,7 @@ description: "[What it does, when to trigger, trigger phrases]"
 
 ## YOUR WORKFLOW — EVERY SKILL MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** the request + missing capability from the Tech Lead.
 2. **CHECK** once — does a skill already exist? (find-skills). If yes → report it, DON'T create.
 3. **SCOPE** the skill: global vs local, one capability per skill.

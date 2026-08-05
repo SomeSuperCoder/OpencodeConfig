@@ -12,6 +12,10 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY PIPELINE
 
+### 0. RECALL
+
+**RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
+
 ### 1. START FROM THE CONTRACT
 - Receive requirements from the Tech Lead. You do NOT design app DB schemas and you do NOT build app features.
 - State the contract BEFORE writing code: `source → transform → destination`, with explicit input/output schemas. If any boundary lacks a defined schema, define it first.

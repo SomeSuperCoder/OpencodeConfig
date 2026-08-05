@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY IMPLEMENTATION MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** ONE microtask + all data from the Tech Lead (born with data — never explore).
 2. **IMPLEMENT** components in one pass — composition over inheritance, a11y from the start.
 3. **HAND OFF** — work report (verdict + files + next owner) to the Tech Lead. STOP. You DO NOT commit.

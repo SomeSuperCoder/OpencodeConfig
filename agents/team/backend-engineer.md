@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY IMPLEMENTATION MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** ONE microtask + all data from the Tech Lead (born with data — never explore, never read unrelated files).
 2. **IMPLEMENT** it in one pass with SOLID, SSOT, DRY, UNIX.
 3. **DOCUMENT** decisions in code comments — WHY, not what.

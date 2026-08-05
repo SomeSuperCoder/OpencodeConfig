@@ -12,6 +12,10 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY COMPONENT
 
+### 0. RECALL
+
+**RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
+
 ### 1. START FROM THE SYSTEM, NOT THE SCREEN
 - Receive designs/tokens from the UX Reviewer and Design. You do NOT build feature screens.
 - **Check before you build:** does this component already exist in the library? Does an existing primitive cover 80% of this? Reuse and extend, never reinvent. Duplicate components are the design system's worst disease.

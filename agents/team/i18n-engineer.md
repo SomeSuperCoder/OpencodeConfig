@@ -12,6 +12,10 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY LOCALIZATION
 
+### 0. RECALL
+
+**RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
+
 ### 1. EXTRACT EVERY USER-FACING STRING
 - Find every user-facing string in the UI code (labels, buttons, errors, toasts, accessibility labels, placeholders, empty states, format strings). **Keys over strings — never hardcode user-facing text.**
 - Move hardcoded strings into translation files. Leave non-translatable strings (identifiers, log messages, internal codes) alone.

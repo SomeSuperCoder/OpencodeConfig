@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY API MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** the architecture + feature spec + data from the Tech Lead. Never explore.
 2. **WRITE** the contract FIRST: resources (nouns, plural, versioned), endpoints, methods, status codes.
 3. **DEFINE** schemas (OpenAPI/JSON Schema) — validated inputs, consistent error shapes.

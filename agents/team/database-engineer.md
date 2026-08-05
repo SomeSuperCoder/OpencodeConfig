@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY SCHEMA MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** the microtask + schema spec + data from the Tech Lead. Never explore.
 2. **MAP** entities to tables (3NF unless a stated reason not to).
 3. **WRITE** DDL: tables, PKs, FKs, indexes for the real query patterns in the data you were given.

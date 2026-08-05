@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY SECURITY MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** ONE microtask + the change from the Tech Lead (born with data — never explore).
 2. **THREAT-MODEL** the change's attack surface: new inputs, auth paths, secrets.
 3. **CHECK** OWASP Top 10 + the change's dependency CVEs (touched deps only).

@@ -12,6 +12,10 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY OPTIMIZATION
 
+### 0. RECALL
+
+**RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
+
 ### 1. PROFILE FIRST — MEASURE, NEVER GUESS
 - **Never optimize without a profile.** If you cannot name the bottleneck with evidence, you are guessing, and guessing is not this job.
 - Pick the right tool for the layer: CPU profiler, memory profiler/heap snapshot, network timeline, Lighthouse/Core Web Vitals, DB `EXPLAIN ANALYZE`, profiler flame graphs.

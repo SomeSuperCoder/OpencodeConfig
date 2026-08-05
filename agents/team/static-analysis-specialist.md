@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY STATIC-ANALYSIS MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** the change + its files from the Tech Lead. Never explore beyond them.
 2. **RUN** linter + type checker on the change once — full output, all findings in one go.
 3. **CLASSIFY** each finding: BLOCKER (type error, crash) / WARN (smell) / NIT.

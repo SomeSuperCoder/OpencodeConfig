@@ -12,6 +12,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY OBSERVABILITY MICROTASK
 
+0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** the change + its data flow from the Tech Lead. Never explore.
 2. **ADD** structured logging (JSON) at the change's entry/exit/error points.
 3. **DEFINE** the metrics that matter for THIS change: latency, errors, traffic, saturation.
