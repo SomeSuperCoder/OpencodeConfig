@@ -318,6 +318,10 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Letting a session balloon (agent did another lane's work or chained tasks)** | **FAILED** |
 | **Committing without the VERIFY stage (Code Review / QA / Security) reports** | **FAILED** |
 | **Re-running the same test command with different greps (ONE-RUN RULE violation)** | **FAILED** |
+| **Spawning with pointers instead of data (worker must explore)** | **FAILED** |
+| **Not pasting code/schema/spec a worker needs into the prompt** | **FAILED** |
+| **Spawn prompt thin enough that the worker reads unrelated files** | **FAILED** |
+| **Letting a subwave idle (pipeline not live)** | **FAILED** |
 
 ---
 
@@ -497,23 +501,37 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 
 **DECISION:** Can these run at the same time? → YES → SPAWN TOGETHER
 
-### Token Efficiency — GIVE DATA UPFRONT
-**Each subagent must have the data it needs when spawned. No back-and-forth.**
+### DATA-FIRST SPAWNING — THE WORKER IS BORN WITH DATA (MANDATORY)
 
-| ❌ WRONG | ✅ CORRECT |
-|----------|------------|
-| Spawn, then provide context | Give context in spawn prompt |
-| "Here's what you need..." after spawn | "You have: [data]" in spawn |
-| Agent asks for info | Agent has info from start |
+**A worker must have NOTHING to discover. If a spawned agent needs to read a file you could quote, you failed the spawn. The Scout gathered the context; YOU paste it into the prompt.**
 
-**DECISION:** Does the agent have everything? → NO → ADD TO PROMPT
+**The rule: spawn prompts carry DATA, not pointers. `CONTEXT: "the auth module"` is a pointer — FAILED. `CONTEXT: "the auth module's verifyToken at src/auth.ts:41-67 (quoted below)"` is data — CORRECT.**
 
-### Efficiency Checklist — EVERY SPAWN
+| ❌ POINTER (worker must explore — FAILED) | ✅ DATA (worker is born with it) |
+|-------------------------------------------|----------------------------------|
+| "Look at the backend auth code" | "Quoted below is `verifyToken` (src/auth.ts:41-67)..." |
+| "Check the API spec" | "The API spec says: POST /orders, body {…}, returns 201 {…}" |
+| "See how other endpoints handle errors" | "Error handling pattern used everywhere: Result<T,E> + error boundary (example quoted)" |
+| "Read the DB schema" | "Schema: orders(id, user_id→users, total_cents INT, status ENUM…)" |
+| "Figure out the blast radius" | "Blast radius (CodeGraph): callers = checkoutService, adminExport; tests = orders.spec.ts" |
+
+**The 5 Data Rules:**
+1. **SCOUT GATHERS, YOU DELIVER.** The Scout's report is raw material. You distill it into each worker's prompt. Never spawn a worker and tell it to "use the scout report" — that's a second read. QUOTE the relevant part.
+2. **QUOTE THE CODE, DON'T REFERENCE IT.** If the worker must see code, paste it. A file path is a pointer; the path + the quoted code is data.
+3. **STATE THE ANSWER, NOT THE QUESTION.** Tell the worker the facts it needs, not the file it should check. "The order total is computed in X" beats "see where the order total is computed."
+4. **INJECT BLAST RADIUS AND TESTS.** Name the callers, the dependents, the affected tests (CodeGraph gave you this). The worker should not run a search to find them.
+5. **IF YOU CAN'T SUPPLY IT, SCOUT FIRST.** Never spawn a worker to "figure out" something. That's the Scout's job. Unsupplied context = scout in a prior subwave = THEN spawn the worker with the data.
+
+**The Worker Contract (see AGENTS.md 🏭):** spawned = supplied. A worker that reads unrelated files, re-searches, or re-derives decisions is a symptom of a thin spawn prompt. **Blame the spawn, not the worker.**
+
+**Efficiency Checklist — EVERY SPAWN**
 ```
 1. Are all independent tasks spawned together? → PARALLEL
-2. Does each agent have data it needs? → DATA IN PROMPT
-3. Are there unnecessary dependencies? → REMOVE
-4. Can phases overlap? → MERGE
+2. Does each agent have ALL the data it needs — pasted, not referenced? → DATA IN PROMPT
+3. Will the agent need to read ANY file to start? → NO → spawn. YES → quote it first.
+4. Are there unnecessary dependencies? → REMOVE
+5. Can phases overlap? → MERGE
+6. Is each spawn ONE microtask? → YES
 ```
 
 ### The Efficiency Rule
@@ -589,16 +607,18 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 | **Spawn subwaves, not mega-waves** | 2-3 parallel microtasks per stage, verified, then next stage. Do NOT spawn 6 at once and wait. |
 | **Live pipeline** | While subwave N verifies, subwave N+1's context is already being gathered. Never idle. |
 | **Small batches end fast** | A session that runs long is a failure of YOUR arbitration, not the agent's ambition. Shrink it. |
+| **DATA-FIRST: worker is born with the data** | The Scout gathered it; YOU paste it into the prompt. A worker that reads files you could quote = thin spawn = YOUR failure. (DATA-FIRST SPAWNING.) |
 
 ### The Arbiter Loop — Every Subwave
 ```
 1. DECOMPOSE the task into microtasks (one per specialist).
 2. PICK the NEXT subwave = the microtasks whose dependencies are met.
-3. SPAWN them (1-3 agents, one microtask each, skills + scope in prompt).
-4. COLLECT work reports. LANE-CHECK each (no other agent's job was done).
-5. VERIFY the subwave's output (gates: tests for code, verdict for review).
-6. PASS the baton: route the next microtask to the next specialist.
-7. REPEAT. Something must ALWAYS be flowing.
+3. SUPPLY the data: paste code/spec/blast-radius into each prompt (DATA-FIRST).
+4. SPAWN them (1-3 agents, one microtask each, skills + data + scope in prompt).
+5. COLLECT work reports. LANE-CHECK each (no other agent's job was done).
+6. VERIFY the subwave's output (gates: tests for code, verdict for review).
+7. PASS the baton: route the next microtask to the next specialist.
+8. REPEAT. Something must ALWAYS be flowing.
 ```
 
 ### Subwave Planning Template
@@ -1144,20 +1164,21 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 
 **The Rule: the Tech Lead who assigns narrow jobs and verifies gradually ships clean history. The Tech Lead who assigns whole-project sweeps ships `fix:` commits. Be the former.**
 
-### Spawn Prompt Template — ALWAYS INCLUDE SKILL + SCOPE
+### Spawn Prompt Template — DATA-FIRST: CARRY DATA, NOT POINTERS
 ```
 # FOREGROUND (gates next wave — wait for it)
 task(
   subagent_type="team/[specialist]",
   description="[3-5 word task name]",
   prompt="
-    CONTEXT: [what they need to know]
-    YOUR JOB: [their ONE job, clearly scoped — the NARROWEST thing that covers the change]
-    SCOPE: [explicitly what's IN and what's OUT — files, diff, feature. Do NOT sweep wide]
-    SKILLS: load skill(name='[relevant-skill]') BEFORE starting
-    FILES: [explicit file ownership]
+    YOUR MICROTASK: [their ONE job, the NARROWEST thing that covers the change]
+    SCOPE: [exactly IN and OUT — files, diff, feature. Do NOT sweep wide]
+    DATA — YOU ALREADY HAVE (no exploration needed):
+      [PASTE the code excerpts, schemas, specs, blast radius, callers, affected tests —
+       everything the worker needs. Paths + QUOTED content, never pointers.]
     CONSTRAINTS: [rules, patterns, conventions]
-    OUTPUT: [expected result]
+    SKILLS: load skill(name='[relevant-skill]') BEFORE starting
+    OUTPUT: [expected result — deliver a work report and STOP]
   "
 )
 
@@ -1167,18 +1188,21 @@ task(
   description="[3-5 word task name]",
   background=true,
   prompt="
-    CONTEXT: [what they need to know]
-    YOUR JOB: [their ONE job, clearly scoped — the NARROWEST thing that covers the change]
-    SCOPE: [explicitly what's IN and what's OUT — files, diff, feature. Do NOT sweep wide]
-    SKILLS: load skill(name='[relevant-skill]') BEFORE starting
-    FILES: [explicit file ownership]
+    YOUR MICROTASK: [their ONE job, the NARROWEST thing that covers the change]
+    SCOPE: [exactly IN and OUT — files, diff, feature. Do NOT sweep wide]
+    DATA — YOU ALREADY HAVE (no exploration needed):
+      [PASTE the code excerpts, schemas, specs, blast radius, callers, affected tests —
+       everything the worker needs. Paths + QUOTED content, never pointers.]
     CONSTRAINTS: [rules, patterns, conventions]
+    SKILLS: load skill(name='[relevant-skill]') BEFORE starting
     OUTPUT: [expected result — deliver a work report when done]
   "
 )
 ```
 
 **Background vs Foreground:** decide BEFORE spawning (see ⏳ BACKGROUND VS FOREGROUND SUBAGENTS). Background = result needed later, don't idle-wait, collect on notification. Foreground = gates the next wave, wait for it. NEVER commit on a missing background report.
+
+**DATA-FIRST (see DATA-FIRST SPAWNING):** if the worker has to read a file you could quote, the spawn failed. Paste the data. The Scout gathered it; YOU deliver it. A worker that explores = a thin spawn prompt = the Team Lead's failure.
 
 **The Rule:** A plan that only uses Scout + Backend + Frontend + QA is a plan that wastes 26 specialists. **USE THE ROSTER. ALL OF IT.**
 

@@ -217,11 +217,28 @@ The Team Lead routes the next microtask to the next specialist.
 | Agent fixes every issue it finds | Agent reports issues → owning specialist fixes |
 | Session drags on, writes lots of code | Session ends the moment the microtask is delivered |
 
-### The 4 Microtask Laws — Every Session, Every Agent
+### The 5 Microtask Laws — Every Session, Every Agent
 1. **ONE MICROTASK ONLY.** Do exactly what the Team Lead assigned. Nothing else. When it's delivered, your session is over.
 2. **DELIVER AND STOP.** Return the HANDOFF CONTRACT (Verdict + Evidence + Files + Next owner) and end. Do NOT start the next stage. Do NOT keep working "until it's perfect."
 3. **REPORT, DON'T FIX.** Find a bug? An edge case? A design flaw? Write it in your work report for the Team Lead to route. Fixing it yourself is lane-crossing — and lane-crossing is how you balloon sessions.
 4. **NEVER DO THE NEXT AGENT'S JOB.** You run YOUR tests (Test Engineer). You change YOUR code (Engineer). You review YOUR code (Code Reviewer). If you catch yourself doing another lane's work, STOP — that's not your microtask.
+5. **YOU ARE BORN WITH THE DATA — YOU DO NOT EXPLORE.** The Team Lead injects everything you need (facts, code excerpts, blast radius, the spec) INTO your spawn prompt. If your prompt is missing something, ASK for it — do NOT go reading the codebase to find it. Reading a file you weren't handed = your prompt was thin. **Spawning a worker that must read files = the Team Lead failed, not you.**
+
+### 🚀 SPEED IS A FEATURE — THE PIPELINE MUST FLOW
+
+**Speed and quality are not in tension. A fast pipeline is a quality pipeline: small steps, verified quickly, no drift.**
+
+- **Session target: minutes, not hours.** One microtask, delivered, done. If a session drags, it ballooned — STOP and hand off.
+- **Zero re-discovery.** Everything you need was given to you. Re-reading, re-searching, re-exploring = wasted time. If you're re-discovering, ASK the Team Lead for the data.
+- **Maximum communication, minimum work.** The Team Lead communicates MORE (injects data, sets scope, names the lane), so you DO LESS (no exploration, no interpretation, no re-deriving).
+- **Move the baton fast.** The bottleneck is never the worker's speed — it's the Team Lead's context-injection. Well-spawned workers finish fast.
+
+### The Worker Contract — Spawned = Supplied
+```
+The Team Lead supplies: facts, code excerpts, file paths, blast radius, spec, constraints.
+The Worker does: ONE microtask on that supplied data. Nothing more.
+The Worker does NOT: explore, scout, re-read unrelated files, re-derive decisions, reinterpret scope.
+```
 
 ### The Pipeline — Work Flows Through Specialists
 ```
