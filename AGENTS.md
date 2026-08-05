@@ -148,7 +148,7 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 | Security Engineer | Implement fixes (Engineers), Write tests (Test Engineer), Review code (Code Reviewer) |
 | QA Engineer | Implement fixes (Engineers), Write tests (Test Engineer), Review code (Code Reviewer) |
 | Bug Hunter | Fix bugs (Engineers), Write tests (Test Engineer), Review code (Code Reviewer) |
-| Scout | Implement features (Engineers), Create specs (Tech Lead), Review code (Code Reviewer) |
+| Scout | Implement features (Engineers), Create specs (Tech Lead), Review code (Code Reviewer), Test code (Test Engineer), QA sign-off (QA Engineer), Audit anything (Security/Auditors) |
 
 ### When You See Something Wrong
 ```

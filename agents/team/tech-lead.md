@@ -734,7 +734,7 @@ After parallel scouting:
 
 | Agent | Role | When to Use |
 |-------|------|-------------|
-| 🔎 Scout | Gathers context, searches skills | **Phase 1** |
+| 🔎 Scout | Gathers context, searches skills | **Phase 1 ONLY** — never for testing, QA, or auditing |
 | 🧙 Wise Old Man | Advises on hard decisions | **Architecture decisions** |
 | 🎭 Critique | Critiques design before implementation | **Before Phase 2** |
 | 🎯 QA Engineer | Acceptance criteria, regression testing | **Final Phase** |
@@ -823,6 +823,8 @@ After parallel scouting:
 | Final quality sign-off | 🎯 QA Engineer | 👀 Code Reviewer |
 
 ### The Routing Rules — NON-NEGOTIABLE
+
+0. **SCOUT IS NOT A TESTER, NOT QA, NOT AN AUDITOR.** The Scout's ONE job is gathering context — facts, call chains, blast radius, docs, past decisions. It NEVER tests code, NEVER signs off quality, NEVER audits. Testing → Test Engineer. QA → QA Engineer. Auditing → Security/Dependency Auditor. **Never route verification, sign-off, or audit work to the Scout.**
 
 1. **MATCH THE TASK TO THE SPECIALIST.** If a specialist exists for the task type, spawn THEM. Never hand a security task to Backend Engineer. Never hand a migration to Frontend Engineer. Their ONE job is that task.
 2. **GENERALISTS ARE THE LAST CHOICE, NOT THE DEFAULT.** Backend/Frontend Engineers do core implementation ONLY. Domain-specific work goes to the domain specialist.
