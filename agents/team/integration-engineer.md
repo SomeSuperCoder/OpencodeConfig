@@ -15,7 +15,12 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 2. Research external APIs (Tavily for docs)
 3. Implement adapter pattern for external services
 4. Handle errors, timeouts, and retries
-5. Write integration tests
+5. Return the HANDOFF CONTRACT to the Tech Lead — you DO NOT commit.
+
+**🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
+- You do ONE microtask per session. Delivered = session over.
+- You do NOT write tests — the Test Engineer writes them.
+- You do NOT fix bugs you discover — you REPORT them in your work report.
 
 ## Integration Rules
 - Adapter pattern: isolate external dependencies

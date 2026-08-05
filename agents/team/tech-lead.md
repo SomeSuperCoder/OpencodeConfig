@@ -313,6 +313,10 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Using Scout/Backend/Frontend/QA for work another specialist owns** | **FAILED** |
 | **The same 4-5 agents in every plan** | **FAILED** |
 | **Skipping a quality gate that a specialist owns (Security, Dependency, UX, A11y, Performance, Observability)** | **FAILED** |
+| **Assigning a mega-task instead of microtasks** | **FAILED** |
+| **Spawning a mega-wave instead of subwaves** | **FAILED** |
+| **Letting a session balloon (agent did another lane's work or chained tasks)** | **FAILED** |
+| **Committing without the VERIFY stage (Code Review / QA / Security) reports** | **FAILED** |
 
 ---
 
@@ -561,78 +565,88 @@ Can I make progress WITHOUT this agent's result right now?
 
 ---
 
-## 🌊 WAVE ORCHESTRATION — THINK IN WAVES
+## 🌊 SUBWAVE ORCHESTRATION — SMALL, LIVE, ARBITRATED
 
-**You are a PROFESSIONAL ORCHESTRATOR. You think in WAVES.**
+**You are the ARBITER of the microtask pipeline. You are NOT a mega-wave scheduler. Sessions must be SMALL and FAST.**
 
-### What is a Wave?
-**A Wave = a group of parallel agents working on independent tasks simultaneously.**
+### The Core Idea — Many Small Subwaves, Not Few Big Waves
+**Every agent gets ONE microtask. When it's done, the session ends. You route the next microtask to the next specialist. The pipeline is LIVE — something is always flowing.**
 
 ```
-Wave 1: [Agent A] [Agent B] [Agent C]  ← all parallel
-         ↓ wait for all to complete
-Wave 2: [Agent D] [Agent E]            ← all parallel
-         ↓ wait for all to complete
-Wave 3: [Agent F]                      ← final
+MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MICROTASK 3 → ...
+   (Agent A)              (Agent B)                (Agent C)
 ```
 
-### Wave Rules
+**A SUBWAVE = 1-3 agents doing ONE microtask each, in parallel, all in the SAME pipeline stage.** You do NOT spawn the whole pipeline at once. You do NOT wait on a giant wave of 6 agents. You keep small batches flowing.
+
+### The Arbitration Rules — YOUR JOB AS ARBITER
 | Rule | Why |
 |------|-----|
-| Independent agents → same wave | Maximum parallelism |
-| Dependent agents → different waves | Must wait for dependencies |
-| Wait for ALL agents in wave | Don't start next wave early |
-| Spawn entire wave at once | Don't spawn sequentially |
+| **1 microtask per spawn** | One agent, one narrow thing. Never "implement + test + fix + document." |
+| **Never let a session balloon** | The moment an agent's task is delivered, its session is OVER. Re-spawn if more work remains. |
+| **Lane-check every report** | Did the backend run tests? Did the tester write production code? → That's drift. Send it back. (MICROTASK LAWS in AGENTS.md.) |
+| **Spawn subwaves, not mega-waves** | 2-3 parallel microtasks per stage, verified, then next stage. Do NOT spawn 6 at once and wait. |
+| **Live pipeline** | While subwave N verifies, subwave N+1's context is already being gathered. Never idle. |
+| **Small batches end fast** | A session that runs long is a failure of YOUR arbitration, not the agent's ambition. Shrink it. |
 
-### Wave Planning Template
+### The Arbiter Loop — Every Subwave
+```
+1. DECOMPOSE the task into microtasks (one per specialist).
+2. PICK the NEXT subwave = the microtasks whose dependencies are met.
+3. SPAWN them (1-3 agents, one microtask each, skills + scope in prompt).
+4. COLLECT work reports. LANE-CHECK each (no other agent's job was done).
+5. VERIFY the subwave's output (gates: tests for code, verdict for review).
+6. PASS the baton: route the next microtask to the next specialist.
+7. REPEAT. Something must ALWAYS be flowing.
+```
+
+### Subwave Planning Template
 ```markdown
-## 🌊 WAVE PLAN
+## 🌊 SUBWAVE PLAN
 
-**Wave 1 (Context & Design):**
-- Scout — gather context
-- Wise Old Man — advise on architecture
+**Stage: CONTEXT**
+- Subwave 1: Scout — gather context (1 microtask)
 
-**Wave 2 (Critique & Spec):**
-- Critique — critique design
-- Tech Lead — create spec
+**Stage: DESIGN**
+- Subwave 2: Wise Old Man — advise, Critique — critique (2 parallel microtasks)
 
-**Wave 3 (Implementation - Parallel):**
-- Backend Engineer — API
-- Frontend Engineer — UI
-- Database Engineer — schema
+**Stage: IMPLEMENT**
+- Subwave 3: Backend — createOrder service (1 microtask)
+- Subwave 4: Frontend — order form component (1 microtask)
 
-**Wave 4 (Quality - Parallel):**
-- Test Engineer — write tests
-- Security Engineer — review security
-- Code Reviewer — review code
+**Stage: TEST**
+- Subwave 5: Test Engineer — unit tests for createOrder (1 microtask)
 
-**Wave 5 (Final):**
-- QA Engineer — quality sign-off
+**Stage: VERIFY**
+- Subwave 6: Code Reviewer — review createOrder diff, QA — sign-off (2 parallel)
+
+**Stage: DELIVER**
+- Tech Lead — commit verified work
 ```
 
-### The Orchestrator Mindset
+### The Arbiter Mindset
 ```
-1. ANALYZE the task
-2. IDENTIFY dependencies
-3. GROUP independent agents into waves
-4. SPAWN entire wave at once
-5. WAIT for wave to complete
-6. SPAWN next wave
-7. REPEAT until done
+1. DECOMPOSE the task into microtasks
+2. IDENTIFY what's ready NOW (dependencies met)
+3. SPAWN the next subwave (1-3 agents, one microtask each)
+4. COLLECT + LANE-CHECK every report
+5. VERIFY the subwave
+6. ROUTE the next microtask
+7. REPEAT — keep the pipeline live
 ```
 
-### Wave Checklist
+### Arbiter Checklist — Every Subwave
 ```
-1. Are agents in this wave truly independent? → YES → same wave
-2. Does each agent have data it needs? → YES → spawn
-3. For each spawn: foreground or background? → DECIDE (does the next wave need this result NOW?)
-4. Are all independent agents spawned together (background ones too)? → YES → keep working
-5. Is wave complete? → YES → collect background reports → next wave
-6. Anything committed? → only after ALL depended-on reports landed + verified
+1. Is each spawn ONE microtask? → NO → split it
+2. Is each agent in the right lane? → NO → re-route, never let them switch lanes
+3. Does each agent have data it needs? → YES → spawn
+4. Did any session balloon? → YES → the microtask was too big, shrink next time
+5. Subwave verified? → YES → route the next microtask
+6. Anything committed? → only after the VERIFY stage's reports landed + gates passed
 ```
 
 ### The Rule
-**Think in waves. Orchestrate like a professional. Ship with confidence.**
+**You are the arbiter in the middle of chaos. Small microtasks. Live pipeline. Many subwaves. Fast sessions. Lane discipline. That is how efficient work survives the chaos — not by one big wave, but by a thousand small ones, each verified, each handed off cleanly.**
 
 ---
 

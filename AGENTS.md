@@ -198,6 +198,51 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 
 ---
 
+## 🏭 MICROTASK PIPELINE — ONE SESSION, ONE MICROTASK, THEN HAND OFF
+
+**Your session is SMALL, DEDICATED, and FAST. You are not here to "do the task." You are here to do YOUR ONE microtask in the pipeline, hand it to the next specialist, and END.**
+
+### The Core Rule — One Session = One Microtask
+```
+You receive ONE microtask → do it → deliver the work report → STOP.
+No next task. No "while I'm here" fixes. No scope creep. No chaining.
+The Team Lead routes the next microtask to the next specialist.
+```
+
+### Why This Exists — the Failure You Prevent
+| ❌ Ballooning session | ✅ Microtask session |
+|------------------------|----------------------|
+| Backend engineer runs tests | Backend implements → hands off → Test Engineer tests |
+| Tester changes production code | Tester writes tests → reports failures → Engineer fixes |
+| Agent fixes every issue it finds | Agent reports issues → owning specialist fixes |
+| Session drags on, writes lots of code | Session ends the moment the microtask is delivered |
+
+### The 4 Microtask Laws — Every Session, Every Agent
+1. **ONE MICROTASK ONLY.** Do exactly what the Team Lead assigned. Nothing else. When it's delivered, your session is over.
+2. **DELIVER AND STOP.** Return the HANDOFF CONTRACT (Verdict + Evidence + Files + Next owner) and end. Do NOT start the next stage. Do NOT keep working "until it's perfect."
+3. **REPORT, DON'T FIX.** Find a bug? An edge case? A design flaw? Write it in your work report for the Team Lead to route. Fixing it yourself is lane-crossing — and lane-crossing is how you balloon sessions.
+4. **NEVER DO THE NEXT AGENT'S JOB.** You run YOUR tests (Test Engineer). You change YOUR code (Engineer). You review YOUR code (Code Reviewer). If you catch yourself doing another lane's work, STOP — that's not your microtask.
+
+### The Pipeline — Work Flows Through Specialists
+```
+CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
+  Scout     Architect/  Engineers  Test      QA, Code   Tech Lead
+            API/        (one      Engineer   Reviewer,  commits
+            Critique    microtask           Security,
+                        each)               audits
+```
+
+**Every stage hands off to the next. No stage runs the whole pipeline. No agent spans two stages.**
+
+### What a Good Microtask Looks Like
+- **Backend Engineer:** "Implement the `createOrder` service function" → deliver → stop. (NOT: implement, test, fix, optimize, document.)
+- **Test Engineer:** "Write unit tests for `createOrder`" → deliver → stop. (NOT: change the function to make tests pass.)
+- **Code Reviewer:** "Review the `createOrder` diff" → deliver verdict → stop. (NOT: rewrite the code.)
+
+**The Rule: your session is a relay baton, not a marathon. Pass it fast and pass it clean.**
+
+---
+
 ## 🔧 AVAILABLE TOOLS & SKILLS — KNOW YOUR ARSENAL
 
 **You have powerful tools and skills. Be aware of them. Use them proactively.**
@@ -372,6 +417,7 @@ Bug fixes, small tasks, test failures, mechanical changes, focused execution.
 - Max 3 attempts per error → pivot (or escalate to the Tech Lead's 3-Strike protocol)
 - Test = ground truth, reading = guessing
 - Minimal communication, action-oriented
+- **ONE MICROTASK per session** — do it, deliver the handoff, STOP (see 🏭 MICROTASK PIPELINE)
 - Stay in YOUR lane; deliver the handoff contract when done
 
 ### The Exceptions (there are many — that's normal)
