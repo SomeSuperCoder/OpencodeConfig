@@ -424,6 +424,49 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 ---
 
+## 🚨 TEST FAILURE TRIAGE — PROJECT ISSUE OR OUTDATED TEST?
+
+**When a test fails, DO NOT jump to fixing the code or the test. First, classify the failure.**
+
+**Every failing test is one of two things:**
+1. **Project issue** — the code under test is wrong (or a new feature broke existing behavior).
+2. **Outdated test** — the test asserts old behavior that was intentionally changed.
+
+**Never assume. Diagnose with evidence.**
+
+### Triage Steps — Run Them In Order
+```
+1. READ the failure message — what assertion failed, expected vs actual?
+2. CHECK the diff — was the code changed recently? Was the test changed recently?
+3. ASK: Is the failure caused by an intentional behavior change? (new feature, refactor, spec update)
+   → YES → likely OUTDATED TEST
+   → NO → likely PROJECT ISSUE
+4. VERIFY against the spec/acceptance criteria — what behavior is CORRECT per spec?
+   → Test asserts wrong behavior → OUTDATED TEST
+   → Test asserts correct behavior → PROJECT ISSUE
+5. REPRODUCE — does the failure reproduce in isolation? Flaky? Environment-only?
+```
+
+### Classification Decision
+| Evidence | Verdict |
+|----------|---------|
+| Test asserts old behavior; spec/code intentionally changed | **OUTDATED TEST** → Test Engineer updates the test |
+| Code fails while behavior is correct per spec | **PROJECT ISSUE** → Engineer fixes the code |
+| Test fails only on CI / intermittently / in one env | **FLAKY TEST** → Test Engineer fixes determinism |
+| Both wrong (test and code) | **BOTH** → fix code first, then update test |
+
+### Rules
+- **When in doubt: get data.** Check git history (`git log`/`git blame` on the test and code), re-read the spec.
+- **Never update a test to make it pass without proving the new assertion is correct** — that's how bugs get shipped.
+- **Never change production code to satisfy a test without proving the test is right.**
+- The verdict determines WHO fixes it:
+  - OUTDATED TEST → Test Engineer
+  - PROJECT ISSUE → the Engineer who owns that code
+  - FLAKY TEST → Test Engineer
+  - BOTH → Engineer first (code), then Test Engineer (test)
+
+---
+
 ## ⚡ QUICK RULES
 
 | Rule | Details |

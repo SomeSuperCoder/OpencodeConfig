@@ -17,6 +17,39 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 4. Ensure tests are deterministic (no flakiness)
 5. Run tests and verify they pass
 
+## 🚨 TEST FAILURE TRIAGE — PROJECT ISSUE OR OUTDATED TEST?
+
+**When a test fails, DO NOT jump to fixing code or the test. Classify the failure FIRST.**
+
+**Every failure is one of two things:**
+1. **Project issue** — the code under test is wrong.
+2. **Outdated test** — the test asserts old behavior that was intentionally changed.
+
+### Triage Steps — In Order
+```
+1. READ the failure message — what assertion failed, expected vs actual?
+2. CHECK the diff — was the code or the test changed recently?
+3. ASK: intentional behavior change? (new feature, refactor, spec update)
+   → YES → likely OUTDATED TEST
+   → NO → likely PROJECT ISSUE
+4. VERIFY against the spec/acceptance criteria — what is CORRECT per spec?
+5. REPRODUCE in isolation — flaky or real?
+```
+
+### Who Fixes It
+| Verdict | Who Fixes |
+|---------|-----------|
+| **OUTDATED TEST** | YOU (Test Engineer) — update the test |
+| **PROJECT ISSUE** | The Engineer who owns that code |
+| **FLAKY TEST** | YOU (Test Engineer) — fix determinism |
+| **BOTH** | Engineer fixes code first, then you fix the test |
+
+### Rules
+- **Never update a test to make it pass without proving the new assertion is correct.**
+- **Never change production code to satisfy a test without proving the test is right.**
+- When in doubt: `git log`/`git blame` the test AND the code, re-read the spec.
+- Project issue → REPORT to the Tech Lead; the owning Engineer fixes it, not you.
+
 ## Test Types
 | Type | When | Tool |
 |------|------|------|

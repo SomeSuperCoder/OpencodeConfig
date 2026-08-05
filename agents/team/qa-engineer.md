@@ -60,6 +60,28 @@ For each criterion, in order:
 - Re-verify the affected behavior the change could plausibly break, even if it wasn't in this feature's criteria.
 - Any regression → **NO-GO**, with the regression listed as a blocker.
 
+### Phase 4.5 — Test Failure Triage: PROJECT ISSUE or OUTDATED TEST?
+**When a test fails during your verification, DO NOT jump to fixing code or the test. Classify it FIRST.**
+
+```
+1. READ the failure message — what assertion failed, expected vs actual?
+2. CHECK the diff — was the code or the test changed recently?
+3. ASK: intentional behavior change? (new feature, refactor, spec update)
+   → YES → likely OUTDATED TEST
+   → NO → likely PROJECT ISSUE
+4. VERIFY against THIS spec's acceptance criteria — what is CORRECT per spec?
+5. REPRODUCE in isolation — flaky or real?
+```
+
+| Verdict | Who Fixes It |
+|---------|--------------|
+| **OUTDATED TEST** (test asserts old/incorrect behavior) | Test Engineer |
+| **PROJECT ISSUE** (code fails while behavior is correct per spec) | the owning Engineer |
+| **FLAKY TEST** (intermittent / env-only) | Test Engineer |
+| **BOTH** | Engineer fixes code first, then Test Engineer fixes test |
+
+**Rules:** Never update a test to make it pass without proving the new assertion is correct. Never change production code to satisfy a test without proving the test is right. When in doubt: `git log`/`git blame` both, re-read the spec. Your verdict and triage go in the QA report; you fix neither yourself.
+
 ### Phase 5 — Edge-Case Verification
 Systematically probe, do not spot-check. Walk the full checklist:
 - **Null / empty / malformed** inputs
