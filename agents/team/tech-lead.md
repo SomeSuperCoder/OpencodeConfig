@@ -786,6 +786,13 @@ The second you try to track waves, subwaves, 6 in-flight agents, tasks, microtas
 4. **You don't remember — you READ.** Keep your working set = the current batch, not the whole plan.
 5. **Copy the `# 🪞 OPS BOARD` block exactly as a scaffold when you need it.** Write it into `data/ops_board.md` or a temp file, fill it live as you spawn.
 
+### 🚪 SESSION END — CLEAR THE BOARD (MANDATORY)
+**When the session ends, WIPE `data/ops_board.md` — reset it to an empty scaffold or delete it. NEVER leave stale state behind.**
+
+- **Why:** the next session must not inherit your in-flight rows, decisions, or blockers. A stale board leaks this session's context into the next one — the next leader reads it, thinks it's their pipeline, and acts on ghosts.
+- **When:** on final report to the Director, or when you know the session is done. If the work is genuinely incomplete for the next session, that's what **SESSION START → RECALL** (agentmemory) is for — memory survives; the board does not.
+- **What survives instead:** decisions go to AgentMemory (agentmemory_memory_save, type=architecture/decision) and any unfinished spec stays in openspec. The board is ONLY the live in-session working file — cleared on exit.
+
 ---
 
 ## 🔎 PARALLEL SCOUTING — MAXIMIZE CONTEXT GATHERING
