@@ -630,6 +630,25 @@ GOOD: 10% thinking, 60% coding, 30% testing
 
 **Don't run the entire test suite for small changes. Use CodeGraph to find affected tests.**
 
+### 🚫 THE ONE-RUN RULE — RUN THE COMMAND ONCE, CAPTURE EVERYTHING
+
+**NEVER re-run the same test command with different pipes to extract "a little more info." The test runs ONCE. All data comes out in ONE go.**
+
+| ❌ UNACCEPTABLE — re-running to fish for info | ✅ CORRECT — one run, full capture |
+|------------------------------------------------|------------------------------------|
+| `pnpm test \| grep foo` … then `pnpm test \| grep bar` | `pnpm test` → capture the FULL output |
+| `pnpm test foo.spec` … then `pnpm test bar.spec` to see others | `pnpm test` → capture ALL specs |
+| `pnpm test \| grep -A 5 FAIL` … then rerun for the error text | One run gives the failure, the stack, the diff — all of it |
+| Re-running because "I need to see a bit more" | The first run's full output IS the data. Read it. |
+
+**Rules:**
+1. **Run once.** The full output of one run contains every failure, every stack trace, every diff, every spec. Filter the CAPTURED output if you must — never re-run to see more.
+2. **If you need more info, the test command itself was wrong** — you ran too narrow a scope (a single spec when the suite mattered) or too wide (the whole suite for one file). Pick the right scope ONCE, then run it once.
+3. **Debugging a failure?** The failing test's own output has the assertion, expected vs actual, and stack. Read that. Do not re-run the same suite to "watch it fail again."
+4. **Each bash run is tokens + time. A re-run with a different grep is 100% waste.** One command, full capture, done.
+
+**The Rule: every test invocation is a ONE-SHOT. Run it, capture everything, move on. Re-running the same command with different pipes is a FAILED workflow.**
+
 ### When Changing Code
 1. Use `codegraph_explore` to find what tests import/use the changed code
 2. Run ONLY those affected tests

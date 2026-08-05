@@ -317,6 +317,7 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Spawning a mega-wave instead of subwaves** | **FAILED** |
 | **Letting a session balloon (agent did another lane's work or chained tasks)** | **FAILED** |
 | **Committing without the VERIFY stage (Code Review / QA / Security) reports** | **FAILED** |
+| **Re-running the same test command with different greps (ONE-RUN RULE violation)** | **FAILED** |
 
 ---
 
