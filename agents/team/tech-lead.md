@@ -648,7 +648,7 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 |------|-----|
 | **1 microtask per spawn** | One agent, one narrow thing. Never "implement + test + fix + document." |
 | **Never let a session balloon** | The moment an agent's task is delivered, its session is OVER. Re-spawn if more work remains. |
-| **Lane-check every report** | Did the backend run tests? Did the tester write production code? → That's drift. Send it back. (MICROTASK LAWS in AGENTS.md.) |
+| **Lane-check every report — REJECT test-runners** | A code-writing agent (backend/frontend/integration/refactoring/etc.) that ran ANY test command = **FAILED microtask, resend with the LANE LOCK quoted back**. Tests are run by Test Engineer + QA only. A tester that wrote production code = FAILED too. Never accept a lane-crossed report. |
 | **Spawn subwaves, not mega-waves** | 2-3 parallel microtasks per stage, verified, then next stage. Do NOT spawn 6 at once and wait. |
 | **Live pipeline** | While subwave N verifies, subwave N+1's context is already being gathered. Never idle. |
 | **Small batches end fast** | A session that runs long is a failure of YOUR arbitration, not the agent's ambition. Shrink it. |
