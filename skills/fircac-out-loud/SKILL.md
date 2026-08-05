@@ -1,6 +1,6 @@
 ---
-name: ficrac-out-loud
-description: "Makes the AI verbalize its FIRCAC reasoning process step-by-step as it works through problems. Use when you want transparent, auditable problem-solving. Triggers: 'think out loud', 'ficrac out loud', 'show your thinking', 'walk me through', 'explain your reasoning'."
+name: fircac-out-loud
+description: "Makes the AI verbalize its FIRCAC reasoning process step-by-step as it works through problems. Use when you want transparent, auditable problem-solving. Also contains the ABC verification method (Assume Nothing, Believe Nobody, Confirm Everything). Triggers: 'think out loud', 'ficrac out loud', 'show your thinking', 'walk me through', 'explain your reasoning'."
 ---
 
 # FIRCAC Protocol for Software Engineering
@@ -198,3 +198,52 @@ FIRCAC complete. Proceeding with adding the anonymous-user guard in the submit h
 3. **Use concrete details** — not vague statements
 4. **Never jump from problem to code** — reason through the full chain first
 5. **Announce completion** — summarize decision
+
+---
+
+# ABC Verification Method
+
+**ABC = Assume Nothing, Believe Nobody, Confirm Everything. A verification method that forces you to prove claims with evidence.**
+
+## When to Use
+
+- Before trusting any information
+- Code review — verifying the reviewer's claims
+- Testing claims — "it works" is a claim until proven
+- Before accepting another agent's handoff verdict
+- Before committing to a decision based on asserted facts
+
+## The Method
+
+### A — Assume Nothing
+- Every claim starts as unverified, including your own assumptions.
+- Don't assume code works because it looks right. Don't assume a verdict is correct because it's confident.
+- List your assumptions explicitly — then challenge each one.
+
+### B — Believe Nobody
+- Treat claims from any source as hypotheses: docs, comments, other agents, even your own memory.
+- Confidence is not evidence. A confident claim is still a claim.
+- "The test passed" is not proof — the test output is proof.
+
+### C — Confirm Everything
+- Verify each claim with evidence: run the test, read the output, check the diff, execute the code.
+- Ask: what would make this claim false? Then try to falsify it.
+- Only accept a claim once you've independently confirmed it.
+
+## Output
+
+```
+Starting ABC verification...
+CLAIM: [the claim being verified]
+ASSUMPTIONS: [what I'm assuming to be true]
+EVIDENCE: [what I actually ran/read/observed]
+VERDICT: CONFIRMED / DISPROVEN / UNVERIFIED
+```
+
+## Rules
+
+1. **Always verbalize** — no silent ABC
+2. **Evidence over authority** — who said it matters less than what proves it
+3. **Confirm independently** — don't accept a claim on the strength of its source
+4. **State the falsification test** — what would disprove this? Then run it.
+5. **UNVERIFIED is a valid verdict** — better than a wrong CONFIRMED.

@@ -22,7 +22,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 - You do NOT fix the bugs you find — the Engineer fixes them. You REPORT.
 - You do NOT write tests — the Test Engineer writes them.
 
-**🚫 HARD RULE — NO FIRCAC WITHOUT THE SKILL:** You may NEVER run FIRCAC unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. Load the skill → then run FIRCAC. Every time. No exceptions.
+**🚫 HARD RULE — load `fircac-out-loud` before any FIRCAC (see AGENTS.md 🗣️ REASONING PROTOCOLS).**
 
 ## 🎯 SCOPE DISCIPLINE — LASER FOCUS, NOT PROJECT-WIDE
 
