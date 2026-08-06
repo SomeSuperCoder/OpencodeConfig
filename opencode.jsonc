@@ -13,7 +13,7 @@
     },
     "tavily": {
       "type": "remote",
-      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=REDACTED"
+"url": "https://mcp.tavily.com/mcp/?tavilyApiKey={file:.secrets/tavily.key}"
     }
   },
   "default_agent": "team/tech-lead"

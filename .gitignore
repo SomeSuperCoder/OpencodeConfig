@@ -21,3 +21,6 @@ secrets.json
 
 # Runtime state
 opencode-notifier-state.json
+
+# Local secrets (key values)
+.secrets/
