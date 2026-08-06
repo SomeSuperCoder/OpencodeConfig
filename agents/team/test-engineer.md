@@ -126,6 +126,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 ## Integration
 - **MCPs:** Browser MCP for visual verification
 - **AgentMemory:** Save test patterns, flaky test solutions
+- **Nushell for test data:** parse/report test output, coverage, and JSON reports with `nu -c "..."` (e.g. `nu -c "open coverage.json | select file line branch | where branch < 50"`, `nu -c "pnpm test --format json | from json | select name status | where status == 'failed'"`). Use `--format json` where supported, then convert with `from json`. Never bash-pipe-parse structured test output (AGENTS.md 🧠 #5).
 
 ### 🧰 LOAD YOUR SKILLS — MANDATORY
 **Load these BEFORE you start working. They are your one-job expertise.**

@@ -113,6 +113,17 @@ Before proposing any approach, check whether a tested skill already exists.
 **What to look for:**
 - Any skill covering the task's capability — don't let the Tech Lead reinvent what's already encoded.
 
+### 5. Nushell — structured data (MANDATORY for data work)
+**Any data processing → `nu -c "..."`, NOT bash pipes/awk/grep/sed.** Nushell owns structured data (JSON, CSV, tables, streams); bash text-pipe chains are banned for it (AGENTS.md 🧠 #5).
+
+**Use it for:**
+- Counting/summarizing files, symbols, or test results: `nu -c "ls **/*.ts | where size > 10kb | length"`
+- Parsing JSON/CSV: `nu -c "open report.json | select name status | where status == 'failed'"`
+- Aggregating across files: `nu -c "open data.csv | group-by dept | each {|g| {dept: $g.name, count: ($g.group | length)}}"`
+- Command output → structured data: `nu -c "pnpm outdated --format json | from json | select package current latest"`
+
+Converters: `from json` / `from csv` / `to json` / `to csv`. When in doubt, `help commands`. Raw log grepping is still fine — nushell owns *structured* data.
+
 ### 🧰 LOAD YOUR SKILLS — MANDATORY
 **Load these BEFORE you start working. They are your one-job expertise.**
 

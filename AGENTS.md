@@ -519,6 +519,39 @@ After any response, ask:
 
 **If it would waste 5+ min re-discovering → save it. If not → don't.**
 
+### 5. Nushell for Data Processing — MANDATORY
+**Any data processing on the command line → nushell (`nu -c "..."`), NOT bash pipes/awk/grep/sed.** Nushell is a structured-data shell: JSON, CSV, tables, and streaming come native. Bash text-pipe archaeology is banned for data work.
+
+**When to reach for nushell:**
+- Parsing/transforming/filtering JSON or CSV output (test reports, API responses, lockfiles, config dumps)
+- Joining, grouping, counting, aggregating data across files
+- Building pipelines that output structured data for another agent or for analysis
+- Column selection, renames, sorts, uniques, dedup — anything you'd reach for awk/grep/sed/jq for
+
+**Why:** one `nu -c` call does in seconds what a 6-stage bash `grep | awk | cut | sort | uniq | head` chain does in 15 fragile minutes. Structured input in, structured output out — no regex escape-room.
+
+**Patterns:**
+```bash
+# JSON in, table out (e.g. inspect test results)
+nu -c "open report.json | select name status | where status == 'failed'"
+
+# CSV aggregation without awk
+nu -c "open data.csv | group-by department | each {|g| {dept: $g.name, count: ($g.group | length)}}"
+
+# Filter + count in one line (replaces grep -c chains)
+nu -c "ls **/*.ts | where size > 10kb | length"
+
+# Parse command output into structured data
+nu -c "pnpm outdated --format json | from json | select package current latest"
+```
+
+**Rules:**
+- **`nu -c "..."` is the default for data work.** If your command is a bash pipe chain over structured data, you chose wrong.
+- **`from json` / `from csv` / `to json` / `to csv`** are your converters — parse, transform, emit.
+- Use `--format json` on commands that support it (pnpm, jest, npm, etc.) then pipe into nushell.
+- When in doubt, check `help commands` or `help <command>` — nushell self-documents.
+- Raw text grepping for LOGS is still fine — nushell owns *structured* data.
+
 ---
 
 ## 🎭 TESTING MANDATE
