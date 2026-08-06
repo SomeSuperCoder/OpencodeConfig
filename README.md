@@ -4,7 +4,7 @@
 
 **🌐 Languages:** [English](./README.md) · [Español (España)](./README.es.md) · [Русский](./README.ru.md)
 
-One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who commands, 8 field Leads who orchestrate, 47 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
+One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who commands, 9 field Leads who orchestrate, 50 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
 
 **You are the Director. You say what matters. It does the rest.**
 
@@ -26,7 +26,7 @@ The reason is structural. One model doing everything at once is a **generalist d
 |------|-----|---------|
 | 👑 **Director** | You | Vision, priorities, final decisions |
 | 🧠 **Team Lead** | `team/tech-lead` | Plan the work, staff the waves, review, report, commit |
-| 🧑‍💼 **8 Field Leads** | `team/lead/*` | Advise on their field — plan microtasks, recommend specialist IDs, NEVER spawn |
+| 🧑‍💼 **9 Field Leads** | `team/lead/*` | Advise on their field — plan microtasks, recommend specialist IDs, NEVER spawn |
 | 👥 **43 Specialists** | Senior engineers | Do ONE microtask, prove it, hand it off, stop |
 
 **Directives flow DOWN. Reports flow UP. Field Leads advise; the Team Lead spawns. Nobody crosses the chain of command.**
@@ -122,7 +122,7 @@ Every agent is a **senior engineer with a single lane** — they do their one jo
 `tech-lead` — the orchestrator. The only one who decides and spawns.
 
 **🧑‍💼 Field Leads (advisory — they plan, you spawn)**
-`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead`
+`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead` · `pinescript-lead`
 
 **🎯 Orchestration & judgement**
 `team/core/scout` (the eyes — gathers context) · `team/core/wise-old-man` (advice on hard calls) · `team/product/product-understander` (the WHY) · `team/product/requirements-analyst` · `team/product/software-architect` · `team/backend/api-designer` · `team/quality/critique` (destroys designs before they're built)
@@ -147,6 +147,9 @@ Every agent is a **senior engineer with a single lane** — they do their one jo
 
 **🤖 Telegram field** (`team/telegram/`)
 `telegram-bot-engineer` (bot core — handlers, keyboards, state, webhooks) · `telegram-mini-app-engineer` (Telegram Mini Apps) · `telegram-integration-engineer` (payments, third-party integrations, channel automation)
+
+**📈 PineScript field** (`team/pinescript/`)
+`pinescript-indicator-developer` (TradingView indicators — calculations, plots, alerts) · `pinescript-strategy-developer` (strategies — entries/exits, sizing, backtests) · `pro-quant` (validates "this strategy works" — stats, walk-forward, GO/NO-GO verdicts)
 
 **👁️ Vision Reader** (`team/core/vision-reader`) — the only agent with eyes. Every other specialist runs a text-only model; it runs MiMo (vision-capable) and reads photos, screenshots, diagrams, and UI mockups for the whole team.
 
@@ -199,7 +202,7 @@ Tech Lead:  Asks Backend Lead for the orchestration plan → staffs
 │       ├── tech-lead.md               ← THE KING — the orchestrator (default agent)
 │       ├── lead/                      ← 🧑‍💼 FIELD LEADS (advisory — plan, never spawn)
 │       │   ├── frontend-lead.md · backend-lead.md · quality-lead.md
-│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md
+│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md · pinescript-lead.md
 │       ├── core/                      ← cross-cutting (scout · wise-old-man · vision-reader)
 │       ├── frontend/                  ← engineer · ui-designer · ux-designer · design-system · animations · i18n
 │       ├── backend/                   ← engineer · api-designer · database · data · integration · llm
@@ -208,7 +211,8 @@ Tech Lead:  Asks Backend Lead for the orchestration plan → staffs
 │       ├── platform/                  ← devops · observability · performance
 │       ├── product/                   ← product-understander · requirements · architect · refactoring
 │       ├── research/                  ← research-agent · domain-expert · documentation · skill-generator
-│       └── telegram/                  ← bot-engineer · mini-app-engineer · integration-engineer
+│       ├── telegram/                  ← bot-engineer · mini-app-engineer · integration-engineer
+│       └── pinescript/                ← indicator-developer · strategy-developer · pro-quant
 └── skills/
     └── (17 pattern skills, loaded on demand)
 ```

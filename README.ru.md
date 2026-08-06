@@ -2,7 +2,7 @@
 
 > **Хватит просить ассистента. Начните управлять компанией.**
 
-Один AI-инструмент для кодинга превращается в **самоорганизующуюся софтверную фирму** — тимлид, который командует, 8 лидов направлений, которые оркестрируют, 47 старших специалистов, которые исполняют, и конвейер микрозадач настолько быстрый, что полноценная функция выпускается за минуты, а не часы. Каждое изменение протестировано. Каждое изменение задокументировано. Каждое изменение проверено до того, как коснуться вашей кодовой базы.
+Один AI-инструмент для кодинга превращается в **самоорганизующуюся софтверную фирму** — тимлид, который командует, 9 лидов направлений, которые оркестрируют, 50 старших специалистов, которые исполняют, и конвейер микрозадач настолько быстрый, что полноценная функция выпускается за минуты, а не часы. Каждое изменение протестировано. Каждое изменение задокументировано. Каждое изменение проверено до того, как коснуться вашей кодовой базы.
 
 **Вы — Директор. Вы решаете, что важно. Всё остальное делает система.**
 
@@ -24,7 +24,7 @@
 |---------|-----|---------------------|
 | 👑 **Директор** | Вы | Видение, приоритеты, финальные решения |
 | 🧠 **Тимлид** | `team/tech-lead` | Планировать работу, формировать волны, ревьюить, отчитываться, коммитить |
-| 🧑‍💼 **8 лидов направлений** | `team/lead/*` | Советовать по своему направлению — планировать микрозадачи, рекомендовать ID специалистов, НИКОГДА не запускать |
+| 🧑‍💼 **9 лидов направлений** | `team/lead/*` | Советовать по своему направлению — планировать микрозадачи, рекомендовать ID специалистов, НИКОГДА не запускать |
 | 👥 **43 специалиста** | Старшие инженеры | Выполнить ОДНУ микрозадачу, доказать результат, передать, остановиться |
 
 **Директивы идут ВНИЗ. Отчёты идут ВВЕРХ. Лиды направлений советуют; тимлид запускает. Никто не нарушает цепочку команд.**
@@ -120,7 +120,7 @@
 `tech-lead` — оркестратор. Единственный, кто решает и запускает.
 
 **🧑‍💼 Лиды направлений (советующие — они планируют, запускаешь ты)**
-`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead`
+`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead` · `pinescript-lead`
 
 **🎯 Оркестрация и суждения**
 `team/core/scout` (глаза — собирает контекст) · `team/core/wise-old-man` (совет по сложным решениям) · `team/product/product-understander` (ЗАЧЕМ это) · `team/product/requirements-analyst` · `team/product/software-architect` · `team/backend/api-designer` · `team/quality/critique` (разрушает дизайны до того, как их построят)
@@ -145,6 +145,9 @@
 
 **🤖 Направление Telegram** (`team/telegram/`)
 `telegram-bot-engineer` (ядро бота — хендлеры, клавиатуры, состояние, вебхуки) · `telegram-mini-app-engineer` (Telegram Mini Apps) · `telegram-integration-engineer` (платежи, интеграции со сторонними сервисами, автоматизация каналов)
+
+**📈 Направление PineScript** (`team/pinescript/`)
+`pinescript-indicator-developer` (индикаторы TradingView — расчёты, графики, алерты) · `pinescript-strategy-developer` (стратегии — входы/выходы, позиционирование, бэктесты) · `pro-quant` (проверяет «эта стратегия работает» — статистика, walk-forward, вердикты GO/NO-GO)
 
 **👁️ Vision Reader** (`team/core/vision-reader`) — единственный агент с глазами. Все остальные специалисты работают на текстовой модели; он работает на MiMo (с поддержкой зрения) и читает фото, скриншоты, диаграммы и мокапы интерфейсов для всей команды.
 
@@ -198,7 +201,7 @@
 │       ├── tech-lead.md                ← КОРОЛЬ — оркестратор (агент по умолчанию)
 │       ├── lead/                       ← 🧑‍💼 ЛИДЫ НАПРАВЛЕНИЙ (советуют — планируют, не запускают)
 │       │   ├── frontend-lead.md · backend-lead.md · quality-lead.md
-│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md
+│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md · pinescript-lead.md
 │       ├── core/                       ← сквозные (scout · wise-old-man · vision-reader)
 │       ├── frontend/                   ← engineer · ui-designer · ux-designer · design-system · animations · i18n
 │       ├── backend/                    ← engineer · api-designer · database · data · integration · llm
@@ -207,7 +210,8 @@
 │       ├── platform/                   ← devops · observability · performance
 │       ├── product/                    ← product-understander · requirements · architect · refactoring
 │       ├── research/                   ← research-agent · domain-expert · documentation · skill-generator
-│       └── telegram/                   ← bot-engineer · mini-app-engineer · integration-engineer
+│       ├── telegram/                   ← bot-engineer · mini-app-engineer · integration-engineer
+│       └── pinescript/                ← indicator-developer · strategy-developer · pro-quant
 └── skills/
     └── (17 паттерн-скиллов, загрузка по требованию)
 ```
