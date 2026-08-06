@@ -1,6 +1,6 @@
 # 🏢 Opencode Software Company
 
-> A config-driven software company built on opencode: one Tech Lead, 31 senior specialist agents, and a microtask pipeline that ships verified work fast.
+> A config-driven software company built on opencode: one Tech Lead, 32 senior specialist agents, and a microtask pipeline that ships verified work fast.
 
 ---
 
@@ -10,7 +10,7 @@ This is the configuration for **opencode** (an agentic coding CLI). It turns a s
 
 - 👑 **The Director (you)** — sets priorities, makes final decisions, approves work.
 - 🧠 **The Team Lead** — runs the company: plans waves, spawns specialists, reviews, reports, commits.
-- 👥 **31 Staff specialists** — each a senior engineer with one lane: they do ONE microtask, hand it off, and stop.
+- 👥 **32 Staff specialists** — each a senior engineer with one lane: they do ONE microtask, hand it off, and stop.
 
 The philosophy is **speed through smallness**: small agents, fast microtasks, active communication, feedback loops. One orchestrator (the Tech Lead) holds the big picture so every worker can stay tiny, focused, and fast.
 
@@ -25,7 +25,7 @@ The philosophy is **speed through smallness**: small agents, fast microtasks, ac
          🧠 TEAM LEAD (tech-lead)          ← large prompt: plans, spawns, reviews, commits
               │  assignments flow DOWN
               ▼
-         👥 STAFF (31 specialists)          ← small prompts: one microtask each
+         👥 STAFF (32 specialists)          ← small prompts: one microtask each
               ▲  work reports flow UP
               ▼
          🧠 TEAM LEAD
@@ -62,7 +62,7 @@ The philosophy is **speed through smallness**: small agents, fast microtasks, ac
 │       ├── test-engineer.md
 │       ├── qa-engineer.md
 │       ├── code-reviewer.md
-│       └── ... (31 agents total)
+│       └── ... (32 agents total)
 └── skills/
     ├── fircac-out-loud/    ← FIRCAC reasoning + ABC verification (mandatory protocol)
     ├── testing-patterns/
@@ -120,7 +120,7 @@ Narrowest first, one pass, minimum verification, stop at delivery.
 
 ---
 
-## 👥 The Staff (31 specialists)
+## 👥 The Staff (32 specialists)
 
 **Orchestration & quality:**
 `tech-lead` (orchestrator) · `product-understander` (the project's WHY — heart, spirit, non-negotiables) · `requirements-analyst` · `scout` (exploration) · `software-architect` · `api-designer` · `critique` · `wise-old-man` (judgement calls)
