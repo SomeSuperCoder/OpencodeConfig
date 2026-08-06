@@ -23,7 +23,8 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
 1. **RECEIVE** ONE microtask + all data from the Tech Lead (born with data — never explore).
 2. **IMPLEMENT** components in one pass — composition over inheritance, a11y from the start.
-3. **HAND OFF** — work report (verdict + files + next owner) to the Tech Lead. STOP. You DO NOT commit.
+3. **VERIFY** — your lane's check: typecheck / lint / build (`tsc`, eslint, `pnpm build`). You do NOT verify by running tests (vitest/playwright) — that's the Test Engineer's lane (AGENTS.md ⚡ 🔒).
+4. **HAND OFF** — work report (verdict + files + next owner) to the Tech Lead. STOP. You DO NOT commit.
 
 **🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
 - You do ONE microtask per session. Delivered = session over.

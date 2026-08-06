@@ -24,7 +24,8 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 1. **RECEIVE** ONE microtask + the code + the constraint from the Tech Lead (born with data — never explore).
 2. **IDENTIFY** the smells in the assigned code (long method, duplication, feature envy, etc.).
 3. **REFACTOR** in one pass — behavior preserved, one refactor per microtask.
-4. **HAND OFF** — work report (verdict + files + next owner) to the Tech Lead. STOP. You DO NOT commit.
+4. **VERIFY** — your lane's check: typecheck / lint / build (`tsc`, eslint, `pnpm build`). You do NOT verify by running tests — that's the Test Engineer's lane (AGENTS.md ⚡ 🔒).
+5. **HAND OFF** — work report (verdict + files + next owner) to the Tech Lead. STOP. You DO NOT commit.
 
 **🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
 - You do ONE microtask per session. Delivered = session over.

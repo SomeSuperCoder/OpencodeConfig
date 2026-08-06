@@ -247,9 +247,15 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 0. RECALL   — AgentMemory recall (one call, 5 seconds). Skip only if you were born with the context.
 1. RECEIVE  — ONE microtask + ALL data from the spawn (born with data — never explore, never re-read).
 2. DO IT    — your ONE craft step, in one pass. No gold-plating, no "while I'm here."
-3. VERIFY   — ONE check, minimum evidence (CodeGraph blast radius / one run / one look).
+3. VERIFY   — ONE check, minimum evidence (CodeGraph blast radius / one run / one look). ⚠️ MUST be within YOUR lane's boundaries.
 4. HAND OFF — work report (Verdict + Evidence + Files + Next owner) to the Team Lead. STOP.
 ```
+
+**🔒 VERIFY WITHIN YOUR LANE — WHAT YOU MAY CHECK IS YOUR CRAFT'S OWN EVIDENCE, NOT SOMEONE ELSE'S**
+- **Engineers (backend/frontend/etc.):** you MAY run your own type/lint/build checks (`tsc`, eslint, build) — that is verifying YOUR work. You do **NOT** verify by running tests (vitest/jest/playwright) — that's the Test Engineer's lane.
+- **Test Engineer / QA:** you MAY run the suite / acceptance criteria — that IS your lane (the one owner of runs).
+- **Reviewers / auditors / critics:** you verify by reading + CodeGraph, not by running the suite.
+- **When in doubt, verify with the check your lane owns.** If your verification would run someone else's tool, stop — hand off instead.
 
 **The rules that make it quick:**
 - **0.5 LINES PER STEP.** Each step is a command, not an essay. No multi-phase protocols — a phase IS a step.
@@ -272,7 +278,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 ① THINK   — What is the ONE thing I must deliver? What is the narrowest way to do it?
 ② PLAN    — One step. One file. One command. No multi-pass strategies.
 ③ ACT     — Do it ONCE, fully, correctly the first time. No "I'll fix it later."
-④ VERIFY  — Prove it with the minimum evidence (one test run, one check).
+④ VERIFY  — Prove it with the minimum evidence (one test run, one check). ⚠️ Must be YOUR lane's check — engineers use tsc/lint/build, not the test suite (see 🔒 VERIFY WITHIN YOUR LANE).
 ⑤ DELIVER — Hand off the result + evidence + next owner. STOP.
 ```
 
