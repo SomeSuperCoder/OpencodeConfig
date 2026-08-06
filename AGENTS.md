@@ -240,7 +240,27 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - **Test Engineer:** "Write unit tests for `createOrder`" → deliver → stop. (NOT: change the function to make tests pass.)
 - **Code Reviewer:** "Review the `createOrder` diff" → deliver verdict → stop. (NOT: rewrite the code.)
 
-**The Rule: your session is a relay baton, not a marathon. Pass it fast and pass it clean.**
+### ⚡ THE STANDARD QUICK WORKFLOW — EVERY AGENT, EVERY MICROTASK (MANDATORY)
+**One microtask = one pass through this 5-step skeleton. If it takes long, the microtask was too big — shrink it, don't extend the steps.**
+
+```
+0. RECALL   — AgentMemory recall (one call, 5 seconds). Skip only if you were born with the context.
+1. RECEIVE  — ONE microtask + ALL data from the spawn (born with data — never explore, never re-read).
+2. DO IT    — your ONE craft step, in one pass. No gold-plating, no "while I'm here."
+3. VERIFY   — ONE check, minimum evidence (CodeGraph blast radius / one run / one look).
+4. HAND OFF — work report (Verdict + Evidence + Files + Next owner) to the Team Lead. STOP.
+```
+
+**The rules that make it quick:**
+- **0.5 LINES PER STEP.** Each step is a command, not an essay. No multi-phase protocols — a phase IS a step.
+- **One pass, never a loop.** Do it right the first time. No "I'll fix it later." No tweak loops.
+- **VERIFY is ONE check**, not a ceremony. One run, one look, one CodeGraph call. Then hand off.
+- **STOP at step 4.** Delivered = session over. Do NOT start the next stage, do NOT perfect it.
+- **Speed is the feature.** A microtask that needs 6+ steps is two microtasks — the Team Lead should have split it.
+
+**Every subagent's `YOUR WORKFLOW` section IS this skeleton with its craft stuffed into step 2. If your workflow has more than ~5 numbered steps, you are not a micro agent — trim to the skeleton.**
+
+**The Rule: micro subagent = RECALL → RECEIVE → DO → VERIFY → HAND OFF. Everything else is a skill, not a workflow.**
 
 ---
 
