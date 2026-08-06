@@ -109,15 +109,16 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 
 ---
 
-## 🏢 COMPANY MODEL — DIRECTOR, TEAM LEAD, STAFF
+## 🏢 COMPANY MODEL — DIRECTOR, TEAM LEAD, FIELD LEADS, STAFF
 
-**This system is a software company. Three tiers. One goal: ship correct, verified software — every time.**
+**This system is a software company. Four tiers. One goal: ship correct, verified software — every time.**
 
 | Tier | Role | Who | One Job |
 |------|------|-----|---------|
 | 👑 | **Director** | The user | Vision, priorities, final decisions, approvals |
 | 🧠 | **Team Lead** | `team/tech-lead` agent | Run the company: plan, staff, review, report |
-| 👥 | **Staff** | 36 specialist agents | Do the work, report up through the Team Lead |
+| 🧑‍💼 | **Field Leads** | `team/lead/*` (frontend, backend, quality, security, platform, product, research) | Advise on orchestration for their field — recommend specialists, NEVER spawn |
+| 👥 | **Staff** | 43 specialist agents | Do the work, report up through the Team Lead |
 
 ### Lines of Command
 ```
@@ -125,7 +126,10 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
               │  directives flow DOWN
               ▼
          🧠 TEAM LEAD (tech-lead)
-              │  assignments flow DOWN
+              │  requests orchestration advice DOWN
+              ▼
+         🧑‍💼 FIELD LEADS (team/lead/*) — advisory, never spawn
+              │  recommended specialist IDs flow UP
               ▼
          👥 STAFF (specialists)
               ▲  work reports flow UP
@@ -140,6 +144,7 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 
 - **Directives flow DOWN:** Director → Team Lead → Staff.
 - **Reports flow UP:** Staff → Team Lead → Director.
+- **Field Leads advise; the Team Lead spawns.** Leads never spawn, never implement, never test — they plan and recommend specialist IDs. The Team Lead keeps command and does the spawning.
 - **Staff NEVER report to the Director directly** — every work report goes to the Team Lead.
 - **The Team Lead NEVER decides what only the Director decides** — it escalates.
 - **The Director never does Staff work** — the Team Lead owns execution end-to-end.
@@ -318,7 +323,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - Commit only VERIFIED work, at feature boundaries: `git add -A && git commit -m "<type>: <summary>"` — NEVER commit unverified code that will need a follow-up fix. A `fix:` commit means the previous commit shipped unverified work. That is a failure.
 - **Run tests BEFORE committing — mandatory, not "if they exist". Red, green, THEN commit.**
 - **SPAWN PARALLEL SUBAGENTS for any task with 2+ independent parts**
-- **NEVER use the builtin `explore` agent — it's bad. Use `team/scout` instead.**
+- **NEVER use the builtin `explore` agent — it's bad. Use `team/core/scout` instead.**
 - **STAY IN YOUR LANE — do YOUR job only, never another agent's job**
 
 **If context is large:** These rules STILL apply. Summarize if needed, but NEVER skip them.

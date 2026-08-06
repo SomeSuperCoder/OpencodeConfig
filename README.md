@@ -106,25 +106,40 @@ Anyone can spawn 30 agents. Chaos is easy. **Verification is the hard part** —
 
 ---
 
-## 🏛️ The Staff — 32 Specialists, One Lane Each
+## 🏛️ The Staff — 43 Specialists, One Lane Each
 
-Every agent is a **senior engineer with a single lane** — they do their one job better than any generalist, because that's all they do.
+Every agent is a **senior engineer with a single lane** — they do their one job better than any generalist, because that's all they do. Subordination is built into the file structure: `agents/team/` is the company, each field lives in its own directory, and field **Leads** advise the Tech Lead on orchestration.
+
+**👑 The King**
+`tech-lead` — the orchestrator. The only one who decides and spawns.
+
+**🧑‍💼 Field Leads (advisory — they plan, you spawn)**
+`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead`
 
 **🎯 Orchestration & judgement**
-`tech-lead` (the orchestrator) · `product-understander` (the WHY — heart, spirit, non-negotiables) · `requirements-analyst` · `scout` (the eyes — gathers context) · `software-architect` · `api-designer` · `critique` (destroys designs before they're built) · `wise-old-man` (advice on hard calls)
+`team/core/scout` (the eyes — gathers context) · `team/core/wise-old-man` (advice on hard calls) · `team/product/product-understander` (the WHY) · `team/product/requirements-analyst` · `team/product/software-architect` · `team/backend/api-designer` · `team/quality/critique` (destroys designs before they're built)
 
-**💻 Execution lanes**
-`backend-engineer` · `frontend-engineer` · `frontend-ui-designer` (the look) · `ux-designer` (the flow, accessibility) · `frontend-animations-engineer` (the motion) · `database-engineer` (schema + migrations) · `data-engineer` (product data model) · `devops-engineer` · `integration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` · `observability-engineer` · `security-engineer` · `llm-engineer`
+**💻 Frontend field** (`team/frontend/`)
+`frontend-engineer` · `frontend-ui-designer` (the look) · `ux-designer` (the flow, accessibility) · `frontend-animations-engineer` (the motion) · `design-system-engineer` · `i18n-engineer`
 
-**🧪 Quality & verification**
-`test-engineer` (owns the suite) · `qa-engineer` (acceptance) · `code-reviewer` (reviews + static analysis) · `bug-hunter` (proves root cause with a repro before anyone fixes anything)
+**⚙️ Backend field** (`team/backend/`)
+`backend-engineer` · `api-designer` · `database-engineer` (schema + migrations) · `data-engineer` (product data model) · `integration-engineer` · `llm-engineer`
 
-**🔬 Specialists & research**
+**🧪 Quality field** (`team/quality/`)
+`test-engineer` (owns the suite) · `qa-engineer` (acceptance) · `code-reviewer` (reviews + static analysis) · `bug-hunter` (proves root cause with a repro before anyone fixes anything) · `critique`
+
+**🔒 Security field** (`team/security/`)
+`security-engineer` (defensive) · `team/security/pentest/*` — the ethical-hacking suite (OFF-BY-DEFAULT)
+
+**🚀 Platform field** (`team/platform/`)
+`devops-engineer` · `observability-engineer` · `performance-engineer`
+
+**🔬 Research field** (`team/research/`)
 `research-agent` · `domain-expert` · `documentation-writer` · `skill-generator`
 
-**👁️ Vision Reader** — the only agent with eyes. Every other specialist runs a text-only model; `vision-reader` runs MiMo (vision-capable) and reads photos, screenshots, diagrams, and UI mockups for the whole team.
+**👁️ Vision Reader** (`team/core/vision-reader`) — the only agent with eyes. Every other specialist runs a text-only model; it runs MiMo (vision-capable) and reads photos, screenshots, diagrams, and UI mockups for the whole team.
 
-**🛡️ Ethical hacking suite (OFF-BY-DEFAULT)** — `pentest-lead` · `pentest-recon` · `pentest-webapp` · `pentest-exploitation`. An authorized security-assessment team that maps a scoped target, probes it with pentest tooling (nmap, sqlmap, nuclei, OWASP-style manual testing), and verifies findings with minimal reversible PoCs. The suite is **never routed proactively** — it activates **only when you explicitly ask** for a pentest or security assessment. Day-to-day security work stays with the 🔒 Security Engineer.
+**🛡️ Ethical hacking suite (OFF-BY-DEFAULT)** — `team/security/pentest/pentest-lead` · `pentest-recon` · `pentest-webapp` · `pentest-exploitation`. An authorized security-assessment team that maps a scoped target, probes it with pentest tooling (nmap, sqlmap, nuclei, OWASP-style manual testing), and verifies findings with minimal reversible PoCs. The suite is **never routed proactively** — it activates **only when you explicitly ask** for a pentest or security assessment. Day-to-day security work stays with the 🔒 Security Engineer.
 
 > **The pattern that causes underuse:** "Scout + Backend + QA is enough." It never is. Each specialist exists because a generalist does that job worse. **Route by job, not by habit.**
 
@@ -154,7 +169,7 @@ Tech Lead:  Announces the plan → staffs Bug Hunter → Test Engineer → QA.
 2. **The Tech Lead handles everything** — plan, staff, review, verify, commit.
 3. **Get a report with evidence** — verdict, tests run, files touched, next owner. Not vibes.
 4. **Say `I'm going`** → full autonomous mode. The company works alone, documents every decision in "Board Minutes," and debriefs you when you're back.
-5. **Call any specialist by hand** — `task team/security-engineer` — for a focused review, anytime.
+5. **Call any specialist by hand** — `task team/security/security-engineer` — for a focused review, anytime.
 6. **Escalations arrive as decisions**, not questions — options, tradeoffs, deadline.
 
 ---
@@ -162,16 +177,25 @@ Tech Lead:  Announces the plan → staffs Bug Hunter → Test Engineer → QA.
 ## 📁 The Machine Room
 
 ```
-~/.config/opencode/
+ ~/.config/opencode/
 ├── README.md           ← you are here
-├── AGENTS.md           ← the constitution (835 lines every agent obeys)
+├── AGENTS.md           ← the constitution (every agent obeys it)
 ├── DIRECTOR.md         ← your playbook — how to command the company
-├── opencode.json       ← config: MCP servers, default agent, plugins
+├── opencode.jsonc      ← config: MCP servers, default agent, plugins
 ├── agents/
-│   └── team/
-│       ├── tech-lead.md        ← the orchestrator (huge, ~1,400 lines)
-│       ├── vision-reader.md    ← the only vision-capable specialist
-│       └── ... (36 specialists + 1 Tech Lead)
+│   └── team/                          ← the company (the `team/*` agent namespace)
+│       ├── tech-lead.md               ← THE KING — the orchestrator (default agent)
+│       ├── lead/                      ← 🧑‍💼 FIELD LEADS (advisory — plan, never spawn)
+│       │   ├── frontend-lead.md · backend-lead.md · quality-lead.md
+│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md
+│       ├── core/                      ← cross-cutting (scout · wise-old-man · vision-reader)
+│       ├── frontend/                  ← engineer · ui-designer · ux-designer · design-system · animations · i18n
+│       ├── backend/                   ← engineer · api-designer · database · data · integration · llm
+│       ├── quality/                   ← test · qa · code-reviewer · bug-hunter · critique
+│       ├── security/                  ← security-engineer · pentest/ (⛔ off-by-default suite)
+│       ├── platform/                  ← devops · observability · performance
+│       ├── product/                   ← product-understander · requirements · architect · refactoring
+│       └── research/                  ← research-agent · domain-expert · documentation · skill-generator
 └── skills/
     └── (17 pattern skills, loaded on demand)
 ```
@@ -183,7 +207,7 @@ Tech Lead:  Announces the plan → staffs Bug Hunter → Test Engineer → QA.
 - **pnpm only.** Never npm/npx.
 - **Check the Justfile** before raw commands.
 - **Commit only verified work** — at feature boundaries, with tests passing first. A `fix:` commit means the previous commit shipped unverified work. That is failure.
-- **Never use the builtin `explore` agent.** Use `team/scout`.
+- **Never use the builtin `explore` agent.** Use `team/core/scout`.
 - **Stay in your lane.** Report issues; never fix another specialist's work.
 - **Emojis are mandatory in all output** — they route the reader's eye to what matters.
 
