@@ -316,6 +316,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 **You MUST:**
 - Use FIRCAC for every bug/decision (load the `fircac-out-loud` skill first — see REASONING PROTOCOLS)
 - Use ABC for verification (load the `fircac-out-loud` skill first — see REASONING PROTOCOLS)
+- Use the Sorotic method when a solution feels too easy or a belief goes unquestioned (see REASONING PROTOCOLS — no skill needed)
 - Write tests for every feature/fix, Playwright for frontend
 - Follow SOLID, SSOT, DRY, UNIX
 - Use pnpm, never npm or npx
@@ -391,9 +392,9 @@ After any response, ask:
 
 ---
 
-## 🗣️ REASONING PROTOCOLS — FIRCAC & ABC (LOAD THE SKILL FIRST)
+## 🗣️ REASONING PROTOCOLS — FIRCAC, ABC & SOROTIC (LOAD THE SKILL FIRST)
 
-**🚫 HARD RULE — NO FIRCAC/ABC WITHOUT THE SKILL:** You may NEVER run FIRCAC or ABC unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. Reasoning without the skill is an unauthorized, incomplete protocol — it will drift into the wrong order or skip steps. **Load the skill → then reason. Every time. No exceptions.**
+**🚫 HARD RULE — NO FIRCAC/ABC WITHOUT THE SKILL:** You may NEVER run FIRCAC or ABC unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. Reasoning without the skill is an unauthorized, incomplete protocol — it will drift into the wrong order or skip steps. **Load the skill → then reason. Every time. No exceptions.** *(The Sorotic method needs no skill — it's a question loop, run it anytime.)*
 
 - **FIRCAC** = Facts, Issue, Rules, Cases, Application, Consequences. A structured reasoning framework for designing, implementing, debugging, and reviewing software. The skill holds the full protocol, checklist, and worked example.
 - **ABC** = Assume Nothing, Believe Nobody, Confirm Everything. A verification method that forces you to prove claims with evidence. The skill holds the full method.
@@ -407,13 +408,48 @@ After any response, ask:
 | Situation | What to Say |
 |-----------|-------------|
 | Bug found | Full FIRCAC out loud |
-| Complex decision | Full FIRCAC out loud |
-| Code review | ABC out loud |
+| Complex decision | Full FIRCAC + Sorotic out loud |
+| Code review | ABC out loud + Sorotic on the verdict |
 | Testing claims | ABC out loud |
 | Before trusting | ABC out loud |
+| Solution "feels too easy" / too-obvious assumption | Sorotic loop out loud |
 
 **NO SILENT THINKING. NO JUMPING TO CONCLUSIONS.**
 **SPEAK YOUR REASONING. EVERY TIME.**
+
+### 🧠 THE SOROTIC METHOD — QUESTION EVERY ANSWER
+
+**The Sorotic method is the counterweight to assumption.** Where FIRCAC structures *how* you reason and ABC forces you to *prove*, the Sorotic method forces you to *defend* — it interrogates every claim, every decision, and every "obvious" choice until it either holds up or crumbles. You use it to catch what you *wouldn't* think to check.
+
+**Trigger it when:** a solution feels too easy, a design was accepted without argument, a claim is "just obviously true," or you're about to commit code you don't fully believe in.
+
+### The Sorotic Question Loop — RUN IT OUT LOUD
+
+Challenge any assertion with the five questions until each has a real answer (not a shrug):
+
+1. **What do I actually know here — and what am I assuming?** Separate fact from assumption *before* you argue about anything.
+2. **What's the opposite of my stance — and do I have a reason to reject it?** If you can't argue against yourself, you don't understand your own position yet.
+3. **What would make my belief false?** Name the exact counterexample or condition that would refute it. If you can't name one, you're not reasoning — you're hoping.
+4. **What is this question actually about?** Is the surface problem hiding the real one? Am I solving the stated issue or the *underlying* one?
+5. **What could I be completely wrong about that I haven't considered?** The blind-spot question — the one that catches the real bugs.
+
+### Sorotic Discipline — Rules of Correction
+
+- **One claim at a time.** Cross-examine single beliefs; don't shotgun.
+- **Assume the idea might be wrong, not the person.** The method attacks the claim, not the claimant — including you.
+- **State the disproof.** A belief you can't disprove you don't understand. Name the counterexample.
+- **Converge or concede:** run the loop to either a *defended answer* or an honest **IDK** — escalate an IDK, never stage it.
+- **Use it on your own work first.** Fire the Sorotic questions at your own design *before* any reviewer, at your own expectation *before* your own tests.
+- **Fires when FIRCAC and ABC alone paint a too-clean picture.** If two experts agree too fast and nothing argues back, Sorotic is the adversarial voice that slows the agreement.
+
+### When NOT to use Sorotic
+
+- **Don't** run the loop on routine, low-blast-radius execution (formatting, a one-line fix) — that's ceremony, not rigor.
+- **Do** run it on design decisions, ambiguous requirements, bugs that resist two attempts, and before trusting a "safe" assumption.
+
+### The Rule
+
+**FIRCAC decides *how* to reason, ABC decides *what* to believe, the Sorotic Method decides *whether you're even standing on the right belief.* A senior engineer uses all three — and the Sorotic loop is the one that catches the assumption you never realized you'd made.**
 
 ---
 
