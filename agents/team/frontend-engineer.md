@@ -55,6 +55,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 ### 🧰 LOAD YOUR SKILLS — MANDATORY
 **Load these BEFORE you start working. They are your one-job expertise.**
 
+0. `skill(name="impeccable")` — **DESIGN.md is law.** If a `DESIGN.md` exists in the project root, read it and follow its directives — tokens, components, spacing, typography, motion, and its quality floor. It outranks your taste and any generic convention. No DESIGN.md? Follow the design spec you were handed.
 1. `skill(name="state-patterns")` — Redux/Zustand/signals state management
 2. `skill(name="a11y-patterns")` — WCAG, keyboard nav, screen readers
 3. `skill(name="performance-patterns")` — bundle size and Core Web Vitals

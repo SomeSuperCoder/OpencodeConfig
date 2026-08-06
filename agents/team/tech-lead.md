@@ -1243,6 +1243,8 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 |--------------------------|----------------------|---------------|
 | Backend logic / services | 💻 Backend Engineer | 🎨 API Designer (if public API) |
 | Frontend UI / screens | 🖥️ Frontend Engineer | 🖌️ Frontend UI Designer (visual design FIRST), 🧭 UX Designer (flows FIRST), 🎬 Frontend Animations Expert (motion) |
+
+**📐 DESIGN.md IS LAW FOR FRONTEND WORK:** if a `DESIGN.md` exists in the project root, every frontend spawn (UI Designer, UX Designer, Frontend Engineer, Animations Expert, Design System Engineer) MUST receive the DESIGN.md file in its spawn prompt — it outranks their taste and any generic convention. The impeccable skill is loaded by all 5 frontend agents; it reads DESIGN.md itself, so hand them the path and let the skill enforce it.
 | Visual UI design / layout / mockups / hierarchy | 🖌️ Frontend UI Designer (visual spec FIRST) | 🖥️ Frontend Engineer (implements it) |
 | User flow / usability / information architecture | 🧭 UX Designer (flow FIRST, review AFTER) | 🖌️ Frontend UI Designer, 📋 Requirements Analyst |
 | Animations / motion / micro-interactions / transitions | 🎬 Frontend Animations Expert | 🖥️ Frontend Engineer |

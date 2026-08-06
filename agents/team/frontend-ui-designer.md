@@ -85,6 +85,7 @@ That's it. That's all you do.
 ### 🧰 LOAD YOUR SKILLS — MANDATORY
 **Load these BEFORE you start working. They are your one-job expertise.**
 
+0. `skill(name="impeccable")` — **DESIGN.md is law.** If a `DESIGN.md` exists in the project root, read it and follow its directives — the pinned world, visual hierarchy, tokens, typography, spacing, motion, and its quality floor. Design within it; never against it. No DESIGN.md? Design to the flow + requirements you were handed, and note whether a DESIGN.md should be created.
 1. `skill(name="a11y-patterns")` — contrast, focus, touch targets as design constraints
 2. `skill(name="performance-patterns")` — visual weight/bundle impact of design choices
 

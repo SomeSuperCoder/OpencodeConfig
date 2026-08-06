@@ -67,7 +67,7 @@ The philosophy is **speed through smallness**: small agents, fast microtasks, ac
     ├── fircac-out-loud/    ← FIRCAC reasoning + ABC verification (mandatory protocol)
     ├── testing-patterns/
     ├── api-patterns/
-    └── ... (16 pattern skills, loaded on demand)
+    └── ... (17 pattern skills, loaded on demand)
 ```
 
 ---
@@ -140,9 +140,9 @@ Each agent has its own fast, craft-specific workflow recipe (`## YOUR WORKFLOW �
 
 ## 📦 Skills (loaded on demand)
 
-16 pattern skills — never pre-loaded, pulled in only when a microtask needs them:
+17 pattern skills — never pre-loaded, pulled in only when a microtask needs them:
 
-`fircac-out-loud` (FIRCAC + ABC) · `testing-patterns` · `api-patterns` · `error-patterns` · `state-patterns` · `caching-patterns` · `refactoring-patterns` · `security-patterns` · `a11y-patterns` · `algorithm-patterns` · `domain-knowledge` · `compliance-patterns` · `git-patterns` · `research-patterns` · `performance-patterns` · `find-skills`
+`fircac-out-loud` (FIRCAC + ABC) · `testing-patterns` · `api-patterns` · `error-patterns` · `state-patterns` · `caching-patterns` · `refactoring-patterns` · `security-patterns` · `a11y-patterns` · `algorithm-patterns` · `domain-knowledge` · `compliance-patterns` · `git-patterns` · `research-patterns` · `performance-patterns` · `find-skills` · `impeccable` (frontend design craft — DESIGN.md is law; loaded by all 5 frontend agents)
 
 **Scatter principle:** AGENTS.md = universal floor; skills = deep, rare, on-demand; agents = only what's role-specific. The Tech Lead is the exception — its protocols live inline because it uses them every session.
 

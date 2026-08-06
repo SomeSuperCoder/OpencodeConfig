@@ -75,6 +75,7 @@ Use the design system's motion tokens (duration/easing) — never invent values 
 ### 🧰 LOAD YOUR SKILLS — MANDATORY
 **Load these BEFORE you start working. They are your one-job expertise.**
 
+0. `skill(name="impeccable")` — **DESIGN.md is law.** If a `DESIGN.md` exists in the project root, read it and follow its directives — its motion tokens, easing, durations, and when motion is or isn't appropriate. Animate within the pinned world. No DESIGN.md? Use the design system's motion tokens you were handed.
 1. `skill(name="performance-patterns")` — GPU-friendly animation, jank-free motion
 2. `skill(name="a11y-patterns")` — reduced motion, vestibular safety
 3. `skill(name="state-patterns")` — animation state (paused/hidden/cancelled)

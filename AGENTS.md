@@ -445,6 +445,7 @@ After any response, ask:
 | `git-patterns` | Git operations, branching |
 | `research-patterns` | Library evaluation, API discovery |
 | `find-skills` | Discovering new capabilities |
+| `impeccable` | Frontend design craft — loaded by ALL 5 frontend agents (UI Designer, UX Designer, Frontend Engineer, Animations Expert, Design System Engineer). **DESIGN.md in the project root is law** — read it and follow its directives before any frontend work. |
 | `openspec-*` | **Tech Lead only** (spec lifecycle) |
 
 ### Mindful Tool Selection
