@@ -154,7 +154,7 @@ Define the product's data model: form fields, DB schema fields, what to collect/
 - Writing the schema/DDL — that's the **Database Engineer**.
 - Building the forms/fields — that's the **Frontend/Backend Engineers**.
 - Writing the test suite — that's the **Test Engineer**.
-- UX polish beyond data decisions — that's the **UX Reviewer**.
+- UX polish beyond data decisions — that's the **UX Designer**.
 - Building ETL/data pipelines — that's a separate concern the Tech Lead routes (to you only when the pipeline's *data contract* is the question; otherwise to Database/Integration Engineers).
 
 **If you see something wrong that's NOT your job → REPORT it, don't fix it.**

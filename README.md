@@ -1,6 +1,6 @@
 # 🏢 Opencode Software Company
 
-> A config-driven software company built on opencode: one Tech Lead, 29 senior specialist agents, and a microtask pipeline that ships verified work fast.
+> A config-driven software company built on opencode: one Tech Lead, 31 senior specialist agents, and a microtask pipeline that ships verified work fast.
 
 ---
 
@@ -10,7 +10,7 @@ This is the configuration for **opencode** (an agentic coding CLI). It turns a s
 
 - 👑 **The Director (you)** — sets priorities, makes final decisions, approves work.
 - 🧠 **The Team Lead** — runs the company: plans waves, spawns specialists, reviews, reports, commits.
-- 👥 **29 Staff specialists** — each a senior engineer with one lane: they do ONE microtask, hand it off, and stop.
+- 👥 **31 Staff specialists** — each a senior engineer with one lane: they do ONE microtask, hand it off, and stop.
 
 The philosophy is **speed through smallness**: small agents, fast microtasks, active communication, feedback loops. One orchestrator (the Tech Lead) holds the big picture so every worker can stay tiny, focused, and fast.
 
@@ -25,7 +25,7 @@ The philosophy is **speed through smallness**: small agents, fast microtasks, ac
          🧠 TEAM LEAD (tech-lead)          ← large prompt: plans, spawns, reviews, commits
               │  assignments flow DOWN
               ▼
-         👥 STAFF (29 specialists)          ← small prompts: one microtask each
+         👥 STAFF (31 specialists)          ← small prompts: one microtask each
               ▲  work reports flow UP
               ▼
          🧠 TEAM LEAD
@@ -62,7 +62,7 @@ The philosophy is **speed through smallness**: small agents, fast microtasks, ac
 │       ├── test-engineer.md
 │       ├── qa-engineer.md
 │       ├── code-reviewer.md
-│       └── ... (29 agents total)
+│       └── ... (31 agents total)
 └── skills/
     ├── fircac-out-loud/    ← FIRCAC reasoning + ABC verification (mandatory protocol)
     ├── testing-patterns/
@@ -120,16 +120,16 @@ Narrowest first, one pass, minimum verification, stop at delivery.
 
 ---
 
-## 👥 The Staff (29 specialists)
+## 👥 The Staff (31 specialists)
 
 **Orchestration & quality:**
 `tech-lead` (orchestrator) · `product-understander` (the project's WHY — heart, spirit, non-negotiables) · `requirements-analyst` · `scout` (exploration) · `software-architect` · `api-designer` · `critique` · `wise-old-man` (judgement calls)
 
 **Execution (the lanes):**
-`backend-engineer` · `frontend-engineer` · `database-engineer` (schema + migrations) · `data-engineer` (product data model: form fields, what to collect) · `devops-engineer` · `integration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` (perf + algorithm complexity) · `observability-engineer` · `security-engineer` (security + dependency audits) · `llm-engineer` (prompts, RAG, evals)
+`backend-engineer` · `frontend-engineer` · `frontend-ui-designer` (visual UI design) · `ux-designer` (flows, usability, accessibility) · `frontend-animations-engineer` (motion) · `database-engineer` (schema + migrations) · `data-engineer` (product data model: form fields, what to collect) · `devops-engineer` · `integration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` (perf + algorithm complexity) · `observability-engineer` · `security-engineer` (security + dependency audits) · `llm-engineer` (prompts, RAG, evals)
 
 **Quality & verification:**
-`test-engineer` (owns the test suite) · `qa-engineer` (acceptance criteria) · `code-reviewer` (reviews + static analysis) · `bug-hunter` · `ux-reviewer` (usability + accessibility)
+`test-engineer` (owns the test suite) · `qa-engineer` (acceptance criteria) · `code-reviewer` (reviews + static analysis) · `bug-hunter`
 
 **Specialists & research:**
 `research-agent` · `domain-expert` · `documentation-writer` · `skill-generator`
