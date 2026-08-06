@@ -16,5 +16,15 @@
 "url": "https://mcp.tavily.com/mcp/?tavilyApiKey={file:.secrets/tavily.key}"
     }
   },
-  "default_agent": "team/tech-lead"
+  "default_agent": "team/tech-lead",
+  "permission": {
+    "external_directory": {
+      "/tmp": "allow",
+      "/tmp/**": "allow"
+    },
+    "bash": {
+      "* /tmp*": "allow",
+      "*/tmp*": "allow"
+    }
+  }
 }
