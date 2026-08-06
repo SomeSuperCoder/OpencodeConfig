@@ -15,7 +15,7 @@
             plans · assigns staff · reviews · reports to you
                      │  assignments flow DOWN
                      ▼
-         👥 STAFF (32 specialists)
+         👥 STAFF (36 specialists)
             engineers · QA · security · auditors · designers · ...
                      ▲  work reports flow UP
 ```

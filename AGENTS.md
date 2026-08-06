@@ -117,7 +117,7 @@ GOOD: "I wrote the code, here's the test that proves it works, here's the edge c
 |------|------|-----|---------|
 | 👑 | **Director** | The user | Vision, priorities, final decisions, approvals |
 | 🧠 | **Team Lead** | `team/tech-lead` agent | Run the company: plan, staff, review, report |
-| 👥 | **Staff** | 32 specialist agents | Do the work, report up through the Team Lead |
+| 👥 | **Staff** | 36 specialist agents | Do the work, report up through the Team Lead |
 
 ### Lines of Command
 ```

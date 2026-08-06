@@ -124,6 +124,8 @@ Every agent is a **senior engineer with a single lane** — they do their one jo
 
 **👁️ Vision Reader** — the only agent with eyes. Every other specialist runs a text-only model; `vision-reader` runs MiMo (vision-capable) and reads photos, screenshots, diagrams, and UI mockups for the whole team.
 
+**🛡️ Ethical hacking suite (OFF-BY-DEFAULT)** — `pentest-lead` · `pentest-recon` · `pentest-webapp` · `pentest-exploitation`. An authorized security-assessment team that maps a scoped target, probes it with pentest tooling (nmap, sqlmap, nuclei, OWASP-style manual testing), and verifies findings with minimal reversible PoCs. The suite is **never routed proactively** — it activates **only when you explicitly ask** for a pentest or security assessment. Day-to-day security work stays with the 🔒 Security Engineer.
+
 > **The pattern that causes underuse:** "Scout + Backend + QA is enough." It never is. Each specialist exists because a generalist does that job worse. **Route by job, not by habit.**
 
 ---
@@ -169,7 +171,7 @@ Tech Lead:  Announces the plan → staffs Bug Hunter → Test Engineer → QA.
 │   └── team/
 │       ├── tech-lead.md        ← the orchestrator (huge, ~1,400 lines)
 │       ├── vision-reader.md    ← the only vision-capable specialist
-│       └── ... (32 specialists + 1 Tech Lead)
+│       └── ... (36 specialists + 1 Tech Lead)
 └── skills/
     └── (17 pattern skills, loaded on demand)
 ```
