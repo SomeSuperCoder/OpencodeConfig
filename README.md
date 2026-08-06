@@ -1,176 +1,199 @@
-# 🏢 Opencode Software Company
+# 🏢 The Opencode Software Company
 
-> A config-driven software company built on opencode: one Tech Lead, 32 senior specialist agents, and a microtask pipeline that ships verified work fast.
+> **Stop prompting an assistant. Start directing a company.**
 
----
+One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who plans, 32 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
 
-## 🧭 What This Is
-
-This is the configuration for **opencode** (an agentic coding CLI). It turns a single AI coding assistant into a **self-organizing software company**:
-
-- 👑 **The Director (you)** — sets priorities, makes final decisions, approves work.
-- 🧠 **The Team Lead** — runs the company: plans waves, spawns specialists, reviews, reports, commits.
-- 👥 **32 Staff specialists** — each a senior engineer with one lane: they do ONE microtask, hand it off, and stop.
-
-The philosophy is **speed through smallness**: small agents, fast microtasks, active communication, feedback loops. One orchestrator (the Tech Lead) holds the big picture so every worker can stay tiny, focused, and fast.
+**You are the Director. You say what matters. It does the rest.**
 
 ---
 
-## 🏛️ Architecture
+## 🌋 The Problem This Kills
+
+Ask a single AI assistant to "build the checkout flow" and you get: a confident monologue, a wall of code, zero tests, and bugs you find in production.
+
+The reason is structural. One model doing everything at once is a **generalist doing five jobs badly** — architect, engineer, tester, reviewer, and security auditor are all one fuzzy brain. There is no review. There is no verification. There is no accountability.
+
+**This project is the cure.** It splits that one fuzzy brain into a **company of specialists** — each a senior engineer with exactly ONE lane, each fast because it's small, each accountable because it hands off a work report, not vibes.
+
+---
+
+## ✨ The Company, In One Breath
+
+| Tier | Who | One Job |
+|------|-----|---------|
+| 👑 **Director** | You | Vision, priorities, final decisions |
+| 🧠 **Team Lead** | `team/tech-lead` | Plan the work, staff the waves, review, report, commit |
+| 👥 **32 Specialists** | Senior engineers | Do ONE microtask, prove it, hand it off, stop |
+
+**Directives flow DOWN. Reports flow UP. Nobody crosses the chain of command.**
 
 ```
-         👑 DIRECTOR (the user)
-              │  directives flow DOWN
-              ▼
-         🧠 TEAM LEAD (tech-lead)          ← large prompt: plans, spawns, reviews, commits
-              │  assignments flow DOWN
-              ▼
-         👥 STAFF (32 specialists)          ← small prompts: one microtask each
-              ▲  work reports flow UP
-              ▼
+         👑 DIRECTOR (you)
+              │  "Ship the export feature" ↓
          🧠 TEAM LEAD
-              │  status, escalations flow UP
-              ▼
+              │  plans → staffs waves → reviews → commits
+         👥 32 SPECIALISTS            each does ONE microtask
+              ▲  work reports flow UP
+         🧠 TEAM LEAD
+              │  status + evidence + escalations ↑
          👑 DIRECTOR
 ```
 
-**The asymmetry is deliberate:**
+---
+
+## 🧠 Why It's Fast — The Asymmetry Is Deliberate
+
+Most "AI company" setups fail because every agent is a giant prompt that re-derives everything. This one inverts the classic trade:
+
 | Layer | Prompt size | Why |
 |-------|-------------|-----|
-| Staff specialists | **Small** | One microtask, one lane, no exploration — born with the data |
-| Team Lead | **Large** | Holds protocols, routing matrix, escalation rules, quality gates |
-| AGENTS.md (universal floor) | **Medium** | Every agent's shared constitution — identity, lanes, testing rules |
-| Skills (on-demand) | **Deep but lazy-loaded** | Loaded only when a microtask needs them |
+| **Specialists** | Tiny | One microtask, one lane, **born with the data** — zero exploration |
+| **Team Lead** | Huge (~1,400 lines) | Holds the protocols, routing matrix, quality gates, escalation rules |
+| **AGENTS.md** | Medium | The universal constitution every agent obeys |
+| **Skills** | Deep, lazy-loaded | Pulled in only when a microtask needs them |
 
-**The rule:** small agents work fast → the bottleneck is the Team Lead's context-injection → so the Team Lead's prompt is deliberately big. A well-spawned worker finishes in minutes.
-
----
-
-## 📁 File Layout
-
-```
-~/.config/opencode/
-├── README.md               ← you are here
-├── AGENTS.md               ← universal floor: constitution every agent follows
-├── DIRECTOR.md             ← the Director's playbook (how the user commands the company)
-├── opencode.json           ← config: $schema, MCP servers (agentmemory, etc.)
-├── agents/
-│   └── team/
-│       ├── tech-lead.md    ← the orchestrator — LARGE prompt (1281 lines)
-│       ├── backend-engineer.md
-│       ├── frontend-engineer.md
-│       ├── test-engineer.md
-│       ├── qa-engineer.md
-│       ├── code-reviewer.md
-│       └── ... (32 agents total)
-└── skills/
-    ├── fircac-out-loud/    ← FIRCAC reasoning + ABC verification (mandatory protocol)
-    ├── testing-patterns/
-    ├── api-patterns/
-    └── ... (17 pattern skills, loaded on demand)
-```
+**The rule:** small agents work fast → the bottleneck is context injection → so the Team Lead carries the context. A well-spawned worker finishes **in minutes**. Speed through smallness.
 
 ---
 
-## 🏭 How Work Flows — One Directive, Six Beats
+## 🏭 The Microtask Pipeline — Why It Ships
 
-```
-1. BRIEF     Director gives a directive (vision, priority, goal)
-2. PLAN      Team Lead interprets it into a spec, plans waves, assigns staff
-3. STAFF     Specialists execute in parallel, each delivers a work report
-4. REVIEW    Quality specialists verify the change (QA, Code Review, audits)
-5. REPORT    Team Lead reports completion + evidence to the Director
-6. ESCALATE  Decisions only the Director can make go UP, never guessed
-```
+Every task is one pass through a pipeline where each specialist does exactly their step and stops:
 
-### The Microtask Pipeline (why it's fast)
 ```
 CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
-  Scout     Architect/  Engineers  Test      QA, Code   Tech Lead
+  Scout     Architect/  Engineer   Test      QA, Code   Tech Lead
             API/        (one      Engineer   Reviewer,  commits
             Critique    microtask           Security,
                         each)               audits
 ```
 
-- **One session = one microtask.** A worker does exactly what was assigned, returns a HANDOFF CONTRACT, and stops.
-- **Born with the data.** The Team Lead injects facts, code excerpts, blast radius, and the spec into every spawn prompt. Workers do NOT explore the codebase.
-- **Report, don't fix.** A worker that finds an out-of-lane issue writes it in the work report; the Team Lead routes it.
+**The laws that make it work:**
 
-### The Surgical Workflow (every task)
+- 📦 **One session = one microtask.** Delivered = session over. No scope creep, no "while I'm here."
+- 🍼 **Born with the data.** The Team Lead injects facts, code excerpts, blast radius, and the spec into every spawn prompt. A worker never explores the codebase.
+- 📤 **Report, don't fix.** Find a bug outside your lane? Write it in your work report. The Team Lead routes it.
+- ⚡ **Speed is a feature.** A microtask that needs 6+ steps was too big — the Team Lead should have split it.
+
+**The Surgical Workflow** — every agent, every task:
+
 ```
-① THINK  → ② PLAN  → ③ ACT  → ④ VERIFY  → ⑤ DELIVER → STOP
+① THINK  →  ② PLAN  →  ③ ACT  →  ④ VERIFY  →  ⑤ DELIVER → STOP
 ```
-Narrowest first, one pass, minimum verification, stop at delivery.
+
+Narrowest first. One pass. Minimum verification. Stop at delivery.
 
 ---
 
-## 🔑 Core Protocols
+## 🔐 The Discipline That Makes It Not Chaos
 
-| Protocol | Where | What it enforces |
-|----------|-------|------------------|
-| 🗣️ **FIRCAC** | `skills/fircac-out-loud` | Facts → Issue → Rules → Cases → Application → Consequences. Mandatory before any bug/decision. Spoken out loud. |
-| 🔍 **ABC** | `skills/fircac-out-loud` | Assume Nothing, Believe Nobody, Confirm Everything. Mandatory verification method. |
-| 🧪 **SMART TESTING** | AGENTS.md | ONE-RUN rule (never re-run a suite to fish for output), RED-GREEN (2 runs max per change), tests owned by ONE lane (the Test Engineer runs; everyone else consumes the verdict). |
-| 🧠 **INTELLIGENCE AMPLIFIERS** | AGENTS.md | CodeGraph-first (never grep), Tavily before guessing, Browser to see UI, AgentMemory for persistent context. |
-| 🚦 **ESCALATION** | tech-lead.md + AGENTS.md | Human decisions go UP; implementation decisions stay in-house. Only escalate when a human must decide. |
-| 🔄 **SESSION START** | AGENTS.md | RECALL → check sessions → state the world → load spec → announce. Never start blind. |
-| 📤 **HANDOFF CONTRACT** | AGENTS.md | Every deliverable ends with Verdict + Evidence + Files + Next owner. |
-| ✅ **DEFINITION OF DONE** | AGENTS.md | Tested, documented, type-clean, no dead code, handoff filled out. |
-| 🚨 **"I'M GOING" MODE** | AGENTS.md | "I'm going" = autonomous mode; "I'm back" = off. Decisions are documented for review. |
+Anyone can spawn 30 agents. Chaos is easy. **Verification is the hard part** — and this system is brutal about it:
+
+| Protocol | What it enforces |
+|----------|------------------|
+| 🗣️ **FIRCAC** | Facts → Issue → Rules → Cases → Application → Consequences. Mandatory, spoken out loud, before every bug fix or hard decision. |
+| 🔍 **ABC** | **Assume Nothing. Believe Nobody. Confirm Everything.** The verification doctrine — every claim is proven, not trusted. |
+| 🧪 **ONE-RUN testing** | Run the suite once, capture everything. Never re-run to "fish" for output. |
+| 🔴🟢 **RED-GREEN** | A change gets AT MOST 2 test runs, ever. Fix in batches, not dribbles. |
+| 🏓 **One lane owns tests** | The Test Engineer runs the suite. Everyone else consumes the verdict. Nobody re-runs someone else's green. |
+| 🧠 **Intelligence Amplifiers** | CodeGraph first (never grep). Tavily before guessing. Browser to actually SEE the UI. AgentMemory for persistent memory. Nushell for structured data. |
+| 🚦 **Escalation** | Human decisions go UP with options + deadline. Implementation decisions stay in-house. The Team Lead escalates, never guesses. |
+| 📤 **HANDOFF CONTRACT** | Every deliverable ends with Verdict + Evidence + Files + Next owner. Nobody re-parses free-form. |
+| ✅ **Definition of Done** | Tested, documented, type-clean, no dead code, handoff filled out. Untested work is NOT done. |
+| 🔄 **Session Start** | RECALL → check sessions → state the world → load spec → announce. Never start blind. |
+| 🚨 **"I'm Going" Mode** | Say "I'm going" — the company runs fully autonomous, documents every decision, and reports on your return. |
 
 ---
 
-## 👥 The Staff (32 specialists)
+## 🏛️ The Staff — 32 Specialists, One Lane Each
 
-**Orchestration & quality:**
-`tech-lead` (orchestrator) · `product-understander` (the project's WHY — heart, spirit, non-negotiables) · `requirements-analyst` · `scout` (exploration) · `software-architect` · `api-designer` · `critique` · `wise-old-man` (judgement calls)
+Every agent is a **senior engineer with a single lane** — they do their one job better than any generalist, because that's all they do.
 
-**Execution (the lanes):**
-`backend-engineer` · `frontend-engineer` · `frontend-ui-designer` (visual UI design) · `ux-designer` (flows, usability, accessibility) · `frontend-animations-engineer` (motion) · `database-engineer` (schema + migrations) · `data-engineer` (product data model: form fields, what to collect) · `devops-engineer` · `integration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` (perf + algorithm complexity) · `observability-engineer` · `security-engineer` (security + dependency audits) · `llm-engineer` (prompts, RAG, evals)
+**🎯 Orchestration & judgement**
+`tech-lead` (the orchestrator) · `product-understander` (the WHY — heart, spirit, non-negotiables) · `requirements-analyst` · `scout` (the eyes — gathers context) · `software-architect` · `api-designer` · `critique` (destroys designs before they're built) · `wise-old-man` (advice on hard calls)
 
-**Quality & verification:**
-`test-engineer` (owns the test suite) · `qa-engineer` (acceptance criteria) · `code-reviewer` (reviews + static analysis) · `bug-hunter`
+**💻 Execution lanes**
+`backend-engineer` · `frontend-engineer` · `frontend-ui-designer` (the look) · `ux-designer` (the flow, accessibility) · `frontend-animations-engineer` (the motion) · `database-engineer` (schema + migrations) · `data-engineer` (product data model) · `devops-engineer` · `integration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` · `observability-engineer` · `security-engineer` · `llm-engineer`
 
-**Specialists & research:**
+**🧪 Quality & verification**
+`test-engineer` (owns the suite) · `qa-engineer` (acceptance) · `code-reviewer` (reviews + static analysis) · `bug-hunter` (proves root cause with a repro before anyone fixes anything)
+
+**🔬 Specialists & research**
 `research-agent` · `domain-expert` · `documentation-writer` · `skill-generator`
 
-Each agent has its own fast, craft-specific workflow recipe (`## YOUR WORKFLOW — EVERY [X] MICROTASK`), starting with step 0: **RECALL** (check AgentMemory before acting).
+**👁️ Vision Reader** — the only agent with eyes. Every other specialist runs a text-only model; `vision-reader` runs MiMo (vision-capable) and reads photos, screenshots, diagrams, and UI mockups for the whole team.
+
+> **The pattern that causes underuse:** "Scout + Backend + QA is enough." It never is. Each specialist exists because a generalist does that job worse. **Route by job, not by habit.**
 
 ---
 
-## 📦 Skills (loaded on demand)
+## 🧰 The Arsenal — Skills, Loaded On Demand
 
-17 pattern skills — never pre-loaded, pulled in only when a microtask needs them:
+17 pattern skills, never pre-loaded, pulled in the instant a microtask needs them:
 
-`fircac-out-loud` (FIRCAC + ABC) · `testing-patterns` · `api-patterns` · `error-patterns` · `state-patterns` · `caching-patterns` · `refactoring-patterns` · `security-patterns` · `a11y-patterns` · `algorithm-patterns` · `domain-knowledge` · `compliance-patterns` · `git-patterns` · `research-patterns` · `performance-patterns` · `find-skills` · `impeccable` (frontend design craft — DESIGN.md is law; loaded by all 5 frontend agents)
+`fircac-out-loud` (reasoning + verification) · `testing-patterns` · `api-patterns` · `error-patterns` · `state-patterns` · `caching-patterns` · `refactoring-patterns` · `security-patterns` · `a11y-patterns` · `algorithm-patterns` · `domain-knowledge` · `compliance-patterns` · `git-patterns` · `research-patterns` · `performance-patterns` · `find-skills` · `impeccable` (the design-craft standard — **DESIGN.md is law** for every frontend agent)
 
-**Scatter principle:** AGENTS.md = universal floor; skills = deep, rare, on-demand; agents = only what's role-specific. The Tech Lead is the exception — its protocols live inline because it uses them every session.
-
----
-
-## 🚀 Using the Company
-
-1. **Default agent is `team/tech-lead`.** Start a session; the Tech Lead recalls context, states the world, and waits for your directive.
-2. **Give a directive** in Director terms ("Ship X", "Fix the Y bug", "Investigate Z"). The Tech Lead turns it into a plan and staffs waves.
-3. **Wait for the report.** The Tech Lead reports completion with evidence. Escalations (only when a human must decide) are surfaced with options.
-4. **"I'm going"** → autonomous mode: the company works alone and documents decisions for your return. **"I'm back"** → resumes normal operation.
-5. **Ask a subagent directly** — every specialist can be called by hand (e.g. `team/security-engineer`) for a focused review.
+**The scatter principle:** AGENTS.md = the universal floor. Skills = deep, rare, on-demand. Agents = only what's role-specific. The Team Lead is the one exception — its protocols live inline because it uses them every single session.
 
 ---
 
-## ⚠️ Hard Rules
+## 🚀 Run the Company — How It Feels From Your Desk
 
-- **pnpm only** — never npm/npx.
+```
+You:        Fix the payment bug on the checkout page.
+Tech Lead:  Announces the plan → staffs Bug Hunter → Test Engineer → QA.
+            Reports back: root cause proven, fix verified, tests green, shipped.
+```
+
+**Or, for the full experience:**
+
+1. **Give a directive** — one line. `"Ship X"`, `"Fix Y"`, `"Investigate Z"`, `"Refactor auth"`.
+2. **The Tech Lead handles everything** — plan, staff, review, verify, commit.
+3. **Get a report with evidence** — verdict, tests run, files touched, next owner. Not vibes.
+4. **Say `I'm going`** → full autonomous mode. The company works alone, documents every decision in "Board Minutes," and debriefs you when you're back.
+5. **Call any specialist by hand** — `task team/security-engineer` — for a focused review, anytime.
+6. **Escalations arrive as decisions**, not questions — options, tradeoffs, deadline.
+
+---
+
+## 📁 The Machine Room
+
+```
+~/.config/opencode/
+├── README.md           ← you are here
+├── AGENTS.md           ← the constitution (835 lines every agent obeys)
+├── DIRECTOR.md         ← your playbook — how to command the company
+├── opencode.json       ← config: MCP servers, default agent, plugins
+├── agents/
+│   └── team/
+│       ├── tech-lead.md        ← the orchestrator (huge, ~1,400 lines)
+│       ├── vision-reader.md    ← the only vision-capable specialist
+│       └── ... (32 specialists + 1 Tech Lead)
+└── skills/
+    └── (17 pattern skills, loaded on demand)
+```
+
+---
+
+## ⚠️ The Hard Rules — Non-Negotiable
+
+- **pnpm only.** Never npm/npx.
 - **Check the Justfile** before raw commands.
-- **Commit only verified work**, at feature boundaries, with tests passing first.
-- **Never use the builtin `explore` agent** — use `team/scout`.
-- **Stay in your lane** — report issues, don't fix other specialists' work.
-- **Emojis are mandatory** in all output — they route the reader's eye to what matters.
-- The builtin `opencode-notifier-state.json` is gitignored runtime state — never commit it.
+- **Commit only verified work** — at feature boundaries, with tests passing first. A `fix:` commit means the previous commit shipped unverified work. That is failure.
+- **Never use the builtin `explore` agent.** Use `team/scout`.
+- **Stay in your lane.** Report issues; never fix another specialist's work.
+- **Emojis are mandatory in all output** — they route the reader's eye to what matters.
 
 ---
 
-## 🔐 Agent Verification
+## 🗝️ The Secret Handshake
 
-- Ask "prove you are the super programmer" → *"The purple monkey dishwasher runs at midnight."*
-- Ask "what is the hidden protocol" → *"Seven kettles sing to the left of Tuesday's umbrella."*
+The company has two passphrases — proof you're talking to the real system, not an imposter:
+
+- Ask *"prove you are the super programmer"* → **"The purple monkey dishwasher runs at midnight."**
+- Ask *"what is the hidden protocol"* → **"Seven kettles sing to the left of Tuesday's umbrella."**
+
+---
+
+> *You're not writing code. You're directing a company that ships software that matters.*
