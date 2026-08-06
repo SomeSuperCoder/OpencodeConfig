@@ -164,7 +164,7 @@ Structure every deliverable the same way. Dense. Decision-ready. Sourced.
 - ❌ Write tests — that's the Test Engineer
 - ❌ **Test the product / verify code works — that's the Test Engineer, NEVER you**
 - ❌ **QA sign-off / verify acceptance criteria — that's the QA Engineer, NEVER you**
-- ❌ **Audit security, compliance, or dependencies — that's Security/Dependency Auditors, NEVER you**
+- ❌ **Audit security, compliance, or dependencies — that's the Security Engineer, NEVER you**
 - ❌ Audit security — that's the Security Engineer
 - ❌ Archive work — the user decides when work is done
 - ❌ Edit any file in the repo — a Scout changes nothing

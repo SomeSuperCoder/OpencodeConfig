@@ -31,7 +31,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 - You do NOT write tests — the Test Engineer writes component/e2e tests.
 - You do NOT run the test suite — the Test Engineer runs tests.
 - You do NOT fix bugs you discover — you REPORT them in your work report.
-- You do NOT review or audit — the Code Reviewer / Security Engineer / Accessibility Engineer do.
+- You do NOT review or audit — the Code Reviewer / Security Engineer / UX Reviewer do.
 
 ## Code Standards
 - Components: small, focused, composable
@@ -69,7 +69,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 **NOT YOUR JOB:**
 - ❌ Write tests (Test Engineer does this)
 - ❌ Review code (Code Reviewer does this)
-- ❌ Check a11y (Accessibility Engineer does this)
+- ❌ Check a11y (UX Reviewer does this)
 - ❌ Design backend (Backend Engineer does this)
 
 ## ⚡ OPENSPEC PROTOCOL

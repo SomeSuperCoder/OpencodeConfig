@@ -1,6 +1,6 @@
 # 🏢 Opencode Software Company
 
-> A config-driven software company built on opencode: one Tech Lead, 34 senior specialist agents, and a microtask pipeline that ships verified work fast.
+> A config-driven software company built on opencode: one Tech Lead, 29 senior specialist agents, and a microtask pipeline that ships verified work fast.
 
 ---
 
@@ -10,7 +10,7 @@ This is the configuration for **opencode** (an agentic coding CLI). It turns a s
 
 - 👑 **The Director (you)** — sets priorities, makes final decisions, approves work.
 - 🧠 **The Team Lead** — runs the company: plans waves, spawns specialists, reviews, reports, commits.
-- 👥 **34 Staff specialists** — each a senior engineer with one lane: they do ONE microtask, hand it off, and stop.
+- 👥 **29 Staff specialists** — each a senior engineer with one lane: they do ONE microtask, hand it off, and stop.
 
 The philosophy is **speed through smallness**: small agents, fast microtasks, active communication, feedback loops. One orchestrator (the Tech Lead) holds the big picture so every worker can stay tiny, focused, and fast.
 
@@ -25,7 +25,7 @@ The philosophy is **speed through smallness**: small agents, fast microtasks, ac
          🧠 TEAM LEAD (tech-lead)          ← large prompt: plans, spawns, reviews, commits
               │  assignments flow DOWN
               ▼
-         👥 STAFF (34 specialists)          ← small prompts: one microtask each
+         👥 STAFF (29 specialists)          ← small prompts: one microtask each
               ▲  work reports flow UP
               ▼
          🧠 TEAM LEAD
@@ -62,7 +62,7 @@ The philosophy is **speed through smallness**: small agents, fast microtasks, ac
 │       ├── test-engineer.md
 │       ├── qa-engineer.md
 │       ├── code-reviewer.md
-│       └── ... (34 agents total)
+│       └── ... (29 agents total)
 └── skills/
     ├── fircac-out-loud/    ← FIRCAC reasoning + ABC verification (mandatory protocol)
     ├── testing-patterns/
@@ -120,19 +120,19 @@ Narrowest first, one pass, minimum verification, stop at delivery.
 
 ---
 
-## 👥 The Staff (34 specialists)
+## 👥 The Staff (29 specialists)
 
 **Orchestration & quality:**
-`tech-lead` (orchestrator) · `project-planner` · `requirements-analyst` · `scout` (exploration) · `software-architect` · `api-designer` · `critique` · `wise-old-man` (judgement calls)
+`tech-lead` (orchestrator) · `product-understander` (the project's WHY — heart, spirit, non-negotiables) · `requirements-analyst` · `scout` (exploration) · `software-architect` · `api-designer` · `critique` · `wise-old-man` (judgement calls)
 
 **Execution (the lanes):**
-`backend-engineer` · `frontend-engineer` · `database-engineer` · `data-engineer` (product data model: form fields, what to collect) · `devops-engineer` · `integration-engineer` · `migration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` · `observability-engineer` · `security-engineer` · `static-analysis-specialist` · `dependency-auditor`
+`backend-engineer` · `frontend-engineer` · `database-engineer` (schema + migrations) · `data-engineer` (product data model: form fields, what to collect) · `devops-engineer` · `integration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` (perf + algorithm complexity) · `observability-engineer` · `security-engineer` (security + dependency audits) · `llm-engineer` (prompts, RAG, evals)
 
 **Quality & verification:**
-`test-engineer` (owns the test suite) · `qa-engineer` (acceptance criteria) · `code-reviewer` · `bug-hunter` · `accessibility-engineer` · `ux-reviewer`
+`test-engineer` (owns the test suite) · `qa-engineer` (acceptance criteria) · `code-reviewer` (reviews + static analysis) · `bug-hunter` · `ux-reviewer` (usability + accessibility)
 
 **Specialists & research:**
-`research-agent` · `domain-expert` · `algorithm-specialist` · `documentation-writer` · `skill-generator`
+`research-agent` · `domain-expert` · `documentation-writer` · `skill-generator`
 
 Each agent has its own fast, craft-specific workflow recipe (`## YOUR WORKFLOW — EVERY [X] MICROTASK`), starting with step 0: **RECALL** (check AgentMemory before acting).
 
