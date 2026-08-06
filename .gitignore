@@ -25,3 +25,6 @@ opencode-notifier-state.json
 
 # Local secrets (key values)
 .secrets/
+
+# Personal notes (not for the repo)
+.blob.md

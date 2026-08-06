@@ -19,7 +19,7 @@
             frontend · backend · quality · security · platform · product · research
             plan microtasks · recommend specialist IDs · NEVER spawn
                      ▼
-         👥 STAFF (43 specialists)
+         👥 STAFF (47 specialists)
             engineers · QA · security · auditors · designers · ...
                      ▲  work reports flow UP
 ```

@@ -2,7 +2,7 @@
 
 > **Deja de pedirle a un asistente. Empieza a dirigir una empresa.**
 
-Un único CLI de IA para programar se convierte en una **empresa de software autoorganizada** — un Jefe de Equipo que comanda, 7 Líderes de Campo que orquestan, 43 especialistas sénior que ejecutan, y un pipeline de microtareas tan rápido que una funcionalidad completa se publica en minutos, no en horas. Cada cambio está probado. Cada cambio está documentado. Cada cambio está verificado antes de tocar tu código.
+Un único CLI de IA para programar se convierte en una **empresa de software autoorganizada** — un Jefe de Equipo que comanda, 8 Líderes de Campo que orquestan, 47 especialistas sénior que ejecutan, y un pipeline de microtareas tan rápido que una funcionalidad completa se publica en minutos, no en horas. Cada cambio está probado. Cada cambio está documentado. Cada cambio está verificado antes de tocar tu código.
 
 **Tú eres el Director. Tú decides lo que importa. El sistema hace el resto.**
 
@@ -24,7 +24,7 @@ La razón es estructural. Un solo modelo haciendo todo a la vez es un **generali
 |-------|-------|------------|
 | 👑 **Director** | Tú | Visión, prioridades, decisiones finales |
 | 🧠 **Jefe de Equipo** | `team/tech-lead` | Planificar el trabajo, formar las oleadas, revisar, informar, hacer commit |
-| 🧑‍💼 **7 Líderes de Campo** | `team/lead/*` | Aconsejar sobre su campo — planificar microtareas, recomendar IDs de especialistas, NUNCA lanzar |
+| 🧑‍💼 **8 Líderes de Campo** | `team/lead/*` | Aconsejar sobre su campo — planificar microtareas, recomendar IDs de especialistas, NUNCA lanzar |
 | 👥 **43 Especialistas** | Ingenieros sénior | Hacer UNA microtarea, demostrarla, entregarla, parar |
 
 **Las directivas fluyen HACIA ABAJO. Los informes fluyen HACIA ARRIBA. Los Líderes de Campo aconsejan; el Jefe de Equipo lanza. Nadie salta la cadena de mando.**
@@ -120,7 +120,7 @@ Cada agente es un **ingeniero sénior con una única especialidad** — hacen su
 `tech-lead` — el orquestador. El único que decide y lanza.
 
 **🧑‍💼 Líderes de Campo (advisory — ellos planifican, tú lanzas)**
-`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead`
+`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead`
 
 **🎯 Orquestación y criterio**
 `team/core/scout` (los ojos — recopila contexto) · `team/core/wise-old-man` (consejo en decisiones difíciles) · `team/product/product-understander` (el PORQUÉ) · `team/product/requirements-analyst` · `team/product/software-architect` · `team/backend/api-designer` · `team/quality/critique` (destruye diseños antes de que se construyan)
@@ -142,6 +142,9 @@ Cada agente es un **ingeniero sénior con una única especialidad** — hacen su
 
 **🔬 Campo Investigación** (`team/research/`)
 `research-agent` · `domain-expert` · `documentation-writer` · `skill-generator`
+
+**🤖 Campo Telegram** (`team/telegram/`)
+`telegram-bot-engineer` (núcleo del bot — handlers, teclados, estado, webhooks) · `telegram-mini-app-engineer` (Telegram Mini Apps) · `telegram-integration-engineer` (pagos, integraciones de terceros, automatización de canales)
 
 **👁️ Vision Reader** (`team/core/vision-reader`) — el único agente con ojos. Todos los demás especialistas usan un modelo solo-texto; este usa MiMo (con visión) y lee fotos, capturas, diagramas y mockups de UI para todo el equipo.
 
@@ -194,7 +197,7 @@ Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
 │       ├── tech-lead.md               ← EL REY — el orquestador (agente por defecto)
 │       ├── lead/                      ← 🧑‍💼 LÍDERES DE CAMPO (advisory — planifican, nunca lanzan)
 │       │   ├── frontend-lead.md · backend-lead.md · quality-lead.md
-│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md
+│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md
 │       ├── core/                      ← transversales (scout · wise-old-man · vision-reader)
 │       ├── frontend/                  ← engineer · ui-designer · ux-designer · design-system · animations · i18n
 │       ├── backend/                   ← engineer · api-designer · database · data · integration · llm
@@ -202,7 +205,8 @@ Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
 │       ├── security/                  ← security-engineer · pentest/ (⛔ suite off por defecto)
 │       ├── platform/                  ← devops · observability · performance
 │       ├── product/                   ← product-understander · requirements · architect · refactoring
-│       └── research/                  ← research-agent · domain-expert · documentation · skill-generator
+│       ├── research/                  ← research-agent · domain-expert · documentation · skill-generator
+│       └── telegram/                  ← bot-engineer · mini-app-engineer · integration-engineer
 └── skills/
     └── (17 skills de patrones, cargadas bajo demanda)
 ```
