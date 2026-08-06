@@ -318,6 +318,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - Use ABC for verification (load the `fircac-out-loud` skill first — see REASONING PROTOCOLS)
 - Use the Sorotic method when a solution feels too easy or a belief goes unquestioned (see REASONING PROTOCOLS — no skill needed)
 - Write tests for every feature/fix, Playwright for frontend
+- **Prove every feature from the user's side: Playwright user-behavior flows, mock-or-cleanup for integration tests (see 🚨 MANDATORY PROTOCOL — FEATURES ARE TESTED AS USER BEHAVIOR)**
 - Follow SOLID, SSOT, DRY, UNIX
 - Use pnpm, never npm or npx
 - Check Justfile before manual commands
@@ -616,6 +617,20 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 - File naming: `*.spec.ts`
 - Run: `pnpm exec playwright test`
 - Anti-patterns: no `waitForTimeout()`, test behavior not implementation
+
+### 🚨 MANDATORY PROTOCOL — FEATURES ARE TESTED AS USER BEHAVIOR, NOT AS CODE
+
+**Every feature — no exceptions — must be proven from the user's side before it is "done."**
+
+- **🦾 Simulate the user, don't verify the code.** Any feature is tested via **Playwright** by scripting the *behavior a real user performs*: click through the real flow, type into the real inputs, navigate the real pages, submit the real forms. The verdict is "a user doing this exact thing is NOT broken," proven by a browser run — not by a unit test that calls the function directly.
+- **🚀 The launch test = the user's first run.** Before a feature launches, the same user-behavior Playwright flow must pass against the launched instance — so "it worked in tests but broke for the user" becomes impossible. The E2E flow IS the acceptance test.
+- **🔒 INTEGRATION TESTS ARE A MINEFIELD — REAL DATA IS THE DANGER.** Integration/E2E tests that touch a live local app instance can **write, mutate, or destroy real data** (create real rows, send real emails, trigger real side effects). This is **not acceptable**:
+  - **🧪 Mock entirely when possible** — stub the backend/API/third parties with Playwright route interception (`page.route`), use fixtures, seed only test data.
+  - **🧹 If a test must touch real state, it MUST clean up after itself** — delete every row it created, revert every mutation, restore every side effect, in `afterEach`/`afterAll`, so the local instance is byte-identical before and after the run.
+  - **🚫 NEVER** point integration tests at production or at a shared instance with real user data. Local test instance only, and only with cleanup guaranteed.
+  - **⚠️ Flag it, don't ship it.** If a test cannot mock and cannot clean up, it is NOT a safe test — report it to the Tech Lead rather than running it against live data.
+
+**The Rule:** a feature is done only when a *simulated real user* has performed the real flow against the real running app **and** nothing was polluted in the process. Test the user's journey, protect the user's data.
 
 ---
 
