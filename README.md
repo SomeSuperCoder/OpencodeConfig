@@ -2,6 +2,8 @@
 
 > **Stop prompting an assistant. Start directing a company.**
 
+**🌐 Languages:** [English](./README.md) · [Español (España)](./README.es.md) · [Русский](./README.ru.md)
+
 One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who commands, 7 field Leads who orchestrate, 43 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
 
 **You are the Director. You say what matters. It does the rest.**
