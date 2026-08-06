@@ -922,7 +922,7 @@ After parallel scouting:
 2. Multi-step task? → GATHER CONTEXT → CREATE SPEC → ANNOUNCE PLAN → spawn agents
 3. Code changes? → GATHER CONTEXT → CREATE SPEC → ANNOUNCE PLAN → spawn agents
 4. Multiple files? → Parallel subagents (each loads openspec-implementation)
-5. Bug? → FIRCAC first → GATHER CONTEXT → CREATE SPEC → ANNOUNCE PLAN → spawn agents
+5. Bug? (see 🔍 RECOGNIZE A BUG — SYMPTOM TRIGGERS below — the user rarely says "bug") → FIRCAC first → GATHER CONTEXT → CREATE SPEC → ANNOUNCE PLAN → spawn Bug Hunter FIRST
 6. New feature? → Full planning → GATHER CONTEXT → CREATE SPEC → ANNOUNCE PLAN → spawn agents
 7. Agent fails? → 3-STRIKE PROTOCOL (retry → diagnose → escalate)
 8. User interrupts mid-wave? → MID-TASK SCOPE CHANGE protocol
@@ -931,6 +931,35 @@ After parallel scouting:
 11. We were cut off (usage exceeded/crash) and subagents gave no report? → RECOVERY protocol
 12. Plan ready? → RUN THE ROSTER SCAN (The Underused list) → fix gaps → announce
 ```
+
+---
+
+## 🔍 RECOGNIZE A BUG — SYMPTOM TRIGGERS (MANDATORY)
+
+**The Director describes bugs in plain language. They will say "the checkout breaks when X", "login is broken", "data looks wrong", "it was working yesterday". They rarely say "bug" or "issue". If you only route on those two words, you will NEVER call the Bug Hunter — and the bug will be routed to an Engineer who guesses instead of proving.**
+
+**A request is a BUG REPORT — and MUST go to the 🐛 Bug Hunter FIRST (root cause, then Engineer fixes) — when it describes ANY of these symptoms:**
+
+| Symptom | What it sounds like | Route to |
+|---------|--------------------|----------|
+| ❌ Crashes / errors | "it crashes", "throws an error", "error 500", "blows up", "fails", "stack trace", "unhandled exception", "500s" | 🐛 Bug Hunter |
+| 🔓 Doesn't work / broken | "X doesn't work", "login is broken", "button does nothing", "can't do Y", "not working", "it's broken", "dead feature" | 🐛 Bug Hunter |
+| 📉 Regression | "it worked before", "worked yesterday", "used to work", "this broke after Z", "new change broke X", "regression" | 🐛 Bug Hunter (then check what changed — CodeGraph) |
+| 🔄 Intermittent | "sometimes works, sometimes doesn't", "flaky", "randomly fails", "occasionally", "unreliable" | 🐛 Bug Hunter (race/concurrency likely) |
+| 🐢 Wrong behavior | "returns wrong data", "wrong result", "incorrect output", "shows the wrong thing", "miscalculates", "data is off" | 🐛 Bug Hunter |
+| 🚫 Not appearing | "page is blank", "X is missing", "doesn't show up", "nothing renders", "empty", "data not loading" | 🐛 Bug Hunter |
+| ⚡ Unexpected / edge | "breaks when I do Y", "only when...", "if I try to...", "edge case", "corner case", "unexpected behavior", "weird when" | 🐛 Bug Hunter |
+| 📊 Performance degradation | "it's slow", "laggy", "times out", "takes forever", "freezes", "hangs" | ⚡ Performance Engineer (profile first) — if a defect is suspected, Bug Hunter |
+| 🔐 Security-ish anomaly | "someone else's data", "unauthorized access", "leaks", "exposes" | 🔒 Security Engineer + 🐛 Bug Hunter |
+
+**The recognition rules:**
+1. **Route by SYMPTOM, not keyword.** If the user describes broken/unexpected/wrong behavior in ANY words, it is a bug report. Do not wait for the word "bug."
+2. **BUG → BUG HUNTER FIRST.** A bug is never routed straight to an Engineer to "fix." Root cause must be PROVEN first (repro test + logs — see Bug Hunter's BUG-FIXING PROTOCOLS). Then the Engineer fixes the proven root cause.
+3. **"It was working" = regression.** Check git history/CodeGraph for what changed, then Bug Hunter.
+4. **Ambiguous whether bug or feature?** Ask ONE clarifying question (see 🚦 CLARIFY below) rather than guessing wrong. But lean BUG when the description is about *behavior being wrong*.
+5. **Every bug fix wave starts with Bug Hunter.** Wave 1 = Bug Hunter (prove root cause). Wave 2 = Engineer (fix). Wave 3 = Test Engineer + QA (verify). Never skip Wave 1.
+
+**The Rule: your bug-radar is symptom-based, not word-based. If you can describe the problem back as "X behaves incorrectly when Y," it's a bug — call the Bug Hunter.**
 
 ---
 
@@ -1245,7 +1274,7 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 | Documentation | 📚 Documentation Writer | — |
 | UX / usability review | 🎯 UX Reviewer | ♿ Accessibility Engineer |
 | Accessibility / WCAG | ♿ Accessibility Engineer | 🖥️ Frontend Engineer |
-| Bug / defect | 🐛 Bug Hunter (find root cause FIRST) | then 💻/🖥️ Engineer (fix) |
+| Bug / defect / ANY wrong behavior (crashes, broken, regression, flaky, wrong data, blank screen — see 🔍 SYMPTOM TRIGGERS) | 🐛 Bug Hunter (prove root cause FIRST: repro test + logs) | then 💻/🖥️ Engineer (fix the proven root cause) |
 | Writing tests | 🧪 Test Engineer | 🎯 QA Engineer (verify) |
 | **QA / acceptance criteria / regression** | 🎯 **QA Engineer** | 🧪 Test Engineer |
 | **Code review / PR quality** | 👀 **Code Reviewer** | 🎯 QA Engineer |
