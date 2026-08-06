@@ -2,7 +2,7 @@
 
 > **Stop prompting an assistant. Start directing a company.**
 
-One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who plans, 32 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
+One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who commands, 7 field Leads who orchestrate, 43 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
 
 **You are the Director. You say what matters. It does the rest.**
 
@@ -24,16 +24,19 @@ The reason is structural. One model doing everything at once is a **generalist d
 |------|-----|---------|
 | 👑 **Director** | You | Vision, priorities, final decisions |
 | 🧠 **Team Lead** | `team/tech-lead` | Plan the work, staff the waves, review, report, commit |
-| 👥 **32 Specialists** | Senior engineers | Do ONE microtask, prove it, hand it off, stop |
+| 🧑‍💼 **7 Field Leads** | `team/lead/*` | Advise on their field — plan microtasks, recommend specialist IDs, NEVER spawn |
+| 👥 **43 Specialists** | Senior engineers | Do ONE microtask, prove it, hand it off, stop |
 
-**Directives flow DOWN. Reports flow UP. Nobody crosses the chain of command.**
+**Directives flow DOWN. Reports flow UP. Field Leads advise; the Team Lead spawns. Nobody crosses the chain of command.**
 
 ```
          👑 DIRECTOR (you)
               │  "Ship the export feature" ↓
          🧠 TEAM LEAD
-              │  plans → staffs waves → reviews → commits
-         👥 32 SPECIALISTS            each does ONE microtask
+              │  asks for orchestration advice ↓
+         🧑‍💼 FIELD LEADS           recommend specialist IDs ↑
+              ▼
+         👥 43 SPECIALISTS         each does ONE microtask
               ▲  work reports flow UP
          🧠 TEAM LEAD
               │  status + evidence + escalations ↑
@@ -49,6 +52,7 @@ Most "AI company" setups fail because every agent is a giant prompt that re-deri
 | Layer | Prompt size | Why |
 |-------|-------------|-----|
 | **Specialists** | Tiny | One microtask, one lane, **born with the data** — zero exploration |
+| **Field Leads** | Small | Field roster + routing knowledge — plan microtasks, recommend IDs, never spawn |
 | **Team Lead** | Huge (~1,400 lines) | Holds the protocols, routing matrix, quality gates, escalation rules |
 | **AGENTS.md** | Medium | The universal constitution every agent obeys |
 | **Skills** | Deep, lazy-loaded | Pulled in only when a microtask needs them |
@@ -63,11 +67,13 @@ Every task is one pass through a pipeline where each specialist does exactly the
 
 ```
 CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
-  Scout     Architect/  Engineer   Test      QA, Code   Tech Lead
-            API/        (one      Engineer   Reviewer,  commits
-            Critique    microtask           Security,
-                        each)               audits
+  Scout     Field      Engineer   Test      QA, Code   Tech Lead
+            Leads      (one      Engineer   Reviewer,  commits
+            + Design   microtask            Security,
+            specialists  each)              audits
 ```
+
+**Field Leads sit at the DESIGN stage:** they break the directive into the narrowest microtasks and recommend which specialist handles each one. The Tech Lead takes that plan, spawns the specialists itself, and drives the rest of the pipeline.
 
 **The laws that make it work:**
 
@@ -159,7 +165,8 @@ Every agent is a **senior engineer with a single lane** — they do their one jo
 
 ```
 You:        Fix the payment bug on the checkout page.
-Tech Lead:  Announces the plan → staffs Bug Hunter → Test Engineer → QA.
+Tech Lead:  Asks Backend Lead for the orchestration plan → staffs
+            Bug Hunter → Backend Engineer → Test Engineer → QA.
             Reports back: root cause proven, fix verified, tests green, shipped.
 ```
 

@@ -13,7 +13,11 @@
                      ▼
          🧠 TEAM LEAD (tech-lead)
             plans · assigns staff · reviews · reports to you
-                     │  assignments flow DOWN
+                     │  requests orchestration advice DOWN
+                     ▼
+         🧑‍💼 FIELD LEADS (team/lead/*)
+            frontend · backend · quality · security · platform · product · research
+            plan microtasks · recommend specialist IDs · NEVER spawn
                      ▼
          👥 STAFF (43 specialists)
             engineers · QA · security · auditors · designers · ...
@@ -21,8 +25,9 @@
 ```
 
 **One rule governs everything: directives flow DOWN, reports flow UP.**
-- You brief → the Team Lead plans and staffs → specialists do the work → the Team Lead verifies → you get the report.
+- You brief → the Team Lead plans → Field Leads advise on their field → the Team Lead spawns the specialists → the work → the Team Lead verifies → you get the report.
 - Staff never report to you directly; everything lands on your desk through the Team Lead.
+- Field Leads never spawn: they recommend which specialist handles each microtask; the Team Lead keeps command and does the spawning.
 
 ---
 
