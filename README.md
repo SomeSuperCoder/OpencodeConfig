@@ -126,7 +126,7 @@ Narrowest first, one pass, minimum verification, stop at delivery.
 `tech-lead` (orchestrator) · `project-planner` · `requirements-analyst` · `scout` (exploration) · `software-architect` · `api-designer` · `critique` · `wise-old-man` (judgement calls)
 
 **Execution (the lanes):**
-`backend-engineer` · `frontend-engineer` · `database-engineer` · `data-engineer` · `devops-engineer` · `integration-engineer` · `migration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` · `observability-engineer` · `security-engineer` · `static-analysis-specialist` · `dependency-auditor`
+`backend-engineer` · `frontend-engineer` · `database-engineer` · `data-engineer` (product data model: form fields, what to collect) · `devops-engineer` · `integration-engineer` · `migration-engineer` · `refactoring-engineer` · `i18n-engineer` · `design-system-engineer` · `performance-engineer` · `observability-engineer` · `security-engineer` · `static-analysis-specialist` · `dependency-auditor`
 
 **Quality & verification:**
 `test-engineer` (owns the test suite) · `qa-engineer` (acceptance criteria) · `code-reviewer` · `bug-hunter` · `accessibility-engineer` · `ux-reviewer`

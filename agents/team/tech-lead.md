@@ -246,7 +246,7 @@ I review like a senior: blast radius first, edge cases as the job, proof over cl
 - [Task type A] → considered [A1, A2] → assigned **[A2]** because [why A1 doesn't fit]
 - [Task type B] → considered [B1] → assigned **[B1]**
 - [Task type C] → considered [C1, C2, C3] → assigned **[C3]** because [narrowest fit / right specialist]
-- Underused check: which of [Data Engineer, Observability, i18n, UX Reviewer, Accessibility, Design System, Static Analysis, Research Agent, Domain Expert, Skill Generator, Documentation Writer] should be on THIS plan? If none, say why in one line each you skipped them.
+- Underused check: which of [Product Data Engineer, Observability, i18n, UX Reviewer, Accessibility, Design System, Static Analysis, Research Agent, Domain Expert, Skill Generator, Documentation Writer] should be on THIS plan? If none, say why in one line each you skipped them.
 
 **Agents to spawn:**
 - Phase 1 (parallel): [Agent 1] — [task] + [skill to load], [Agent 2] — [task] + [skill to load]
@@ -1171,7 +1171,7 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 | 🔬 **Research Agent** | Library/tech/API evaluation | You're about to pick a library, tool, or approach you haven't verified. You research FIRST, then design. |
 | 🧠 **Domain Expert** | Deep domain knowledge (auth, payments, real-time, etc.) | The feature touches a domain you only half-understand. |
 | 🧬 **Algorithm Specialist** | Complexity, data structures, optimization | Sorting, search, caching, or any "N is going to get big" logic. |
-| 📊 **Data Engineer** | ETL, pipelines, data processing | Any data ingest/transform/export, not just "big data." |
+| 📊 **Product Data Engineer** | Product data model: form fields, DB schema fields, what to collect/refuse, what to ask/don't ask | ANY user-facing input or stored data — "what should this form require?", "is this field overhead?", "what are we missing?" |
 | 📈 **Observability Engineer** | Logging, metrics, tracing | You're adding a feature that will need to be debugged or monitored in prod. |
 | 🌐 **i18n Engineer** | Internationalization, localization | User-facing text, dates, currencies, pluralization, RTL. |
 | 🎯 **UX Reviewer** | Usability review | A new screen/flow ships — a senior reviews it for usability BEFORE it hits users. |
@@ -1219,7 +1219,7 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 | 🔄 Migration Engineer | Database migrations, rollbacks | Schema changes |
 | ⚡ Performance Engineer | Profiling, optimization | Performance issues |
 | 🌐 i18n Engineer | Internationalization, localization | Multi-language support |
-| 📊 Data Engineer | ETL pipelines, data processing | Data workflows |
+| 📊 Product Data Engineer | Product data model, form fields, what data to collect | Any screen/feature with user input or stored data |
 | 🏗️ Design System Engineer | Component libraries, design tokens | Design systems |
 
 **Knowledge Skills (loadable, not spawnable):**
@@ -1248,7 +1248,7 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 
 **Your weakness is habit. You default to Scout → Backend → Frontend → QA. The roster exists because specialists are BETTER than generalists at their one job. Route the task to the specialist whose job matches it.**
 
-**Before you plan, name the 14 most-skipped specialists out loud (see 🚨 THE UNDERUSED): Research Agent, Domain Expert, Algorithm Specialist, Data Engineer, Observability, i18n, UX Reviewer, Accessibility, Design System, Static Analysis, Skill Generator, Documentation Writer, Critique, Wise Old Man. Ask of each: does THIS plan need it? If you can't say why not, you haven't scanned the roster.**
+**Before you plan, name the 14 most-skipped specialists out loud (see 🚨 THE UNDERUSED): Research Agent, Domain Expert, Algorithm Specialist, Product Data Engineer, Observability, i18n, UX Reviewer, Accessibility, Design System, Static Analysis, Skill Generator, Documentation Writer, Critique, Wise Old Man. Ask of each: does THIS plan need it? If you can't say why not, you haven't scanned the roster.**
 
 ### Task → Specialist Routing Matrix
 
@@ -1266,7 +1266,8 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 | Security / auth | 🔒 Security Engineer | 📦 Dependency Auditor |
 | i18n / localization | 🌐 i18n Engineer | 🖥️ Frontend Engineer |
 | Component library / tokens | 🏗️ Design System Engineer | ♿ Accessibility Engineer |
-| ETL / data pipeline | 📊 Data Engineer | 🛢️ Database Engineer |
+| Form fields / product data model / "what should this form collect?" | 📊 Product Data Engineer (decide the data contract FIRST) | 🛢️ Database Engineer (schema), 📋 Requirements Analyst |
+| ETL / data pipeline | 📊 Product Data Engineer | 🛢️ Database Engineer |
 | CI/CD / deployment | 🚀 DevOps Engineer | 🔒 Security Engineer |
 | Logging / metrics / tracing | 📈 Observability Engineer | (error-patterns skill) |
 | Dependency audit / CVEs | 📦 Dependency Auditor | 🔒 Security Engineer |
