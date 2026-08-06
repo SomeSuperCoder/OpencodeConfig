@@ -2,7 +2,7 @@
 
 > **Хватит просить ассистента. Начните управлять компанией.**
 
-Один AI-инструмент для кодинга превращается в **самоорганизующуюся софтверную фирму** — тимлид, который командует, 13 лидов направлений, которые оркестрируют, 63 старших специалиста, которые исполняют, и конвейер микрозадач настолько быстрый, что полноценная функция выпускается за минуты, а не часы. Каждое изменение протестировано. Каждое изменение задокументировано. Каждое изменение проверено до того, как коснуться вашей кодовой базы.
+Один AI-инструмент для кодинга превращается в **самоорганизующуюся софтверную фирму** — тимлид, который командует, 15 лидов направлений, которые оркестрируют, 69 старших специалистов, которые исполняют, и конвейер микрозадач настолько быстрый, что полноценная функция выпускается за минуты, а не часы. Каждое изменение протестировано. Каждое изменение задокументировано. Каждое изменение проверено до того, как коснуться вашей кодовой базы.
 
 **Вы — Директор. Вы решаете, что важно. Всё остальное делает система.**
 
@@ -24,7 +24,7 @@
 |---------|-----|---------------------|
 | 👑 **Директор** | Вы | Видение, приоритеты, финальные решения |
 | 🧠 **Тимлид** | `team/tech-lead` | Планировать работу, формировать волны, ревьюить, отчитываться, коммитить |
-| 🧑‍💼 **13 лидов направлений** | `team/lead/*` | Советовать по своему направлению — планировать микрозадачи, рекомендовать ID специалистов, НИКОГДА не запускать |
+| 🧑‍💼 **15 лидов направлений** | `team/lead/*` | Советовать по своему направлению — планировать микрозадачи, рекомендовать ID специалистов, НИКОГДА не запускать |
 | 👥 **43 специалиста** | Старшие инженеры | Выполнить ОДНУ микрозадачу, доказать результат, передать, остановиться |
 
 **Директивы идут ВНИЗ. Отчёты идут ВВЕРХ. Лиды направлений советуют; тимлид запускает. Никто не нарушает цепочку команд.**
@@ -120,7 +120,7 @@
 `tech-lead` — оркестратор. Единственный, кто решает и запускает.
 
 **🧑‍💼 Лиды направлений (советующие — они планируют, запускаешь ты)**
-`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead` · `pinescript-lead` · `mobile-lead` · `web3-lead` · `seo-lead` · `lgtm-lead`
+`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead` · `pinescript-lead` · `mobile-lead` · `web3-lead` · `seo-lead` · `lgtm-lead` · `engagement-lead` · `highload-lead`
 
 **🎯 Оркестрация и суждения**
 `team/core/scout` (глаза — собирает контекст) · `team/core/wise-old-man` (совет по сложным решениям) · `team/product/product-understander` (ЗАЧЕМ это) · `team/product/requirements-analyst` · `team/product/software-architect` · `team/backend/api-designer` · `team/quality/critique` (разрушает дизайны до того, как их построят)
@@ -160,6 +160,12 @@
 
 **📊 Направление LGTM — стек наблюдаемости Grafana** (`team/lgtm/`)
 `loki-logging-engineer` (логи) · `grafana-dashboard-engineer` (визуализация) · `tempo-tracing-engineer` (трейсы) · `mimir-metrics-engineer` (метрики на длительный срок)
+
+**🎮 Направление Engagement — привлекательные, геймифицированные, удерживающие приложения** (`team/engagement/`)
+`gamification-engineer` (очки, значки, стрики, уровни, таблицы лидеров) · `behavioral-designer` (петли привычек, онбординг) · `retention-analyst` (D1/D7/D30, отток, когорты)
+
+**⚡ Направление High-Load — распределённые системы и оптимизация** (`team/highload/`)
+`highload-architect` (шардирование, очереди, кэш, асинхронность) · `highload-engineer` (горячие пути, конкурентность, память) · `load-testing-engineer` (нагрузочные тесты k6, планирование ёмкости)
 
 **👁️ Vision Reader** (`team/core/vision-reader`) — единственный агент с глазами. Все остальные специалисты работают на текстовой модели; он работает на MiMo (с поддержкой зрения) и читает фото, скриншоты, диаграммы и мокапы интерфейсов для всей команды.
 
@@ -213,7 +219,7 @@
 │       ├── tech-lead.md                ← КОРОЛЬ — оркестратор (агент по умолчанию)
 │       ├── lead/                       ← 🧑‍💼 ЛИДЫ НАПРАВЛЕНИЙ (советуют — планируют, не запускают)
 │       │   ├── frontend-lead.md · backend-lead.md · quality-lead.md
-│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md · pinescript-lead.md · mobile-lead.md · web3-lead.md · seo-lead.md · lgtm-lead.md
+│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md · pinescript-lead.md · mobile-lead.md · web3-lead.md · seo-lead.md · lgtm-lead.md · engagement-lead.md · highload-lead.md
 │       ├── core/                       ← сквозные (scout · wise-old-man · vision-reader)
 │       ├── frontend/                   ← engineer · ui-designer · ux-designer · design-system · animations · i18n
 │       ├── backend/                    ← engineer · api-designer · database · data · integration · llm
@@ -227,7 +233,9 @@
 │       ├── mobile/                    ← engineer · native-engineer · performance-engineer
 │       ├── web3/                      ← smart-contract · dapp-engineer · defi-analyst
 │       ├── seo/                       ← seo-engineer · content-strategist · analytics-specialist
-│       └── lgtm/                      ← loki · grafana-dashboard · tempo · mimir
+│       ├── lgtm/                      ← loki · grafana-dashboard · tempo · mimir
+│       ├── engagement/                ← gamification-engineer · behavioral-designer · retention-analyst
+│       └── highload/                  ← architect · engineer · load-testing-engineer
 └── skills/
     └── (17 паттерн-скиллов, загрузка по требованию)
 ```

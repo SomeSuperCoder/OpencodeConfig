@@ -2,7 +2,7 @@
 
 > **Deja de pedirle a un asistente. Empieza a dirigir una empresa.**
 
-Un único CLI de IA para programar se convierte en una **empresa de software autoorganizada** — un Jefe de Equipo que comanda, 13 Líderes de Campo que orquestan, 63 especialistas sénior que ejecutan, y un pipeline de microtareas tan rápido que una funcionalidad completa se publica en minutos, no en horas. Cada cambio está probado. Cada cambio está documentado. Cada cambio está verificado antes de tocar tu código.
+Un único CLI de IA para programar se convierte en una **empresa de software autoorganizada** — un Jefe de Equipo que comanda, 15 Líderes de Campo que orquestan, 69 especialistas sénior que ejecutan, y un pipeline de microtareas tan rápido que una funcionalidad completa se publica en minutos, no en horas. Cada cambio está probado. Cada cambio está documentado. Cada cambio está verificado antes de tocar tu código.
 
 **Tú eres el Director. Tú decides lo que importa. El sistema hace el resto.**
 
@@ -24,7 +24,7 @@ La razón es estructural. Un solo modelo haciendo todo a la vez es un **generali
 |-------|-------|------------|
 | 👑 **Director** | Tú | Visión, prioridades, decisiones finales |
 | 🧠 **Jefe de Equipo** | `team/tech-lead` | Planificar el trabajo, formar las oleadas, revisar, informar, hacer commit |
-| 🧑‍💼 **13 Líderes de Campo** | `team/lead/*` | Aconsejar sobre su campo — planificar microtareas, recomendar IDs de especialistas, NUNCA lanzar |
+| 🧑‍💼 **15 Líderes de Campo** | `team/lead/*` | Aconsejar sobre su campo — planificar microtareas, recomendar IDs de especialistas, NUNCA lanzar |
 | 👥 **43 Especialistas** | Ingenieros sénior | Hacer UNA microtarea, demostrarla, entregarla, parar |
 
 **Las directivas fluyen HACIA ABAJO. Los informes fluyen HACIA ARRIBA. Los Líderes de Campo aconsejan; el Jefe de Equipo lanza. Nadie salta la cadena de mando.**
@@ -120,7 +120,7 @@ Cada agente es un **ingeniero sénior con una única especialidad** — hacen su
 `tech-lead` — el orquestador. El único que decide y lanza.
 
 **🧑‍💼 Líderes de Campo (advisory — ellos planifican, tú lanzas)**
-`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead` · `pinescript-lead` · `mobile-lead` · `web3-lead` · `seo-lead` · `lgtm-lead`
+`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead` · `pinescript-lead` · `mobile-lead` · `web3-lead` · `seo-lead` · `lgtm-lead` · `engagement-lead` · `highload-lead`
 
 **🎯 Orquestación y criterio**
 `team/core/scout` (los ojos — recopila contexto) · `team/core/wise-old-man` (consejo en decisiones difíciles) · `team/product/product-understander` (el PORQUÉ) · `team/product/requirements-analyst` · `team/product/software-architect` · `team/backend/api-designer` · `team/quality/critique` (destruye diseños antes de que se construyan)
@@ -160,6 +160,12 @@ Cada agente es un **ingeniero sénior con una única especialidad** — hacen su
 
 **📊 Campo LGTM — stack de observabilidad Grafana** (`team/lgtm/`)
 `loki-logging-engineer` (logs) · `grafana-dashboard-engineer` (visualización) · `tempo-tracing-engineer` (traces) · `mimir-metrics-engineer` (métricas a largo plazo)
+
+**🎮 Campo Engagement — apps atractivas, con gamificación y retención** (`team/engagement/`)
+`gamification-engineer` (puntos, insignias, rachas, niveles, rankings) · `behavioral-designer` (bucles de enganche, hábito, onboarding) · `retention-analyst` (D1/D7/D30, churn, cohortes)
+
+**⚡ Campo High-Load — sistemas distribuidos y optimización** (`team/highload/`)
+`highload-architect` (sharding, colas, caché, async) · `highload-engineer` (rutas calientes, concurrencia, memoria) · `load-testing-engineer` (pruebas de carga/esfuerzo/saturación con k6, planificación de capacidad)
 
 **👁️ Vision Reader** (`team/core/vision-reader`) — el único agente con ojos. Todos los demás especialistas usan un modelo solo-texto; este usa MiMo (con visión) y lee fotos, capturas, diagramas y mockups de UI para todo el equipo.
 
@@ -212,7 +218,7 @@ Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
 │       ├── tech-lead.md               ← EL REY — el orquestador (agente por defecto)
 │       ├── lead/                      ← 🧑‍💼 LÍDERES DE CAMPO (advisory — planifican, nunca lanzan)
 │       │   ├── frontend-lead.md · backend-lead.md · quality-lead.md
-│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md · pinescript-lead.md · mobile-lead.md · web3-lead.md · seo-lead.md · lgtm-lead.md
+│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md · pinescript-lead.md · mobile-lead.md · web3-lead.md · seo-lead.md · lgtm-lead.md · engagement-lead.md · highload-lead.md
 │       ├── core/                      ← transversales (scout · wise-old-man · vision-reader)
 │       ├── frontend/                  ← engineer · ui-designer · ux-designer · design-system · animations · i18n
 │       ├── backend/                   ← engineer · api-designer · database · data · integration · llm
@@ -226,7 +232,9 @@ Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
 │       ├── mobile/                    ← engineer · native-engineer · performance-engineer
 │       ├── web3/                      ← smart-contract · dapp-engineer · defi-analyst
 │       ├── seo/                       ← seo-engineer · content-strategist · analytics-specialist
-│       └── lgtm/                      ← loki · grafana-dashboard · tempo · mimir
+│       ├── lgtm/                      ← loki · grafana-dashboard · tempo · mimir
+│       ├── engagement/                ← gamification-engineer · behavioral-designer · retention-analyst
+│       └── highload/                  ← architect · engineer · load-testing-engineer
 └── skills/
     └── (17 skills de patrones, cargadas bajo demanda)
 ```
