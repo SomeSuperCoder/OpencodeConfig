@@ -17,6 +17,7 @@ Thumbs.db
 # Secrets
 .env
 .env.*
+!.env.example
 secrets.json
 
 # Runtime state
