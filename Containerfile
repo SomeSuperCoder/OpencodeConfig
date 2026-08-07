@@ -52,9 +52,11 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --default-toolchain ${RUST_VERSION} \
     && /root/.cargo/bin/rustup component add clippy rustfmt
 
-# ---- Nushell (pinned, via cargo install) ----------------------------------
-# Built from source to pin the exact version.
-RUN /root/.cargo/bin/cargo install nu --version ${NUSHELL_VERSION}
+# ---- Nushell (via Fedora repos) -------------------------------------------
+# NOTE: Version is not pinned — Fedora ships whatever version is in repos.
+#       The NUSHELL_VERSION env var is retained for reference but not enforced.
+#       If exact version pinning is needed, add a COPR repo or revert to cargo install.
+RUN dnf install -y nushell && dnf clean all && rm -rf /var/cache/dnf
 
 # ---- just (pinned, binary install) ----------------------------------------
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh \
