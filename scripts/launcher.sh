@@ -28,6 +28,7 @@ readonly CONTAINER_HOSTNAME="opencode-env"
 readonly CONTAINER_WORKDIR="/workspace"
 readonly STATE_VOLUME="opencode-state"
 readonly AGENTMEMORY_HOST_DIR="${HOME}/.agentmemory"
+readonly IMPROVEMENTS_DIR="${HOME}/OpencodeImprovements"
 
 # --- Resolve script location (for finding Containerfile) ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -216,6 +217,7 @@ echo ""
 echo "   Workspace:      ${WORKSPACE_DIR} → ${CONTAINER_WORKDIR}"
 echo "   State volume:   ${STATE_VOLUME} → /home/allen/.config/opencode/data"
 echo "   Agentmemory:    ${AGENTMEMORY_HOST_DIR} ↔ /home/allen/.agentmemory"
+echo "   Improvements:   ${IMPROVEMENTS_DIR} ↔ /home/allen/OpencodeImprovements"
 echo "   Config:         baked into image (not mounted from host)"
 echo "   User:           $(id -u):$(id -g)"
 echo "   Hostname:       ${CONTAINER_HOSTNAME}"
@@ -238,6 +240,7 @@ exec podman run \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
     --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
     --volume "${AGENTMEMORY_HOST_DIR}:/home/allen/.agentmemory" \
+    --volume "${IMPROVEMENTS_DIR}:/home/allen/OpencodeImprovements" \
     ${VOLUME_MOUNTS[@]+"${VOLUME_MOUNTS[@]}"} \
     ${X11_MOUNTS[@]+"${X11_MOUNTS[@]}"} \
     ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \

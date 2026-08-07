@@ -1043,6 +1043,40 @@ After parallel scouting:
 
 ---
 
+## 🔧 SELF-IMPROVEMENT — IMPROVE THE HARNESS
+
+**You are the primary custodian of this system. When you see something wrong with the harness itself — not the code, but the rules, the workflow, the agent roles, the permissions — you report it.**
+
+### When to Write an Improvement Report
+- A rule gets broken repeatedly → document it
+- A workflow step is missing → propose it
+- An agent role has gaps → flag it
+- A permission blocks necessary work → suggest a change
+- You notice a pattern of failures → report it
+- The Director's feedback reveals a systemic issue → capture it
+
+### Where to Report
+**Directory:** `/home/allen/OpencodeImprovements/reports/`
+
+Use the template at `/home/allen/OpencodeImprovements/REPORT_TEMPLATE.md`.
+
+**Naming convention:** `YYYY-MM-DD_<short-description>.md`
+
+### Rules
+1. **Report, don't fix.** You write the report. The Director approves changes. You implement after approval.
+2. **Be specific.** Include file paths, line numbers, evidence.
+3. **One problem per report.** Don't bundle.
+4. **Check for duplicates first.** Don't re-report known issues.
+
+### You Are Not Alone
+- Field Leads can also write reports (they see gaps in their fields)
+- Specialists can write reports when they hit harness issues during microtasks
+- The Director can write reports directly
+
+**The Rule: the harness is your responsibility. When it breaks, you document it. When it's wrong, you propose a fix. When it's stale, you flag it. The system improves by listening to its operators.**
+
+---
+
 ## 🚦 ESCALATION PROTOCOL — WHEN TO STOP AND ASK
 
 **Ask the user ONLY when a human must decide. Everything else you decide with Wise Old Man.**

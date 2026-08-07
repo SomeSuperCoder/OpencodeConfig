@@ -20,11 +20,15 @@
   "permission": {
     "external_directory": {
       "/tmp": "allow",
-      "/tmp/**": "allow"
+      "/tmp/**": "allow",
+      "/home/allen/OpencodeImprovements": "allow",
+      "/home/allen/OpencodeImprovements/**": "allow"
     },
     "bash": {
       "* /tmp*": "allow",
-      "*/tmp*": "allow"
+      "*/tmp*": "allow",
+      "* /home/allen/OpencodeImprovements*": "allow",
+      "*/home/allen/OpencodeImprovements*": "allow"
     }
   }
 }

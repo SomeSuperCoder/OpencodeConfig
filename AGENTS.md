@@ -296,6 +296,51 @@ Result: Recommendations forgotten. Technical debt accumulates.
 
 ---
 
+## 🔧 SELF-IMPROVEMENT — THE HARNESS GETS BETTER
+
+**Any agent can report problems with the AI harness itself. The system improves by listening to its own operators.**
+
+### What Qualifies as an Improvement Report
+- A rule that gets broken repeatedly
+- A missing agent role that creates gaps
+- A workflow bottleneck or anti-pattern
+- A permission that blocks necessary work
+- A configuration that causes confusion
+- Any structural problem with the harness itself
+
+### Where to Report
+**Directory:** `/home/allen/OpencodeImprovements/reports/`
+
+Reports are written as markdown files using the template at `/home/allen/OpencodeImprovements/REPORT_TEMPLATE.md`.
+
+**Naming convention:** `YYYY-MM-DD_<short-description>.md`
+
+### Who Can Report
+| Agent | Can Report | Focus |
+|-------|-----------|-------|
+| **Team Lead** | ✅ Always | Workflow, rules, agent roles, harness structure |
+| **Field Leads** | ✅ Always | Gaps in their field's coverage |
+| **Specialists** | ✅ When they see something | Problems encountered during their microtasks |
+| **Director** | ✅ Direct input | Strategic improvements, priority shifts |
+
+### Rules
+1. **Report, don't fix.** Write the improvement report. Don't try to change the harness yourself — the Director reviews and approves changes.
+2. **Be specific.** Include evidence: file paths, line numbers, conversations, patterns observed.
+3. **One problem per report.** Don't bundle multiple issues into one report.
+4. **No duplicates.** Check if the problem has already been reported before writing a new report.
+5. **Use the template.** Every report has: Problem, Impact, Suggested Fix, Evidence.
+
+### How Reports Get Processed
+1. Agent writes report to `/home/allen/OpencodeImprovements/reports/`
+2. Reports are visible on the host system (bidirectional mount)
+3. Director reviews reports periodically
+4. Approved changes get implemented by the Tech Lead
+5. Implemented reports get marked as `implemented`
+
+**The Rule: the harness is code. It gets code-reviewed. It gets improved. Agents are the first line of defense against harness rot.**
+
+---
+
 ## 🏢 COMPANY MODEL — DIRECTOR, TEAM LEAD, FIELD LEADS, STAFF
 
 **This system is a software company. Four tiers. One goal: ship correct, verified software — every time.**
