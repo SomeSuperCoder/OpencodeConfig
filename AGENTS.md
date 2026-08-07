@@ -110,6 +110,8 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 | **Consult Field Leads for complex work** | Leads know their field's specialists. 30 sec consultation prevents30 min wrong spawning. |
 | **FIRCAC out loud** | Silent thinking = silent mistakes. Speak reasoning = auditable decisions. |
 | **One suite, one owner** | Multiple agents re-running same tests = waste. Test Engineer runs, everyone consumes verdict. |
+| **ORIGINAL REQUEST PRESERVATION** | Tests pass ≠ right thing built. Every agent must know WHAT the user asked for, not just the spec. The spec is an interpretation; the original request is the truth. |
+| **USER INTENT GATE** | Before commit, Tech Lead must ask: "Does this actually do what the user asked?" Not "does it pass tests?" — "does it solve the user's problem?" |
 
 ### The Company Map
 ```
@@ -144,6 +146,76 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - 👥 **Specialist** — do ONE microtask, deliver, stop
 
 **If you're a specialist and you find yourself doing another specialist's work → STOP. REPORT IT. That's not your lane.**
+
+### 🚨 THE ORIGINAL REQUEST — NEVER LOSE IT
+**The user's original words are the TRUTH. The spec is an interpretation. Tests verify the spec. But the user asked for something else.**
+
+**The Problem This Solves:**
+```
+User: "Make the checkout button bigger"
+Spec: "Increase button padding by 20px"
+Tests: Pass (button is bigger)
+Result: Button is bigger but wrong color, user wanted it MORE VISIBLE
+```
+
+**The Rule:**
+1. **Preserve the original request** — Tech Lead must quote it in every spec
+2. **Every agent must know it** — Spawn prompts include: "USER REQUESTED: [exact words]"
+3. **Validate before commit** — Tech Lead asks: "Does this solve the USER'S problem?"
+4. **If spec drifts from intent** — ESCALATE, don't commit
+
+**The User Intent Gate:**
+```
+Before EVERY commit, ask:
+1. What did the user ACTUALLY ask for? (exact words)
+2. What did we BUILD? (deliverable)
+3. Does it solve THEIR problem? (not just pass tests)
+4. If NO → STOP. Re-align. Don't commit.
+```
+
+### 📋 RECOMMENDATIONS — PERSIST IMPROVEMENTS, DON'T LOSE THEM
+**When an agent gives "Pass with notes" or "Pass with recommendations", those recommendations MUST be saved to `recommendations/` directory — not lost in chat history.**
+
+**The Problem This Solves:**
+```
+QA: "Pass with recommendations: add rate limiting, improve error messages"
+Tech Lead: "Noted. Moving on."
+Result: Recommendations forgotten. Technical debt accumulates.
+```
+
+**The Solution:**
+1. **Save to `recommendations/`** — persistent directory, not gitignored
+2. **Organized by domain** — security/, performance/, quality/, testing/, accessibility/, architecture/, general/
+3. **User controls implementation** — say "Implement all prior recommendations" when ready
+4. **Nothing gets lost** — every improvement suggestion is tracked
+
+**When to Save:**
+- QA gives "Pass with recommendations"
+- Security reviewer gives "Pass with notes"
+- Code reviewer suggests improvements
+- Test Engineer identifies flaky tests or coverage gaps
+- Any agent gives a non-blocking improvement suggestion
+
+**File Format:**
+```markdown
+# [Topic]
+**Date:** YYYY-MM-DD
+**Source:** [Agent]
+**Priority:** low | medium | high
+**Status:** pending | in_progress | implemented | dismissed
+**Effort:** quick (<1hr) | medium (1-4hr) | large (>4hr)
+
+## Recommendation
+[What should be improved]
+
+## Rationale
+[Why it matters]
+
+## Evidence
+[Links to code, findings]
+```
+
+**User Command:** "Implement all prior recommendations" → Tech Lead scans `recommendations/`, groups by domain, spawns specialists, implements.
 
 ---
 
@@ -874,6 +946,7 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 **Files touched:** [paths]
 **Next owner:** [who handles what remains — if any]
 **Blockers / open questions:** [none, or list]
+**Recommendations:** [improvement suggestions — save to recommendations/ directory]
 ```
 
 **Rules:**
@@ -881,6 +954,7 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 - **Evidence is not optional.** "I did it" is worthless; attach proof.
 - **Next owner names a specific agent.** No "someone needs to..." — who, exactly.
 - **Agents that produce a review/verdict artifact (Code Reviewer, QA, Security, Critique) still add a HANDOFF at the end of their report.**
+- **Recommendations are saved, not lost.** Non-blocking improvements go to `recommendations/` directory.
 
 **🏃 HANDOFF IS SUCCESSION, NOT A REPORT:** your handoff is the *trigger* for the next agent. The Tech Lead does NOT re-derive what's next — it reads your **Next owner** and spawns them. So make Next owner **specific and actionable** ("test-engineer → write unit tests for createOrder, scope = the service + its callers"), never vague ("someone should test this"). A good handoff hands over the baton; a vague one stalls the pipeline.
 

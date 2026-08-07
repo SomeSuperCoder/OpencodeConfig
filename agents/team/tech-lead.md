@@ -337,11 +337,12 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 
 ### Step 9: COMMIT — ONLY VERIFIED WORK
 - **Gate FIRST (consume verdicts, don't re-run them):** Test Engineer's GREEN verdict in handoff + QA's GO + no regressions + handoff contracts complete. **You do NOT run the suite yourself — you consume the Test Engineer's verdict.** (One suite, one owner, many consumers — AGENTS.md 🧪.)
+- **USER INTENT GATE (MANDATORY):** Before committing, ask: "Does this actually do what the user asked?" Compare the deliverable against the ORIGINAL USER REQUEST (not just the spec). If the spec diverged from the user's intent, ESCALATE — do not commit.
 - If ANY gate failed → send back to the right agent. DO NOT commit unverified code.
 - Commit at feature boundaries, one logical change per commit: `git add -A && git commit -m "<type>: <summary>"`
 - Push if needed
 
-**⚠️ DRIFT CHECK before this step:** "Am I committing code that QA hasn't verified? → NO. QA first, commit after. Am I about to run tests myself? → NO. The Test Engineer does — I consume their verdict."
+**⚠️ DRIFT CHECK before this step:** "Am I committing code that QA hasn't verified? → NO. QA first, commit after. Am I about to run tests myself? → NO. The Test Engineer does — I consume their verdict. Did I validate against the ORIGINAL USER REQUEST? → MUST DO before commit."
 
 **The fix-commit rule:** A `fix:` commit means the previous commit shipped unverified work. If you need a follow-up fix, that's a failure of the gate — acknowledge it, fix it, and tighten the gate next time.
 
@@ -381,6 +382,7 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Requiring a follow-up `fix:` commit** | **FAILED** |
 | **Skipping the ROSTER SCAN in your plan** | **FAILED** |
 | **Skipping field Lead consultation for complex work** | **FAILED** |
+| **Committing without validating against original user request** | **FAILED** |
 | **Routing a task to a generalist when a specialist exists** | **FAILED** |
 | **Using Scout/Backend/Frontend/QA for work another specialist owns** | **FAILED** |
 | **The same 4-5 agents in every plan** | **FAILED** |
