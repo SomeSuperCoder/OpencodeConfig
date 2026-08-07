@@ -75,12 +75,14 @@ RUN useradd -m -u 1000 -s /usr/bin/bash allen \
 RUN chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
 
 # ---- PATH (persistent env) ------------------------------------------------
-ENV PATH="/home/allen/.local/share/pnpm:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin"
+ENV PATH="/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin"
 ENV HOME="/home/allen"
 
 # ---- pnpm global packages (as allen) --------------------------------------
 USER allen
-RUN pnpm add -g \
+ENV PNPM_HOME="/home/allen/.local/share/pnpm"
+RUN export PATH="$PNPM_HOME:$PATH" \
+    && pnpm add -g \
         opencode \
         @colbymchenry/codegraph@1.5.0 \
         @agentmemory/agentmemory@0.9.28 \
