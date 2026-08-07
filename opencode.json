@@ -4,10 +4,13 @@
     "agentmemory": {
       "type": "local",
       "command": [
-        "env",
-        "CI=true",
-        "agentmemory"
+        "npx",
+        "-y",
+        "@agentmemory/mcp"
       ],
+      "environment": {
+        "AGENTMEMORY_URL": "http://localhost:3111"
+      },
       "enabled": true
     }
   }
