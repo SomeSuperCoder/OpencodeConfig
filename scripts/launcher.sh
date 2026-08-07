@@ -26,6 +26,7 @@ readonly IMAGE_NAME="opencode-env"
 readonly CONTAINER_HOSTNAME="opencode-env"
 readonly CONTAINER_WORKDIR="/workspace"
 readonly STATE_VOLUME="opencode-state"
+readonly AGENTMEMORY_VOLUME="opencode-agentmemory"
 
 # --- Resolve script location (for finding Containerfile) ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -231,6 +232,7 @@ exec podman run \
     --env "PATH=/home/allen/.config/opencode/scripts:/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
     --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
+    --volume "${AGENTMEMORY_VOLUME}:/home/allen/.agentmemory" \
     ${VOLUME_MOUNTS[@]+"${VOLUME_MOUNTS[@]}"} \
     ${X11_MOUNTS[@]+"${X11_MOUNTS[@]}"} \
     ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
