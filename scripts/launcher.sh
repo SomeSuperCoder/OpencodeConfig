@@ -166,6 +166,31 @@ if [[ ! -d "$WORKSPACE_DIR" ]]; then
     exit 1
 fi
 
+# --- Handle Tavily API key ---
+SECRETS_DIR="${CONFIG_ROOT}/.secrets"
+TAVILY_KEY_FILE="${SECRETS_DIR}/tavily.key"
+TAVILY_MOUNT=""
+
+if [[ -f "$TAVILY_KEY_FILE" ]]; then
+    TAVILY_MOUNT="--volume ${TAVILY_KEY_FILE}:/home/allen/.config/opencode/.secrets/tavily.key:ro"
+else
+    echo "🔑 Tavily API key not found."
+    echo "   Tavily is needed for web search in opencode."
+    echo ""
+    read -rp "   Enter your Tavily API key (or press Enter to skip): " TAVILY_KEY
+
+    if [[ -n "$TAVILY_KEY" ]]; then
+        mkdir -p "$SECRETS_DIR"
+        echo -n "$TAVILY_KEY" > "$TAVILY_KEY_FILE"
+        chmod 600 "$TAVILY_KEY_FILE"
+        TAVILY_MOUNT="--volume ${TAVILY_KEY_FILE}:/home/allen/.config/opencode/.secrets/tavily.key:ro"
+        echo "   ✅ Key saved to ${TAVILY_KEY_FILE}"
+    else
+        echo "   ⚠️  Skipping — Tavily search won't work without a key."
+    fi
+    echo ""
+fi
+
 # --- Print what we're doing ---
 echo "🚀 Launching opencode container..."
 echo ""
@@ -191,5 +216,6 @@ exec podman run \
     --env "PATH=/home/allen/.config/opencode/scripts:/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
     --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
+    ${TAVILY_MOUNT:+"$TAVILY_MOUNT"} \
     "${EXTRA_ARGS[@]}" \
     "$IMAGE_NAME"
