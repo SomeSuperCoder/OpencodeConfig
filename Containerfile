@@ -69,7 +69,9 @@ RUN useradd -m -u 1000 -s /usr/bin/bash allen \
         /home/allen/.local/bin \
         /home/allen/.opencode/bin \
         /workspace \
-    && chown -R allen:allen /home/allen /workspace
+    && chown -R allen:allen /home/allen /workspace \
+    && git config --global user.email "opencode@container" \
+    && git config --global user.name "OpenCode User"
 
 # Fix Rust/cargo ownership (installed as root above)
 RUN chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
