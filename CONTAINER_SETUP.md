@@ -57,12 +57,25 @@ opencode
 
 That's it. The launcher handles everything: image build, API key setup, workspace mounts, clipboard support.
 
-**Your first project** — the launcher drops you into a bash shell inside the container, with your working folder mounted as `/workspace`. Pick your path:
+**Your first project** — the launcher drops you into a bash shell inside the container. Pick your path:
 
-| What you want | Do this |
-|---------------|---------|
-| 🆕 **Create a new project** | `create-project my-api` — scaffolds git, README, a per-project `.opencode/` config, and a codegraph index. Then `cd my-api` and `opencode`. |
-| 📂 **Open an existing project** | Launch with its path: `./scripts/launcher.sh /path/to/my/project`, then inside the container run `setup-project` (wires OpenSpec + CodeGraph) and `opencode`. |
+🆕 **New project** — scaffold it, step into it, start opencode:
+
+```bash
+create-project my-api      # scaffold (git, per-project config, codegraph)
+cd my-api                  # step into it
+opencode                   # start working
+```
+
+📂 **Existing project** — mount your projects folder, step into it, wire it up:
+
+```bash
+./scripts/launcher.sh ~/code    # on the host — mount your projects folder
+
+cd /workspace/my-api            # inside the container — step into the project
+setup-project                   # init OpenSpec + CodeGraph for it
+opencode                        # start working
+```
 
 > **⚠️ Important:** Clone to a **separate directory** (e.g., `~/opencode-container`), NOT to `~/.config/opencode`. The container bakes its own copy of the config at build time. Your host's `~/.config/opencode` stays untouched.
 

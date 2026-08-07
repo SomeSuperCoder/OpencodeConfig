@@ -57,12 +57,25 @@ opencode
 
 Eso es todo. El launcher maneja todo: compilación de la imagen, configuración de la clave API, montajes del espacio de trabajo, soporte de portapapeles.
 
-**Tu primer proyecto** — el launcher te deja en un shell bash dentro del contenedor, con tu carpeta de trabajo montada como `/workspace`. Elige tu camino:
+**Tu primer proyecto** — el launcher te deja en un shell bash dentro del contenedor. Elige tu camino:
 
-| Qué quieres | Haz esto |
-|-------------|----------|
-| 🆕 **Crear un nuevo proyecto** | `create-project my-api` — crea git, README, una configuración `.opencode/` por proyecto y un índice de codegraph. Luego `cd my-api` y `opencode`. |
-| 📂 **Abrir un proyecto existente** | Ejecuta el launcher con su ruta: `./scripts/launcher.sh /path/to/my/project`, y luego dentro del contenedor ejecuta `setup-project` (configura OpenSpec y CodeGraph) y `opencode`. |
+🆕 **Nuevo proyecto** — créalo, entra en él y empieza a trabajar:
+
+```bash
+create-project my-api      # crea (git, configuración por proyecto, codegraph)
+cd my-api                  # entra en él
+opencode                   # empieza a trabajar
+```
+
+📂 **Proyecto existente** — monta tu carpeta de proyectos, entra en él y conéctalo:
+
+```bash
+./scripts/launcher.sh ~/code    # en el host — monta tu carpeta de proyectos
+
+cd /workspace/my-api            # dentro del contenedor — entra en el proyecto
+setup-project                   # inicializa OpenSpec y CodeGraph
+opencode                        # empieza a trabajar
+```
 
 > **⚠️ Importante:** Clona en un **directorio separado** (por ejemplo, `~/opencode-container`), NO en `~/.config/opencode`. El contenedor integra su propia copia de la configuración al momento de compilar. El `~/.config/opencode` de tu host permanece intacto.
 
