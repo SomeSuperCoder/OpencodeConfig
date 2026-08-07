@@ -57,6 +57,13 @@ opencode
 
 Eso es todo. El launcher maneja todo: compilación de la imagen, configuración de la clave API, montajes del espacio de trabajo, soporte de portapapeles.
 
+**Tu primer proyecto** — el launcher te deja en un shell bash dentro del contenedor, con tu carpeta de trabajo montada como `/workspace`. Elige tu camino:
+
+| Qué quieres | Haz esto |
+|-------------|----------|
+| 🆕 **Crear un nuevo proyecto** | `create-project my-api` — crea git, README, una configuración `.opencode/` por proyecto y un índice de codegraph. Luego `cd my-api` y `opencode`. |
+| 📂 **Abrir un proyecto existente** | Ejecuta el launcher con su ruta: `./scripts/launcher.sh /path/to/my/project`, y luego dentro del contenedor ejecuta `setup-project` (configura OpenSpec y CodeGraph) y `opencode`. |
+
 > **⚠️ Importante:** Clona en un **directorio separado** (por ejemplo, `~/opencode-container`), NO en `~/.config/opencode`. El contenedor integra su propia copia de la configuración al momento de compilar. El `~/.config/opencode` de tu host permanece intacto.
 
 ---
@@ -121,6 +128,10 @@ Te sumerges en un shell bash dentro del contenedor, en `/workspace`:
    User:           1000:1000
    Hostname:       opencode-env
 ```
+
+**¿Y ahora qué?**
+- 🆕 **Nuevo proyecto:** ejecuta `create-project my-api` → `cd my-api` → `opencode` (ver [Crear un Nuevo Proyecto](#crear-un-nuevo-proyecto)).
+- 📂 **Proyecto existente:** relanza con su ruta — `./scripts/launcher.sh /path/to/my/project` — y luego `setup-project` y `opencode` (ver [Abrir un Proyecto Existente](#abrir-un-proyecto-existente)).
 
 ---
 
@@ -225,6 +236,34 @@ create-project my-api --no-codegraph    # Omitir inicialización de codegraph
 create-project my-api --dir ~/projects  # Crear en un directorio padre específico
 ```
 
+### Abrir un Proyecto Existente
+
+Monta cualquier proyecto existente como `/workspace` pasando su ruta al launcher:
+
+```bash
+# En el host
+./scripts/launcher.sh /path/to/my/project
+```
+
+Caes en la raíz del proyecto dentro del contenedor. Conéctalo para opencode:
+
+```bash
+# 1. Inicializa OpenSpec + CodeGraph para este directorio
+setup-project
+
+# 2. Empieza a trabajar
+opencode
+```
+
+**Qué hace `setup-project`** — inicializa las dos cosas que los agentes necesitan para ser eficaces en una base de código existente:
+
+- **OpenSpec** (`openspec init`) — desarrollo dirigido por especificaciones: una estructura `openspec/` (config, cambios, specs) además de herramientas de OpenCode en `.opencode/`
+- **CodeGraph** (`codegraph init`) — indexa la base de código (`.codegraph/`) para que los agentes puedan explorar símbolos, cadenas de llamadas y alcance de impacto
+
+Es seguro volver a ejecutarlo — ambas herramientas son idempotentes. Pasa un directorio para apuntar a algo distinto del actual (`setup-project /path/to/project`).
+
+> Los archivos son **bidireccionales** — las ediciones que hagas dentro del contenedor aparecen en tu host y viceversa.
+
 ### Ejecutar opencode
 
 ```bash
@@ -321,7 +360,7 @@ chmod 600 ~/opencode-container/.secrets/tavily.key
 | AGENTS.md | `/home/allen/.config/opencode/AGENTS.md` |
 | Configuración de opencode | `/home/allen/.config/opencode/opencode.jsonc` |
 | Dependencias de paquetes | `/home/allen/.config/opencode/node_modules/` |
-| Scripts | `/usr/local/bin/first-run`, `/usr/local/bin/create-project` |
+| Scripts | `/usr/local/bin/first-run`, `/usr/local/bin/create-project`, `/usr/local/bin/setup-project` |
 
 ### Estado Persistente
 
@@ -442,8 +481,8 @@ cd ~/opencode-container        # O donde lo hayas clonado
 
 # Dentro del contenedor
 create-project my-app          # Nuevo proyecto
+setup-project                  # Configurar un proyecto existente (OpenSpec + CodeGraph)
 opencode                       # Iniciar el TUI
-codegraph init                 # Indexar un proyecto para codegraph
 
 # En el host
 ~/opencode-container/.secrets/ # Directorio de secretos

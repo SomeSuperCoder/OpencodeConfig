@@ -57,6 +57,13 @@ opencode
 
 Вот и всё. Лаунчер делает всё: сборку образа, настройку API-ключа, монтирование рабочей области, поддержку буфера обмена.
 
+**Ваш первый проект** — лаунчер переносит вас в bash-оболочку внутри контейнера, где ваша рабочая папка смонтирована как `/workspace`. Выберите свой путь:
+
+| Что вы хотите | Что делать |
+|---------------|------------|
+| 🆕 **Создать новый проект** | `create-project my-api` — создаёт git, README, конфигурацию `.opencode/` для проекта и индекс codegraph. Затем `cd my-api` и `opencode`. |
+| 📂 **Открыть существующий проект** | Запустите лаунчер с путём проекта: `./scripts/launcher.sh /path/to/my/project`, затем внутри контейнера выполните `setup-project` (настроит OpenSpec и CodeGraph) и `opencode`. |
+
 > **⚠️ Важно:** Клонируйте в **отдельный каталог** (например, `~/opencode-container`), а НЕ в `~/.config/opencode`. Контейнер собирает собственную копию конфигурации во время сборки. Ваш `~/.config/opencode` на хосте остаётся нетронутым.
 
 ---
@@ -121,6 +128,10 @@ cd ~/opencode-container
    User:           1000:1000
    Hostname:       opencode-env
 ```
+
+**Что дальше?**
+- 🆕 **Новый проект:** выполните `create-project my-api` → `cd my-api` → `opencode` (см. [Создание нового проекта](#создание-нового-проекта)).
+- 📂 **Существующий проект:** перезапустите с его путём — `./scripts/launcher.sh /path/to/my/project` — затем `setup-project` и `opencode` (см. [Открытие существующего проекта](#открытие-существующего-проекта)).
 
 ---
 
@@ -225,6 +236,34 @@ create-project my-api --no-codegraph    # Пропустить инициали�
 create-project my-api --dir ~/projects  # Создать в конкретном родительском каталоге
 ```
 
+### Открытие существующего проекта
+
+Смонтируйте любой существующий проект как `/workspace`, передав его путь лаунчеру:
+
+```bash
+# На хосте
+./scripts/launcher.sh /path/to/my/project
+```
+
+Вы попадёте в корень проекта внутри контейнера. Подключите его к opencode:
+
+```bash
+# 1. Инициализируйте OpenSpec + CodeGraph для этого каталога
+setup-project
+
+# 2. Начните работать
+opencode
+```
+
+**Что делает `setup-project`** — инициализирует две вещи, необходимые агентам для эффективной работы с существующей кодовой базой:
+
+- **OpenSpec** (`openspec init`) — разработка по спецификациям: структура `openspec/` (конфиг, изменения, спецификации) плюс инструменты OpenCode в `.opencode/`
+- **CodeGraph** (`codegraph init`) — индексирует кодовую базу (`.codegraph/`), чтобы агенты могли исследовать символы, цепочки вызовов и зону поражения
+
+Повторный запуск безопасен — обе утилиты идемпотентны. Передайте каталог, чтобы указать на что-то отличное от текущего (`setup-project /path/to/project`).
+
+> Файлы **двунаправленные** — правки, сделанные внутри контейнера, появляются на хосте и наоборот.
+
 ### Запуск opencode
 
 ```bash
@@ -321,7 +360,7 @@ chmod 600 ~/opencode-container/.secrets/tavily.key
 | AGENTS.md | `/home/allen/.config/opencode/AGENTS.md` |
 | Конфигурация opencode | `/home/allen/.config/opencode/opencode.jsonc` |
 | Зависимости пакетов | `/home/allen/.config/opencode/node_modules/` |
-| Скрипты | `/usr/local/bin/first-run`, `/usr/local/bin/create-project` |
+| Скрипты | `/usr/local/bin/first-run`, `/usr/local/bin/create-project`, `/usr/local/bin/setup-project` |
 
 ### Постоянное состояние
 
@@ -442,8 +481,8 @@ cd ~/opencode-container        # Или где вы клонировали
 
 # Внутри контейнера
 create-project my-app          # Новый проект
+setup-project                  # Настроить существующий проект (OpenSpec + CodeGraph)
 opencode                       # Запустить TUI
-codegraph init                 # Индексировать проект для codegraph
 
 # На хосте
 ~/opencode-container/.secrets/ # Каталог секретов

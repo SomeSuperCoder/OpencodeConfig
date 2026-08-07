@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ============================================================================
+# setup-project — Prepare an EXISTING directory for opencode work
+# Initializes OpenSpec (spec-driven development) and CodeGraph (codebase
+# intelligence) in the given project directory.
+#
+# Usage: setup-project [directory]
+#   directory   Project to set up (default: current directory)
+#
+# Unlike create-project, this does NOT scaffold anything new — it wires spec
+# management and codebase indexing into a project that already exists.
+# Safe to re-run: both tools are idempotent.
+# ============================================================================
+
+# --- Color support (graceful fallback) ---
+if [[ -t 1 ]] && command -v tput &>/dev/null && [[ "$(tput colors 2>/dev/null || echo 0)" -ge 8 ]]; then
+  RED=$(tput setaf 1)
+  GREEN=$(tput setaf 2)
+  YELLOW=$(tput setaf 3)
+  BLUE=$(tput setaf 4)
+  BOLD=$(tput bold)
+  RESET=$(tput sgr0)
+else
+  RED="" GREEN="" YELLOW="" BLUE="" BOLD="" RESET=""
+fi
+
+# --- Helpers ---
+info()  { printf "%s%sℹ%s  %s\n" "$BLUE"  "$BOLD" "$RESET" "$*"; }
+ok()    { printf "%s%s✅%s %s\n" "$GREEN" "$BOLD" "$RESET" "$*"; }
+warn()  { printf "%s%s⚠️ %s%s\n" "$YELLOW" "$BOLD" "$*" "$RESET"; }
+err()   { printf "%s%s❌%s %s\n" "$RED"   "$BOLD" "$RESET" "$*" >&2; }
+die()   { err "$@"; exit 1; }
+
+# --- Usage ---
+usage() {
+  cat <<EOF
+${BOLD}Usage:${RESET} setup-project [directory]
+
+Prepare an existing project for opencode by initializing:
+  - OpenSpec   (spec-driven development: openspec/ structure + .opencode/ tools)
+  - CodeGraph  (codebase intelligence: .codegraph/ index)
+
+${BOLD}Options:${RESET}
+  --help            Show this help message
+
+${BOLD}Arguments:${RESET}
+  directory         Project to set up (default: current directory)
+
+${BOLD}Examples:${RESET}
+  setup-project
+  setup-project /workspace/my-project
+EOF
+}
+
+# --- Parse arguments ---
+TARGET_DIR=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    -*)
+      die "Unknown option: $1 (use --help for usage)"
+      ;;
+    *)
+      if [[ -z "$TARGET_DIR" ]]; then
+        TARGET_DIR="$1"
+      else
+        die "Unexpected argument: $1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+# --- Default to current directory ---
+if [[ -z "$TARGET_DIR" ]]; then
+  TARGET_DIR="$(pwd)"
+fi
+
+# --- Resolve to absolute path ---
+if ! TARGET_DIR="$(cd "$TARGET_DIR" 2>/dev/null && pwd)"; then
+  die "Directory does not exist: $TARGET_DIR"
+fi
+
+# --- Verify it's a directory ---
+if [[ ! -d "$TARGET_DIR" ]]; then
+  die "Not a directory: $TARGET_DIR"
+fi
+
+cd "$TARGET_DIR"
+info "Setting up project at ${BOLD}${TARGET_DIR}${RESET}"
+
+# --- Initialize OpenSpec ---
+if command -v openspec &>/dev/null; then
+  info "Initializing OpenSpec (spec-driven development)..."
+  if openspec init --tools opencode --no-animation . >/dev/null 2>&1; then
+    ok "OpenSpec initialized"
+  else
+    warn "openspec init returned non-zero — you may need to run it manually"
+  fi
+else
+  warn "openspec not found in PATH — skipping (install it and run 'openspec init' later)"
+fi
+
+# --- Initialize CodeGraph ---
+if command -v codegraph &>/dev/null; then
+  info "Initializing CodeGraph index..."
+  if codegraph init >/dev/null 2>&1; then
+    ok "CodeGraph initialized"
+  else
+    warn "codegraph init returned non-zero — you may need to run it manually"
+  fi
+else
+  warn "codegraph not found in PATH — skipping (install it and run 'codegraph init' later)"
+fi
+
+# --- Print summary ---
+echo ""
+ok "Project setup complete"
+echo ""
+echo "  Next steps:"
+echo "    cd ${TARGET_DIR}"
+echo "    opencode"
+echo ""

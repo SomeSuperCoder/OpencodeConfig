@@ -110,7 +110,8 @@ COPY --chown=allen:allen scripts/ /tmp/scripts/
 RUN mkdir -p /usr/local/bin \
     && mv /tmp/scripts/first-run.sh /usr/local/bin/first-run \
     && mv /tmp/scripts/create-project /usr/local/bin/create-project \
-    && chmod +x /usr/local/bin/first-run /usr/local/bin/create-project \
+    && mv /tmp/scripts/setup-project /usr/local/bin/setup-project \
+    && chmod +x /usr/local/bin/first-run /usr/local/bin/create-project /usr/local/bin/setup-project \
     && rm -rf /tmp/scripts
 USER allen
 

@@ -57,6 +57,13 @@ opencode
 
 That's it. The launcher handles everything: image build, API key setup, workspace mounts, clipboard support.
 
+**Your first project** — the launcher drops you into a bash shell inside the container, with your working folder mounted as `/workspace`. Pick your path:
+
+| What you want | Do this |
+|---------------|---------|
+| 🆕 **Create a new project** | `create-project my-api` — scaffolds git, README, a per-project `.opencode/` config, and a codegraph index. Then `cd my-api` and `opencode`. |
+| 📂 **Open an existing project** | Launch with its path: `./scripts/launcher.sh /path/to/my/project`, then inside the container run `setup-project` (wires OpenSpec + CodeGraph) and `opencode`. |
+
 > **⚠️ Important:** Clone to a **separate directory** (e.g., `~/opencode-container`), NOT to `~/.config/opencode`. The container bakes its own copy of the config at build time. Your host's `~/.config/opencode` stays untouched.
 
 ---
@@ -121,6 +128,10 @@ You're dropped into a bash shell inside the container, in `/workspace`:
    User:           1000:1000
    Hostname:       opencode-env
 ```
+
+**What now?**
+- 🆕 **New project:** run `create-project my-api` → `cd my-api` → `opencode` (see [Creating a New Project](#creating-a-new-project)).
+- 📂 **Existing project:** relaunch with its path — `./scripts/launcher.sh /path/to/my/project` — then `setup-project` and `opencode` (see [Opening an Existing Project](#opening-an-existing-project)).
 
 ---
 
@@ -225,6 +236,34 @@ create-project my-api --no-codegraph    # Skip codegraph init
 create-project my-api --dir ~/projects  # Create in a specific parent dir
 ```
 
+### Opening an Existing Project
+
+Mount any existing project as `/workspace` by passing its path to the launcher:
+
+```bash
+# On the host
+./scripts/launcher.sh /path/to/my/project
+```
+
+You're dropped into the project root inside the container. Wire it up for opencode:
+
+```bash
+# 1. Initialize OpenSpec + CodeGraph for this directory
+setup-project
+
+# 2. Start working
+opencode
+```
+
+**What `setup-project` does** — it initializes the two things agents need to be effective on an existing codebase:
+
+- **OpenSpec** (`openspec init`) — spec-driven development: an `openspec/` structure (config, changes, specs) plus OpenCode tooling in `.opencode/`
+- **CodeGraph** (`codegraph init`) — indexes the codebase (`.codegraph/`) so agents can explore symbols, call chains, and blast radius
+
+It's safe to re-run — both tools are idempotent. Pass a directory to target something other than the current one (`setup-project /path/to/project`).
+
+> Files are **bidirectional** — edits you make inside the container appear on your host and vice versa.
+
 ### Running opencode
 
 ```bash
@@ -321,7 +360,7 @@ chmod 600 ~/opencode-container/.secrets/tavily.key
 | AGENTS.md | `/home/allen/.config/opencode/AGENTS.md` |
 | opencode config | `/home/allen/.config/opencode/opencode.jsonc` |
 | Package deps | `/home/allen/.config/opencode/node_modules/` |
-| Scripts | `/usr/local/bin/first-run`, `/usr/local/bin/create-project` |
+| Scripts | `/usr/local/bin/first-run`, `/usr/local/bin/create-project`, `/usr/local/bin/setup-project` |
 
 ### Persistent State
 
@@ -442,8 +481,8 @@ cd ~/opencode-container        # Or wherever you cloned
 
 # Inside the container
 create-project my-app          # New project
+setup-project                  # Wire an existing project (OpenSpec + CodeGraph)
 opencode                       # Start the TUI
-codegraph init                 # Index a project for codegraph
 
 # On the host
 ~/opencode-container/.secrets/ # Secrets directory
