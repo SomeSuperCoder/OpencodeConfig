@@ -103,12 +103,14 @@ COPY --chown=allen:allen \
     /home/allen/.config/opencode/
 
 # ---- Scripts (changes most often) -----------------------------------------
+USER root
 COPY --chown=allen:allen scripts/ /tmp/scripts/
 RUN mkdir -p /usr/local/bin \
     && mv /tmp/scripts/first-run.sh /usr/local/bin/first-run \
     && mv /tmp/scripts/create-project /usr/local/bin/create-project \
     && chmod +x /usr/local/bin/first-run /usr/local/bin/create-project \
     && rm -rf /tmp/scripts
+USER allen
 
 # ---- Working directory -----------------------------------------------------
 WORKDIR /workspace
