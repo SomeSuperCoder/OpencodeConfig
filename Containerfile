@@ -83,7 +83,7 @@ USER allen
 ENV PNPM_HOME="/home/allen/.local/share/pnpm"
 RUN export PATH="$PNPM_HOME:$PATH" \
     && pnpm add -g \
-        opencode \
+        opencode-ai \
         @colbymchenry/codegraph@1.5.0 \
         @agentmemory/agentmemory@0.9.28 \
         @fission-ai/openspec@1.7.0
