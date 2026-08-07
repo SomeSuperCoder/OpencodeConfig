@@ -82,14 +82,14 @@ RUN git config --global user.email "opencode@container" \
     && git config --global user.name "OpenCode User"
 
 # ---- pnpm globals (changes on version bumps) ------------------------------
-# Configure pnpm to run build scripts (postinstall) automatically
+# --config.onlyBuiltDependencies=[] allows all build scripts (postinstall) to run
 RUN export PATH="$PNPM_HOME:$PATH" \
-    && pnpm config set onlyBuiltDependenciesFile "" \
     && pnpm add -g \
         opencode-ai \
         @colbymchenry/codegraph@1.5.0 \
         @agentmemory/agentmemory@0.9.28 \
-        @fission-ai/openspec@1.7.0
+        @fission-ai/openspec@1.7.0 \
+        --config.onlyBuiltDependencies=[]
 
 # ---- Config files (changes on config edits) -------------------------------
 # Baked into image — host config is NOT mounted.
