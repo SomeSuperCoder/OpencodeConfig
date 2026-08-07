@@ -69,9 +69,7 @@ RUN useradd -m -u 1000 -s /usr/bin/bash allen \
         /home/allen/.local/bin \
         /home/allen/.opencode/bin \
         /workspace \
-    && chown -R allen:allen /home/allen /workspace \
-    && git config --global user.email "opencode@container" \
-    && git config --global user.name "OpenCode User"
+    && chown -R allen:allen /home/allen /workspace
 
 # Fix Rust/cargo ownership (installed as root above)
 RUN chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
@@ -82,6 +80,8 @@ ENV HOME="/home/allen"
 
 # ---- pnpm global packages (as allen) --------------------------------------
 USER allen
+RUN git config --global user.email "opencode@container" \
+    && git config --global user.name "OpenCode User"
 ENV PNPM_HOME="/home/allen/.local/share/pnpm"
 RUN export PATH="$PNPM_HOME:$PATH" \
     && pnpm add -g \
