@@ -184,6 +184,7 @@ exec podman run \
     --user "$(id -u):$(id -g)" \
     --hostname "$CONTAINER_HOSTNAME" \
     --workdir "$CONTAINER_WORKDIR" \
+    --security-opt label=disable \
     --env "SHELL=/usr/bin/bash" \
     --env "HOME=/home/allen" \
     --env "PATH=/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
