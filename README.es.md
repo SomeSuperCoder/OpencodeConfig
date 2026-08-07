@@ -6,6 +6,8 @@ Un único CLI de IA para programar se convierte en una **empresa de software aut
 
 **Tú eres el Director. Tú decides lo que importa. El sistema hace el resto.**
 
+🐳 **[Configuración del Contenedor](./CONTAINER_SETUP.es.md)** — Ejecuta opencode en un contenedor Podman reproducible con todas las dependencias preinstaladas.
+
 ---
 
 ## 🌋 El Problema Que Esto Elimina
