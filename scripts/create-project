@@ -98,8 +98,6 @@ fi
 # --- Determine workspace root ---
 if [[ -n "$PARENT_DIR" ]]; then
   WORKSPACE="$PARENT_DIR"
-elif [[ -d "/workspace" ]]; then
-  WORKSPACE="/workspace"
 else
   WORKSPACE="$(pwd)"
 fi
