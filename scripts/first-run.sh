@@ -29,4 +29,5 @@ if [[ ! -f "$MARKER" ]]; then
     echo ""
 fi
 
+cd /workspace
 exec /usr/bin/bash
