@@ -86,7 +86,8 @@ RUN export PATH="$PNPM_HOME:$PATH" \
         opencode-ai \
         @colbymchenry/codegraph@1.5.0 \
         @agentmemory/agentmemory@0.9.28 \
-        @fission-ai/openspec@1.7.0
+        @fission-ai/openspec@1.7.0 \
+    && cd "$(pnpm root -g)/opencode-ai" && node postinstall.mjs
 
 # ---- Working directory -----------------------------------------------------
 WORKDIR /workspace
