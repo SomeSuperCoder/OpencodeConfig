@@ -27,7 +27,7 @@ ENV NODE_VERSION=22 \
 # util-linux (nsenter), file, which — plus build deps for Rust/Node
 RUN dnf install -y --setopt=tsflags=nodocs \
         git curl wget jq ripgrep tree tmux bash python3 \
-        gh podman util-linux file which \
+        gh podman util-linux file which xclip \
         gcc gcc-c++ make \
         openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel \
         sqlite-devel xz-devel tk-devel \

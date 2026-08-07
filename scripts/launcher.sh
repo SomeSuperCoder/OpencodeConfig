@@ -192,6 +192,19 @@ else
     echo ""
 fi
 
+# --- Handle X11 clipboard support ---
+X11_MOUNTS=()
+if [[ -n "${DISPLAY:-}" ]]; then
+    X11_MOUNTS+=("--env" "DISPLAY=${DISPLAY}")
+    if [[ -e "/tmp/.X11-unix" ]]; then
+        X11_MOUNTS+=("--volume" "/tmp/.X11-unix:/tmp/.X11-unix")
+    fi
+    if [[ -e "${XAUTHORITY:-$HOME/.Xauthority}" ]]; then
+        X11_MOUNTS+=("--volume" "${XAUTHORITY:-$HOME/.Xauthority}:/home/allen/.Xauthority")
+        X11_MOUNTS+=("--env" "XAUTHORITY=/home/allen/.Xauthority")
+    fi
+fi
+
 # --- Print what we're doing ---
 echo "🚀 Launching opencode container..."
 echo ""
@@ -218,5 +231,6 @@ exec podman run \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
     --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
     ${VOLUME_MOUNTS[@]+"${VOLUME_MOUNTS[@]}"} \
+    ${X11_MOUNTS[@]+"${X11_MOUNTS[@]}"} \
     ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
     "$IMAGE_NAME"
