@@ -44,9 +44,9 @@ podman --version
 ## ⚡ Quick Start (3 Commands)
 
 ```bash
-# 1. Clone the config
-git clone <your-repo-url> ~/.config/opencode
-cd ~/.config/opencode
+# 1. Clone the config (to ANY directory — NOT your actual ~/.config/opencode)
+git clone <your-repo-url> ~/opencode-container
+cd ~/opencode-container
 
 # 2. Build the image (first time only — takes a few minutes)
 ./scripts/launcher.sh --build
@@ -56,6 +56,8 @@ opencode
 ```
 
 That's it. The launcher handles everything: image build, API key setup, workspace mounts, clipboard support.
+
+> **⚠️ Important:** Clone to a **separate directory** (e.g., `~/opencode-container`), NOT to `~/.config/opencode`. The container bakes its own copy of the config at build time. Your host's `~/.config/opencode` stays untouched.
 
 ---
 
@@ -68,9 +70,12 @@ See the [Prerequisites](#-prerequisites) section above.
 ### Step 2: Clone the Config
 
 ```bash
-git clone <your-repo-url> ~/.config/opencode
-cd ~/.config/opencode
+# Clone to a dedicated directory — NOT your actual ~/.config/opencode
+git clone <your-repo-url> ~/opencode-container
+cd ~/opencode-container
 ```
+
+> **Why a separate directory?** The Containerfile copies files from the cloned directory into the image at build time. Your host's `~/.config/opencode` is never touched. You can name the directory whatever you want.
 
 ### Step 3: Build the Container Image
 
@@ -101,7 +106,7 @@ On first launch, the launcher prompts for your [Tavily](https://tavily.com) API 
    ✅ Key saved to /home/allen/.config/opencode/.secrets/tavily.key
 ```
 
-The key is stored at `~/.config/opencode/.secrets/tavily.key` and mounted read-only into the container. You can skip this if you don't need web search.
+The key is stored in your cloned directory at `.secrets/tavily.key` and mounted read-only into the container. You can skip this if you don't need web search.
 
 ### Step 5: Start Working
 
@@ -264,7 +269,7 @@ This is intentional. The container is a reproducible, isolated environment.
 
 To update the config that ships with the container:
 
-1. **Edit files on your host** (in `~/.config/opencode/`)
+1. **Edit files on your host** (in your cloned directory, e.g., `~/opencode-container/`)
 2. **Rebuild the image:**
 
 ```bash
@@ -279,7 +284,7 @@ Secrets are handled separately from config — they're **mounted at runtime**, n
 
 | Secret | Location | How It's Mounted |
 |--------|----------|------------------|
-| Tavily API key | `~/.config/opencode/.secrets/tavily.key` | Read-only bind mount |
+| Tavily API key | `<cloned-dir>/.secrets/tavily.key` | Read-only bind mount |
 
 **Rules:**
 - The `.secrets/` directory is **never committed to git** (check your `.gitignore`)
@@ -288,10 +293,10 @@ Secrets are handled separately from config — they're **mounted at runtime**, n
 
 **To add a key later:**
 ```bash
-# On the host
-mkdir -p ~/.config/opencode/.secrets
-echo -n "tvly-your-key-here" > ~/.config/opencode/.secrets/tavily.key
-chmod 600 ~/.config/opencode/.secrets/tavily.key
+# On the host — in your cloned directory
+mkdir -p ~/opencode-container/.secrets
+echo -n "tvly-your-key-here" > ~/opencode-container/.secrets/tavily.key
+chmod 600 ~/opencode-container/.secrets/tavily.key
 ```
 
 ---
@@ -303,7 +308,7 @@ chmod 600 ~/.config/opencode/.secrets/tavily.key
 | Host Path | Container Path | Mode |
 |-----------|----------------|------|
 | `~/` (or specified dir) | `/workspace` | Read/Write |
-| `~/.config/opencode/.secrets/tavily.key` | `/home/allen/.config/opencode/.secrets/tavily.key` | Read-only |
+| `<cloned-dir>/.secrets/tavily.key` | `/home/allen/.config/opencode/.secrets/tavily.key` | Read-only |
 | `/tmp/.X11-unix` | `/tmp/.X11-unix` | Read/Write (if X11 available) |
 | `~/.Xauthority` | `/home/allen/.Xauthority` | Read/Write (if X11 available) |
 
@@ -360,9 +365,10 @@ podman build -t opencode-env -f Containerfile .
 You skipped the API key prompt or the file doesn't exist. Add it manually:
 
 ```bash
-mkdir -p ~/.config/opencode/.secrets
-echo -n "tvly-your-key" > ~/.config/opencode/.secrets/tavily.key
-chmod 600 ~/.config/opencode/.secrets/tavily.key
+# In your cloned directory (e.g., ~/opencode-container)
+mkdir -p .secrets
+echo -n "tvly-your-key" > .secrets/tavily.key
+chmod 600 .secrets/tavily.key
 ```
 
 Then restart the container — it picks up the key automatically.
@@ -430,7 +436,7 @@ sudo apt install podman        # Ubuntu
 brew install podman            # macOS
 
 # Build & run
-cd ~/.config/opencode
+cd ~/opencode-container        # Or wherever you cloned
 ./scripts/launcher.sh --build  # First time / after config changes
 ./scripts/launcher.sh          # Subsequent runs
 
@@ -440,7 +446,7 @@ opencode                       # Start the TUI
 codegraph init                 # Index a project for codegraph
 
 # On the host
-~/.config/opencode/.secrets/   # Secrets directory
+~/opencode-container/.secrets/ # Secrets directory
 ```
 
 ---
