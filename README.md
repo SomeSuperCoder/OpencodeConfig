@@ -4,7 +4,7 @@
 
 **🌐 Languages:** [English](./README.md) · [Español (España)](./README.es.md) · [Русский](./README.ru.md)
 
-One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who commands, 15 field Leads who orchestrate, 69 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
+One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead who commands, 15 field Leads who orchestrate, 61 senior specialists who execute, and a microtask pipeline so fast that a full feature ships in minutes, not hours. Every change is tested. Every change is documented. Every change is verified before it touches your codebase.
 
 **You are the Director. You say what matters. It does the rest.**
 
@@ -29,7 +29,7 @@ The reason is structural. One model doing everything at once is a **generalist d
 | 👑 **Director** | You | Vision, priorities, final decisions |
 | 🧠 **Team Lead** | `team/tech-lead` | Plan the work, staff the waves, review, report, commit |
 | 🧑‍💼 **15 Field Leads** | `team/lead/*` | Advise on their field — plan microtasks, recommend specialist IDs, NEVER spawn |
-| 👥 **43 Specialists** | Senior engineers | Do ONE microtask, prove it, hand it off, stop |
+| 👥 **61 Specialists** | Senior engineers | Do ONE microtask, prove it, hand it off, stop |
 
 **Directives flow DOWN. Reports flow UP. Field Leads advise; the Team Lead spawns. Nobody crosses the chain of command.**
 
@@ -40,7 +40,7 @@ The reason is structural. One model doing everything at once is a **generalist d
               │  asks for orchestration advice ↓
          🧑‍💼 FIELD LEADS           recommend specialist IDs ↑
               ▼
-         👥 43 SPECIALISTS         each does ONE microtask
+         👥 61 SPECIALISTS         each does ONE microtask
               ▲  work reports flow UP
          🧠 TEAM LEAD
               │  status + evidence + escalations ↑
@@ -116,7 +116,7 @@ Anyone can spawn 30 agents. Chaos is easy. **Verification is the hard part** —
 
 ---
 
-## 🏛️ The Staff — 43 Specialists, One Lane Each
+## 🏛️ The Staff — 61 Specialists, One Lane Each
 
 Every agent is a **senior engineer with a single lane** — they do their one job better than any generalist, because that's all they do. Subordination is built into the file structure: `agents/team/` is the company, each field lives in its own directory, and field **Leads** advise the Tech Lead on orchestration.
 
@@ -176,6 +176,27 @@ Every agent is a **senior engineer with a single lane** — they do their one jo
 **🛡️ Ethical hacking suite (OFF-BY-DEFAULT)** — `team/security/pentest/pentest-lead` · `pentest-recon` · `pentest-webapp` · `pentest-exploitation`. An authorized security-assessment team that maps a scoped target, probes it with pentest tooling (nmap, sqlmap, nuclei, OWASP-style manual testing), and verifies findings with minimal reversible PoCs. The suite is **never routed proactively** — it activates **only when you explicitly ask** for a pentest or security assessment. Day-to-day security work stays with the 🔒 Security Engineer.
 
 > **The pattern that causes underuse:** "Scout + Backend + QA is enough." It never is. Each specialist exists because a generalist does that job worse. **Route by job, not by habit.**
+
+---
+
+## 🎨 Design Patterns & Code Style
+
+The company follows battle-tested design patterns. Full guidelines in [`CODE_STYLE.md`](./CODE_STYLE.md).
+
+**Core patterns we use:**
+
+| Pattern | When | Anti-pattern it kills |
+|---------|------|----------------------|
+| **Inversion of Control** | External dependencies | Code that calls libraries instead of being called |
+| **Parse, Don't Validate** | Input handling | Runtime checks that leave types untyped |
+| **Result Type** | Expected failures | Exceptions for control flow |
+| **Anti-Corruption Layer** | External APIs | Domain logic tangled with Stripe/DB/SMTP |
+| **Specification Pattern** | Business rules | Scattered if-else chains |
+| **Bounded Context** | Domain modeling | God objects that serve every use case |
+| **Sentinel Object** | Special values | Magic numbers and null checks |
+| **Fail-Fast Boundary** | Error handling | Raw errors leaking across layers |
+
+**The meta-rule:** Code is a communication medium. If the reader must look at the implementation to understand the call, the abstraction is wrong.
 
 ---
 
@@ -253,6 +274,75 @@ Tech Lead:  Asks Backend Lead for the orchestration plan → staffs
 - **Never use the builtin `explore` agent.** Use `team/core/scout`.
 - **Stay in your lane.** Report issues; never fix another specialist's work.
 - **Emojis are mandatory in all output** — they route the reader's eye to what matters.
+
+---
+
+## 🔄 Self-Improvement — The Harness Gets Better
+
+Any agent can report problems with the AI harness itself. The system improves by listening to its own operators.
+
+**Directory:** `/home/allen/OpencodeImprovements/reports/`
+
+Reports are written as markdown files. When an agent finds a broken rule, a missing role, a workflow bottleneck, or a configuration problem, it writes a report. The Director reviews and approves changes. The Tech Lead implements them.
+
+**The Rule:** the harness is code. It gets code-reviewed. It gets improved. Agents are the first line of defense against harness rot.
+
+---
+
+## 🌍 Language Rule — Match the User
+
+Every user-facing message must be in the language the user speaks. Detect their language from their message and respond in it. No exceptions.
+
+| Context | Language |
+|---------|----------|
+| **User-facing output** | **100% in the user's language** |
+| **Subagent prompts** | English (consistent across the team) |
+| **Code, commands, file paths** | Always English (never translated) |
+
+**Technical terms stay in English.** Words like "container", "MCP", "opencode", "FIRCAC" stay in English even in non-English messages.
+
+---
+
+## 🧠 AgentMemory — Persistent Memory Across Sessions
+
+AgentMemory is a standalone MCP server that gives every agent persistent memory across sessions:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  agentmemory-mcp (MCP Server)                          │
+│  ├── SQLite database with FTS5 full-text search         │
+│  ├── Provides memory_save, memory_recall, etc.          │
+│  ├── Automatic compaction, search, and context injection│
+│  └── Exposes resources for browsing memories            │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Memory types:** `fact`, `pattern`, `architecture`, `bug`, `workflow`, `preference`
+
+**When to save:** Architecture decisions, bug root causes, project patterns, user preferences, repeatable processes.
+
+**When to recall:** Session start, debugging, before refactoring, before asking user something you should know.
+
+---
+
+## 📋 Recommendations — Persistent Improvement Tracking
+
+Every "pass with recommendations" from QA, security, code review, or any verification agent gets saved to `recommendations/` — not lost in chat history.
+
+```
+recommendations/
+├── security/          ← security-related improvements
+├── performance/       ← performance recommendations
+├── quality/           ← code quality suggestions
+├── testing/           ← test improvements
+├── accessibility/     ← a11y recommendations
+├── architecture/      ← architectural improvements
+└── general/           ← other recommendations
+```
+
+**Format:** `YYYY-MM-DD-topic.md` with Status, Priority, Effort, Rationale, Evidence.
+
+**User command:** `"Implement all prior recommendations"` → Tech Lead scans, groups by domain, spawns specialists, implements.
 
 ---
 

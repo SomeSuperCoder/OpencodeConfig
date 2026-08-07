@@ -2,7 +2,7 @@
 
 > **Deja de pedirle a un asistente. Empieza a dirigir una empresa.**
 
-Un único CLI de IA para programar se convierte en una **empresa de software autoorganizada** — un Jefe de Equipo que comanda, 15 Líderes de Campo que orquestan, 69 especialistas sénior que ejecutan, y un pipeline de microtareas tan rápido que una funcionalidad completa se publica en minutos, no en horas. Cada cambio está probado. Cada cambio está documentado. Cada cambio está verificado antes de tocar tu código.
+Un único CLI de IA para programar se convierte en una **empresa de software autoorganizada** — un Jefe de Equipo que comanda, 15 Líderes de Campo que orquestan, 61 especialistas sénior que ejecutan, y un pipeline de microtareas tan rápido que una funcionalidad completa se publica en minutos, no en horas. Cada cambio está probado. Cada cambio está documentado. Cada cambio está verificado antes de tocar tu código.
 
 **Tú eres el Director. Tú decides lo que importa. El sistema hace el resto.**
 
@@ -27,7 +27,7 @@ La razón es estructural. Un solo modelo haciendo todo a la vez es un **generali
 | 👑 **Director** | Tú | Visión, prioridades, decisiones finales |
 | 🧠 **Jefe de Equipo** | `team/tech-lead` | Planificar el trabajo, formar las oleadas, revisar, informar, hacer commit |
 | 🧑‍💼 **15 Líderes de Campo** | `team/lead/*` | Aconsejar sobre su campo — planificar microtareas, recomendar IDs de especialistas, NUNCA lanzar |
-| 👥 **43 Especialistas** | Ingenieros sénior | Hacer UNA microtarea, demostrarla, entregarla, parar |
+| 👥 **61 Especialistas** | Ingenieros sénior | Hacer UNA microtarea, demostrarla, entregarla, parar |
 
 **Las directivas fluyen HACIA ABAJO. Los informes fluyen HACIA ARRIBA. Los Líderes de Campo aconsejan; el Jefe de Equipo lanza. Nadie salta la cadena de mando.**
 
@@ -38,7 +38,7 @@ La razón es estructural. Un solo modelo haciendo todo a la vez es un **generali
               │  pide consejo de orquestación ↓
          🧑‍💼 LÍDERES DE CAMPO         recomiendan IDs de especialistas ↑
               ▼
-         👥 43 ESPECIALISTAS         cada uno hace UNA microtarea
+         👥 61 ESPECIALISTAS         cada uno hace UNA microtarea
               ▲  los informes de trabajo fluyen hacia arriba
          🧠 JEFE DE EQUIPO
               │  estado + evidencias + escaladas ↑
@@ -114,7 +114,7 @@ Cualquiera puede lanzar 30 agentes. El caos es fácil. **La verificación es la 
 
 ---
 
-## 🏛️ La Plantilla — 43 Especialistas, Una Especialidad Cada Uno
+## 🏛️ La Plantilla — 61 Especialistas, Una Especialidad Cada Uno
 
 Cada agente es un **ingeniero sénior con una única especialidad** — hacen su único trabajo mejor que cualquier generalista, porque es todo lo que hacen. La subordinación está construida en la estructura de archivos: `agents/team/` es la empresa, cada campo vive en su propio directorio, y los Líderes de Campo aconsejan al Jefe de Equipo sobre la orquestación.
 
@@ -174,6 +174,27 @@ Cada agente es un **ingeniero sénior con una única especialidad** — hacen su
 **🛡️ Suite de hacking ético (desactivada por defecto)** — `team/security/pentest/pentest-lead` · `pentest-recon` · `pentest-webapp` · `pentest-exploitation`. Un equipo de evaluación de seguridad autorizado que cartografía un objetivo acotado, lo sondea con herramientas de pentesting (nmap, sqlmap, nuclei, pruebas manuales estilo OWASP) y verifica los hallazgos con PoCs mínimos y reversibles. La suite **nunca se enruta de forma proactiva** — se activa **solo cuando tú pides explícitamente** un pentest o una evaluación de seguridad. El trabajo de seguridad diario queda en manos del 🔒 Security Engineer.
 
 > **El patrón que causa infrautilización:** "Scout + Backend + QA es suficiente." Nunca lo es. Cada especialista existe porque un generalista hace ese trabajo peor. **Enruta por trabajo, no por costumbre.**
+
+---
+
+## 🎨 Patrones de Diseño y Estilo de Código
+
+La empresa sigue patrones de diseño probados. Guías completas en [`CODE_STYLE.md`](./CODE_STYLE.md).
+
+**Patrones principales que usamos:**
+
+| Patrone | Cuándo | Anti-patrón que elimina |
+|---------|--------|------------------------|
+| **Inversión de Control** | Dependencias externas | Código que llama a bibliotecas en vez de ser llamado |
+| **Parsear, No Validar** | Manejo de entrada | Chequeos en runtime que dejan tipos sin tipar |
+| **Tipo Result** | Fallos esperados | Excepciones para flujo de control |
+| **Capa Anti-Corruptción** | APIs externas | Lógica de negocio enredada con Stripe/DB/SMTP |
+| **Patrón de Especificación** | Reglas de negocio | Cadenas if-else esparcidas |
+| **Contexto Acotado** | Modelado de dominio | Objetos Dios que sirven para todo |
+| **Objeto Centinela** | Valores especiales | Números mágicos y chequeos de null |
+| **Límite de Fallo Rápido** | Manejo de errores | Errores crudos filtrándose entre capas |
+
+**La meta-regla:** El código es un medio de comunicación. Si el lector debe mirar la implementación para entender la llamada, la abstracción está mal.
 
 ---
 
@@ -251,6 +272,75 @@ Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
 - **Nunca uses el agente `explore` integrado.** Usa `team/core/scout`.
 - **Quédate en tu especialidad.** Informa de los problemas; nunca arregles el trabajo de otro especialista.
 - **Los emojis son obligatorios en toda salida** — dirigen la vista del lector hacia lo que importa.
+
+---
+
+## 🔄 Auto-Mejora — El Aparato Se Mejora
+
+Cualquier agente puede reportar problemas con el propio arnés de IA. El sistema mejora escuchando a sus propios operadores.
+
+**Directorio:** `/home/allen/OpencodeImprovements/reports/`
+
+Los informes se escriben como archivos markdown. Cuando un agente encuentra una regla rota, un rol faltante, un cuello de botella en el flujo de trabajo o un problema de configuración, escribe un informe. El Director revisa y aprueba cambios. El Jefe de Equipo los implementa.
+
+**La Regla:** el arnés es código. Se revisa como código. Se mejora. Los agentes son la primera línea de defensa contra la degradación del arnés.
+
+---
+
+## 🌍 Regla de Idioma — Coincide con el Usuario
+
+Toda salida dirigida al usuario debe estar en el idioma que el usuario habla. Detecta su idioma de su mensaje y responde en él. Sin excepciones.
+
+| Contexto | Idioma |
+|----------|--------|
+| **Salida dirigida al usuario** | **100% en el idioma del usuario** |
+| **Prompts de subagentes** | Inglés (consistente en todo el equipo) |
+| **Código, comandos, rutas de archivos** | Siempre inglés (nunca se traduce) |
+
+**Los términos técnicos se mantienen en inglés.** Palabras como "container", "MCP", "opencode", "FIRCAC" se mantienen en inglés incluso en mensajes no en inglés.
+
+---
+
+## 🧠 AgentMemory — Memoria Persistente entre Sesiones
+
+AgentMemory es un servidor MCP independiente que da a cada agente memoria persistente entre sesiones:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  agentmemory-mcp (Servidor MCP)                         │
+│  ├── Base de datos SQLite con búsqueda de texto FTS5    │
+│  ├── Provee memory_save, memory_recall, etc.            │
+│  ├── Compactación, búsqueda e inyección de contexto auto│
+│  └── Expone recursos para navegar memorias              │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Tipos de memoria:** `fact`, `pattern`, `architecture`, `bug`, `workflow`, `preference`
+
+**Cuándo guardar:** Decisiones de arquitectura, causas raíz de bugs, patrones de proyecto, preferencias del usuario, procesos repetibles.
+
+**Cuándo recordar:** Inicio de sesión, depuración, antes de refactorizar, antes de preguntar al usuario algo que deberías saber.
+
+---
+
+## 📋 Recomendaciones — Seguimiento Persistente de Mejoras
+
+Cada "pasa con recomendaciones" de QA, seguridad, revisión de código o cualquier agente de verificación se guarda en `recommendations/` — no se pierde en el historial del chat.
+
+```
+recommendations/
+├── security/          ← mejoras de seguridad
+├── performance/       ← recomendaciones de rendimiento
+├── quality/           ← sugerencias de calidad de código
+├── testing/           ← mejoras de tests
+├── accessibility/     ← recomendaciones de accesibilidad
+├── architecture/      ← mejoras arquitectónicas
+└── general/           ← otras recomendaciones
+```
+
+**Formato:** `YYYY-MM-DD-topic.md` con Estado, Prioridad, Esfuerzo, Razonamiento, Evidencia.
+
+**Comando del usuario:** `"Implementa todas las recomendaciones anteriores"` → El Jefe de Equipo escanea, agrupa por dominio, lanza especialistas, implementa.
 
 ---
 
