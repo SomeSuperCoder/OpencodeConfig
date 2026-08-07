@@ -188,7 +188,7 @@ exec podman run \
     --security-opt label=disable \
     --env "SHELL=/usr/bin/bash" \
     --env "HOME=/home/allen" \
-    --env "PATH=/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
+    --env "PATH=/home/allen/.config/opencode/scripts:/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
     --volume "${CONFIG_ROOT}:/home/allen/.config/opencode:Z" \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
     --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
