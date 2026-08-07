@@ -1,88 +1,87 @@
 # ============================================================================
 # Containerfile — Reproducible opencode development environment
 # Podman-compatible (no Docker-specific syntax)
-# ============================================================================
+#
+# Layer cache order: least-changing → most-changing
+#   1. Base image + system packages (rarely changes)
+#   2. Runtimes: Node, pnpm, Rust, Nushell, just (rarely changes)
+#   3. User setup (rarely changes)
+#   4. pnpm globals (changes on version bumps)
+#   5. Config files (changes on config edits)
+#   6. Scripts (changes most often)
+#
 # Build:  podman build -t opencode-dev -f Containerfile .
-# Run:    podman run --rm -it -v ./workspace:/workspace opencode-dev
+# Run:    ./scripts/launcher.sh
 # ============================================================================
 
-# ---- Base image -----------------------------------------------------------
+# ---- Base image (NEVER changes) -------------------------------------------
 # Fedora 44 required: opencode binary needs glibc 2.40+
 FROM registry.fedoraproject.org/fedora:44
 
-LABEL maintainer="SomeSuperCoder"
-LABEL description="Reproducible opencode development environment"
-LABEL version="1.0.0"
+LABEL maintainer="SomeSuperCoder" \
+      description="Reproducible opencode development environment" \
+      version="1.0.0"
 
-# ---- Pinned versions ------------------------------------------------------
-# All versions pinned for reproducibility. Update this block when bumping.
+# ---- Pinned versions (changes only on version bumps) ----------------------
 ENV NODE_VERSION=22 \
     PNPM_VERSION=10.33.0 \
     RUST_VERSION=1.97.1 \
-    NUSHELL_VERSION=0.99.1 \
     JUST_VERSION=1.55.1
 
-# ---- System packages (single layer, cache cleaned) ------------------------
-# git, curl, wget, jq, ripgrep, tree, tmux, bash, python3, gh, podman,
-# util-linux (nsenter), file, which — plus build deps for Rust/Node
+# ---- System packages (changes rarely) -------------------------------------
 RUN dnf install -y --setopt=tsflags=nodocs \
         git curl wget jq ripgrep tree tmux bash python3 \
         gh podman util-linux file which xclip \
         gcc gcc-c++ make \
         openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel \
         sqlite-devel xz-devel tk-devel \
-        glibc-langpack-en \
+        glibc-langpack-en nushell \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
-# ---- Node.js 22 (via NodeSource) -----------------------------------------
+# ---- Runtimes (changes rarely) --------------------------------------------
+# Node.js 22
 RUN curl -fsSL https://rpm.nodesource.com/setup_22.x | bash - \
     && dnf install -y nodejs \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
-# ---- pnpm via corepack (pinned version) -----------------------------------
+# pnpm via corepack
 RUN corepack enable \
     && corepack prepare pnpm@${PNPM_VERSION} --activate
 
-# ---- Rust via rustup (pinned toolchain) -----------------------------------
-# Installs to /root during build; ownership transferred to allen later.
+# Rust via rustup
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --default-toolchain ${RUST_VERSION} \
     && /root/.cargo/bin/rustup component add clippy rustfmt
 
-# ---- Nushell (via Fedora repos) -------------------------------------------
-# NOTE: Version is not pinned — Fedora ships whatever version is in repos.
-#       The NUSHELL_VERSION env var is retained for reference but not enforced.
-#       If exact version pinning is needed, add a COPR repo or revert to cargo install.
-RUN dnf install -y nushell && dnf clean all && rm -rf /var/cache/dnf
-
-# ---- just (pinned, binary install) ----------------------------------------
+# just
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh \
     | bash -s -- --to /usr/local/bin --tag ${JUST_VERSION}
 
-# ---- User setup -----------------------------------------------------------
-# Create non-root user 'allen' with uid=1000
+# ---- User setup (changes rarely) ------------------------------------------
+# Create non-root user, directories, fix ownership, set git identity
 RUN useradd -m -u 1000 -s /usr/bin/bash allen \
     && mkdir -p \
         /home/allen/.config/opencode \
         /home/allen/.local/bin \
         /home/allen/.opencode/bin \
         /workspace \
-    && chown -R allen:allen /home/allen /workspace
+    && chown -R allen:allen /home/allen /workspace \
+    && chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
 
-# Fix Rust/cargo ownership (installed as root above)
-RUN chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
+# Persistent env
+ENV PATH="/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
+    HOME="/home/allen" \
+    PNPM_HOME="/home/allen/.local/share/pnpm"
 
-# ---- PATH (persistent env) ------------------------------------------------
-ENV PATH="/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin"
-ENV HOME="/home/allen"
-
-# ---- pnpm global packages (as allen) --------------------------------------
 USER allen
+
+# Git identity (inside user layer — rarely changes)
 RUN git config --global user.email "opencode@container" \
     && git config --global user.name "OpenCode User"
-ENV PNPM_HOME="/home/allen/.local/share/pnpm"
+
+# ---- pnpm globals (changes on version bumps) ------------------------------
 RUN export PATH="$PNPM_HOME:$PATH" \
     && pnpm add -g \
         opencode-ai \
@@ -90,26 +89,26 @@ RUN export PATH="$PNPM_HOME:$PATH" \
         @agentmemory/agentmemory@0.9.28 \
         @fission-ai/openspec@1.7.0
 
-# ---- Copy opencode config into image (baked at build time) ------------------
-# Config is OWNED by the container — not mounted from host.
-# This ensures clear separation: host config and container config are independent.
+# ---- Config files (changes on config edits) -------------------------------
+# Baked into image — host config is NOT mounted.
 # To update container config, rebuild the image.
-COPY --chown=allen:allen agents/ /home/allen/.config/opencode/agents/
-COPY --chown=allen:allen skills/ /home/allen/.config/opencode/skills/
-COPY --chown=allen:allen AGENTS.md /home/allen/.config/opencode/AGENTS.md
-COPY --chown=allen:allen opencode.jsonc /home/allen/.config/opencode/opencode.jsonc
-COPY --chown=allen:allen opencode.json /home/allen/.config/opencode/opencode.json
-COPY --chown=allen:allen package.json /home/allen/.config/opencode/package.json
-COPY --chown=allen:allen package-lock.json /home/allen/.config/opencode/package-lock.json
+COPY --chown=allen:allen \
+    agents/ \
+    skills/ \
+    AGENTS.md \
+    opencode.jsonc \
+    opencode.json \
+    package.json \
+    package-lock.json \
+    /home/allen/.config/opencode/
 
-# ---- First-run setup script ------------------------------------------------
-# Runs opencode postinstall + pnpm install on first container start
-COPY --chown=allen:allen scripts/first-run.sh /usr/local/bin/first-run
-RUN chmod +x /usr/local/bin/first-run
-
-# ---- Global commands -------------------------------------------------------
-COPY --chown=allen:allen scripts/create-project /usr/local/bin/create-project
-RUN chmod +x /usr/local/bin/create-project
+# ---- Scripts (changes most often) -----------------------------------------
+COPY --chown=allen:allen scripts/ /tmp/scripts/
+RUN mkdir -p /usr/local/bin \
+    && mv /tmp/scripts/first-run.sh /usr/local/bin/first-run \
+    && mv /tmp/scripts/create-project /usr/local/bin/create-project \
+    && chmod +x /usr/local/bin/first-run /usr/local/bin/create-project \
+    && rm -rf /tmp/scripts
 
 # ---- Working directory -----------------------------------------------------
 WORKDIR /workspace
