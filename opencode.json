@@ -4,6 +4,8 @@
     "agentmemory": {
       "type": "local",
       "command": [
+        "env",
+        "CI=true",
         "agentmemory"
       ],
       "enabled": true
