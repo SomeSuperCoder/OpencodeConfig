@@ -13,7 +13,7 @@ if [[ ! -f "$MARKER" ]]; then
     if [[ -f /home/allen/.config/opencode/package.json ]]; then
         echo "   Installing config dependencies..."
         cd /home/allen/.config/opencode
-        pnpm install --no-frozen-lockfile --allow-build=msgpackr-extract 2>&1 || true
+        pnpm install --no-frozen-lockfile 2>&1 || true
     fi
 
     touch "$MARKER"

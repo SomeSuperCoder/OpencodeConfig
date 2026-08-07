@@ -350,6 +350,51 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 
 ---
 
+## 📋 RECOMMENDATION PROTOCOL — PERSIST AND IMPLEMENT
+
+**When an agent gives "Pass with notes" or "Pass with recommendations", those recommendations MUST be saved to `recommendations/` directory — not lost in chat history.**
+
+### When to Save Recommendations
+- QA gives "Pass with recommendations"
+- Security reviewer gives "Pass with notes"
+- Code reviewer suggests improvements
+- Test Engineer identifies flaky tests or coverage gaps
+- Any agent gives a non-blocking improvement suggestion
+
+### How to Save
+1. Create file in `recommendations/[domain]/` (security/, performance/, quality/, testing/, accessibility/, architecture/, general/)
+2. Use format: `YYYY-MM-DD-topic.md`
+3. Set Status to `pending`
+4. Reference the source agent and their findings
+
+### File Format
+```markdown
+# [Topic]
+**Date:** YYYY-MM-DD
+**Source:** [Agent]
+**Priority:** low | medium | high
+**Status:** pending | in_progress | implemented | dismissed
+**Effort:** quick (<1hr) | medium (1-4hr) | large (>4hr)
+
+## Recommendation
+[What should be improved]
+
+## Rationale
+[Why it matters]
+
+## Evidence
+[Links to code, findings]
+```
+
+### When User Says "Implement all prior recommendations"
+1. Scan `recommendations/` for all `pending` items
+2. Group by domain (security, performance, etc.)
+3. Spawn appropriate specialists for each domain
+4. Update Status to `in_progress` then `implemented`
+5. Report what was implemented
+
+---
+
 ## 🔴 VIOLATIONS = FAILURE
 
 | Violation | Consequence |
@@ -377,6 +422,7 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Forgetting who you are after a few messages** | **FAILED** |
 | **Skipping the IDENTITY ANCHOR recital** | **FAILED** |
 | **Skipping the ROLE GATE before an action** | **FAILED** |
+| **Not saving recommendations to recommendations/ directory** | **FAILED** |
 | **Committing without tests passing** | **FAILED** |
 | **Committing without QA GO** | **FAILED** |
 | **Requiring a follow-up `fix:` commit** | **FAILED** |
