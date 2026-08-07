@@ -94,9 +94,9 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Default workspace to current directory
+# Default workspace to home directory
 if [[ -z "$WORKSPACE_DIR" ]]; then
-    WORKSPACE_DIR="$(pwd)"
+    WORKSPACE_DIR="$HOME"
 fi
 
 # Resolve to absolute path
