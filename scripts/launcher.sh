@@ -222,6 +222,7 @@ exec podman run \
     --tty \
     --user "$(id -u):$(id -g)" \
     --userns keep-id \
+    --network host \
     --hostname "$CONTAINER_HOSTNAME" \
     --workdir "$CONTAINER_WORKDIR" \
     --security-opt label=disable \
