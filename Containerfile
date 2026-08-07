@@ -20,8 +20,7 @@ ENV NODE_VERSION=22 \
     PNPM_VERSION=10.33.0 \
     RUST_VERSION=1.97.1 \
     NUSHELL_VERSION=0.99.1 \
-    JUST_VERSION=1.55.1 \
-    OPENCODE_VERSION=1.18.13
+    JUST_VERSION=1.55.1
 
 # ---- System packages (single layer, cache cleaned) ------------------------
 # git, curl, wget, jq, ripgrep, tree, tmux, bash, python3, gh, podman,
@@ -62,18 +61,6 @@ RUN dnf install -y nushell && dnf clean all && rm -rf /var/cache/dnf
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh \
     | bash -s -- --to /usr/local/bin --tag ${JUST_VERSION}
 
-# ---- opencode binary (pinned, from GitHub releases) -----------------------
-# Download the Linux x86_64 ELF binary from anomalyco/opencode releases.
-# Asset: opencode-linux-x64.zip — verified via GitHub API.
-# NOTE: If the zip structure changes, adjust the mv command below.
-RUN OPENCODE_URL="https://github.com/anomalyco/opencode/releases/download/v${OPENCODE_VERSION}/opencode-linux-x64.zip" \
-    && curl -fsSL "${OPENCODE_URL}" -o /tmp/opencode.zip \
-    && mkdir -p /usr/local/bin \
-    && unzip -o /tmp/opencode.zip -d /tmp/opencode-bin \
-    && mv /tmp/opencode-bin/opencode /usr/local/bin/opencode \
-    && chmod +x /usr/local/bin/opencode \
-    && rm -rf /tmp/opencode-bin /tmp/opencode.zip
-
 # ---- User setup -----------------------------------------------------------
 # Create non-root user 'allen' with uid=1000
 RUN useradd -m -u 1000 -s /usr/bin/bash allen \
@@ -88,12 +75,13 @@ RUN useradd -m -u 1000 -s /usr/bin/bash allen \
 RUN chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
 
 # ---- PATH (persistent env) ------------------------------------------------
-ENV PATH="/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin"
+ENV PATH="/home/allen/.local/share/pnpm:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin"
 ENV HOME="/home/allen"
 
 # ---- pnpm global packages (as allen) --------------------------------------
 USER allen
 RUN pnpm add -g \
+        opencode \
         @colbymchenry/codegraph@1.5.0 \
         @agentmemory/agentmemory@0.9.28 \
         @fission-ai/openspec@1.7.0
