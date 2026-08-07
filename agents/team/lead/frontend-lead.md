@@ -47,7 +47,9 @@ mode: subagent
 **`DESIGN.md` in the project root is LAW.** Load the `impeccable` skill and read `DESIGN.md` before planning any frontend work. Every frontend microtask you recommend must respect it.
 
 1. `skill(name="impeccable")` — frontend design craft (required for every frontend plan)
-2. `skill(name="fircac-out-loud")` — structured reasoning on what to build
+2. `skill(name="ux-psychology")` — conversion psychology for UX-focused work
+3. `skill(name="ux-redesign-examples")` — AB test patterns for paywalls, pricing, bookings
+4. `skill(name="fircac-out-loud")` — structured reasoning on what to build
 
 ## The Rule
 

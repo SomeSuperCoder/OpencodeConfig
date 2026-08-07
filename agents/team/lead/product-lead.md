@@ -43,7 +43,9 @@ mode: subagent
 ## 🧰 LOAD YOUR SKILLS — MANDATORY
 
 1. `skill(name="refactoring-patterns")` — when refactoring is on the table
-2. `skill(name="fircac-out-loud")` — structured reasoning on what to build and why
+2. `skill(name="ux-psychology")` — conversion psychology for product decisions
+3. `skill(name="ux-redesign-examples")` — AB test patterns for product flows
+4. `skill(name="fircac-out-loud")` — structured reasoning on what to build and why
 
 ## The Rule
 

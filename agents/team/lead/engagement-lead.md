@@ -46,8 +46,10 @@ mode: subagent
 ## 🧰 LOAD YOUR SKILLS — MANDATORY
 
 1. `skill(name="impeccable")` — design craft that makes apps appealing; **DESIGN.md is law**
-2. `skill(name="domain-knowledge")` — retention, habit-forming product depth when the directive touches it
-3. `skill(name="fircac-out-loud")` — structured reasoning on what to build
+2. `skill(name="ux-psychology")` — conversion psychology for retention and behavioral design
+3. `skill(name="ux-redesign-examples")` — AB test patterns for engagement flows
+4. `skill(name="domain-knowledge")` — retention, habit-forming product depth when the directive touches it
+5. `skill(name="fircac-out-loud")` — structured reasoning on what to build
 
 ## The Rule
 

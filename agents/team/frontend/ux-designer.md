@@ -113,9 +113,11 @@ Accessibility is part of UX, not a bolt-on. Design and review it alongside every
 **Load these BEFORE you start working. They are your one-job expertise.**
 
 0. `skill(name="impeccable")` — **DESIGN.md is law.** If a `DESIGN.md` exists in the project root, read it and follow its directives — the surface's mode, information architecture, visual language, and quality floor. Design flows within it. No DESIGN.md? Design to the requirements + product charter, and note whether a DESIGN.md should be created.
-1. `skill(name="a11y-patterns")` — WCAG, keyboard, screen readers
-2. `skill(name="performance-patterns")` — perceived performance/UX
-3. `skill(name="domain-knowledge")` — when the feature touches a domain you only half-understand
+1. `skill(name="ux-psychology")` — conversion psychology: smart defaults, goal gradient, reciprocity, IKEA effect, loss aversion, contrast effect
+2. `skill(name="ux-redesign-examples")` — AB test patterns: paywall questions, price presentation, booking screen emotion
+3. `skill(name="a11y-patterns")` — WCAG, keyboard, screen readers
+4. `skill(name="performance-patterns")` — perceived performance/UX
+5. `skill(name="domain-knowledge")` — when the feature touches a domain you only half-understand
 
 ---
 
