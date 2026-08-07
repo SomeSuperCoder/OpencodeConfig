@@ -8,6 +8,8 @@ One AI coding CLI becomes a **self-organizing software firm** — a Tech Lead wh
 
 **You are the Director. You say what matters. It does the rest.**
 
+🐳 **[Container Setup](./CONTAINER_SETUP.md)** — Run opencode in a reproducible Podman container with all dependencies pre-installed.
+
 ---
 
 ## 🌋 The Problem This Kills
