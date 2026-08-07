@@ -98,7 +98,9 @@ COPY --chown=allen:allen agents/ /home/allen/.config/opencode/agents/
 COPY --chown=allen:allen skills/ /home/allen/.config/opencode/skills/
 COPY --chown=allen:allen AGENTS.md /home/allen/.config/opencode/AGENTS.md
 COPY --chown=allen:allen opencode.jsonc /home/allen/.config/opencode/opencode.jsonc
+COPY --chown=allen:allen opencode.json /home/allen/.config/opencode/opencode.json
 COPY --chown=allen:allen package.json /home/allen/.config/opencode/package.json
+COPY --chown=allen:allen package-lock.json /home/allen/.config/opencode/package-lock.json
 
 # ---- First-run setup script ------------------------------------------------
 # Runs opencode postinstall + pnpm install on first container start
