@@ -1,17 +1,40 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "opencode-dynamic-context-pruning",
+    "opencode-tool-search",
+    "@mohak34/opencode-notifier@latest",
+    "opencode-auto-resume"
+  ],
   "mcp": {
     "agentmemory": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@agentmemory/mcp"
-      ],
-      "environment": {
-        "AGENTMEMORY_URL": "http://localhost:3111"
-      },
+      "command": ["agentmemory-mcp"],
       "enabled": true
+    },
+    "codegraph": {
+      "type": "local",
+      "command": [
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
+      "enabled": true
+    },
+    "tavily": {
+      "type": "remote",
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey={file:.secrets/tavily.key}"
+    }
+  },
+  "default_agent": "team/tech-lead",
+  "permission": {
+    "external_directory": {
+      "/tmp": "allow",
+      "/tmp/**": "allow"
+    },
+    "bash": {
+      "* /tmp*": "allow",
+      "*/tmp*": "allow"
     }
   }
 }

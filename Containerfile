@@ -66,6 +66,7 @@ RUN useradd -m -u 1000 -s /usr/bin/bash allen \
         /home/allen/.config/opencode \
         /home/allen/.local/bin \
         /home/allen/.opencode/bin \
+        /home/allen/.agentmemory \
         /workspace \
     && chown -R allen:allen /home/allen /workspace \
     && chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
@@ -88,6 +89,7 @@ RUN export PATH="$PNPM_HOME:$PATH" \
         opencode-ai \
         @colbymchenry/codegraph@1.5.0 \
         @agentmemory/agentmemory@0.9.28 \
+        @agentmemory/mcp@0.9.28 \
         @fission-ai/openspec@1.7.0 \
         --allow-build=opencode-ai
 

@@ -9,6 +9,7 @@ set -euo pipefail
 #   - Config directory mounted (agents, skills, configs, AGENTS.md, secrets)
 #   - Current working directory mounted as /workspace
 #   - Named volume for persistent state (state_store.db, node_modules cache)
+#   - Host ~/.agentmemory bind-mounted (agentmemory sync between host and container)
 #
 # SECURITY: Mounts are scoped. We do NOT mount the entire home directory,
 #           SSH keys, GPG keys, AWS creds, or browser data.
@@ -26,7 +27,7 @@ readonly IMAGE_NAME="opencode-env"
 readonly CONTAINER_HOSTNAME="opencode-env"
 readonly CONTAINER_WORKDIR="/workspace"
 readonly STATE_VOLUME="opencode-state"
-readonly AGENTMEMORY_VOLUME="opencode-agentmemory"
+readonly AGENTMEMORY_HOST_DIR="${HOME}/.agentmemory"
 
 # --- Resolve script location (for finding Containerfile) ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -206,11 +207,15 @@ if [[ -n "${DISPLAY:-}" ]]; then
     fi
 fi
 
+# --- Ensure host agentmemory directory exists for host<->container sync ---
+mkdir -p "${AGENTMEMORY_HOST_DIR}"
+
 # --- Print what we're doing ---
 echo "🚀 Launching opencode container..."
 echo ""
 echo "   Workspace:      ${WORKSPACE_DIR} → ${CONTAINER_WORKDIR}"
 echo "   State volume:   ${STATE_VOLUME} → /home/allen/.config/opencode/data"
+echo "   Agentmemory:    ${AGENTMEMORY_HOST_DIR} ↔ /home/allen/.agentmemory"
 echo "   Config:         baked into image (not mounted from host)"
 echo "   User:           $(id -u):$(id -g)"
 echo "   Hostname:       ${CONTAINER_HOSTNAME}"
@@ -232,7 +237,7 @@ exec podman run \
     --env "PATH=/home/allen/.config/opencode/scripts:/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
     --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
-    --volume "${AGENTMEMORY_VOLUME}:/home/allen/.agentmemory" \
+    --volume "${AGENTMEMORY_HOST_DIR}:/home/allen/.agentmemory" \
     ${VOLUME_MOUNTS[@]+"${VOLUME_MOUNTS[@]}"} \
     ${X11_MOUNTS[@]+"${X11_MOUNTS[@]}"} \
     ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
