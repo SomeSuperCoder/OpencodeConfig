@@ -82,7 +82,9 @@ RUN git config --global user.email "opencode@container" \
     && git config --global user.name "OpenCode User"
 
 # ---- pnpm globals (changes on version bumps) ------------------------------
+# Configure pnpm to run build scripts (postinstall) automatically
 RUN export PATH="$PNPM_HOME:$PATH" \
+    && pnpm config set onlyBuiltDependenciesFile "" \
     && pnpm add -g \
         opencode-ai \
         @colbymchenry/codegraph@1.5.0 \
