@@ -86,8 +86,22 @@ RUN export PATH="$PNPM_HOME:$PATH" \
         opencode-ai \
         @colbymchenry/codegraph@1.5.0 \
         @agentmemory/agentmemory@0.9.28 \
-        @fission-ai/openspec@1.7.0 \
-    && cd "$(pnpm root -g)/opencode-ai" && node postinstall.mjs
+        @fission-ai/openspec@1.7.0
+
+# ---- Copy opencode config into image (baked at build time) ------------------
+# Config is OWNED by the container — not mounted from host.
+# This ensures clear separation: host config and container config are independent.
+# To update container config, rebuild the image.
+COPY --chown=allen:allen agents/ /home/allen/.config/opencode/agents/
+COPY --chown=allen:allen skills/ /home/allen/.config/opencode/skills/
+COPY --chown=allen:allen AGENTS.md /home/allen/.config/opencode/AGENTS.md
+COPY --chown=allen:allen opencode.jsonc /home/allen/.config/opencode/opencode.jsonc
+COPY --chown=allen:allen package.json /home/allen/.config/opencode/package.json
+
+# ---- First-run setup script ------------------------------------------------
+# Runs opencode postinstall + pnpm install on first container start
+COPY --chown=allen:allen scripts/first-run.sh /usr/local/bin/first-run
+RUN chmod +x /usr/local/bin/first-run
 
 # ---- Working directory -----------------------------------------------------
 WORKDIR /workspace
@@ -97,4 +111,4 @@ HEALTHCHECK --interval=30s --timeout=5s \
     CMD opencode --version || exit 1
 
 # ---- Default command -------------------------------------------------------
-CMD ["/usr/bin/bash"]
+CMD ["/usr/local/bin/first-run"]

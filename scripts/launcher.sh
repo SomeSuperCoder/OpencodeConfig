@@ -170,8 +170,8 @@ fi
 echo "🚀 Launching opencode container..."
 echo ""
 echo "   Workspace:      ${WORKSPACE_DIR} → ${CONTAINER_WORKDIR}"
-echo "   Config:         ${CONFIG_ROOT} → /home/allen/.config/opencode"
 echo "   State volume:   ${STATE_VOLUME} → /home/allen/.config/opencode/data"
+echo "   Config:         baked into image (not mounted from host)"
 echo "   User:           $(id -u):$(id -g)"
 echo "   Hostname:       ${CONTAINER_HOSTNAME}"
 echo ""
@@ -189,7 +189,6 @@ exec podman run \
     --env "SHELL=/usr/bin/bash" \
     --env "HOME=/home/allen" \
     --env "PATH=/home/allen/.config/opencode/scripts:/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
-    --volume "${CONFIG_ROOT}:/home/allen/.config/opencode:Z" \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
     --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
     "${EXTRA_ARGS[@]}" \
