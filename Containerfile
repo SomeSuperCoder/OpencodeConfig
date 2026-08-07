@@ -103,6 +103,10 @@ COPY --chown=allen:allen package.json /home/allen/.config/opencode/package.json
 COPY --chown=allen:allen scripts/first-run.sh /usr/local/bin/first-run
 RUN chmod +x /usr/local/bin/first-run
 
+# ---- Global commands -------------------------------------------------------
+COPY --chown=allen:allen scripts/create-project /usr/local/bin/create-project
+RUN chmod +x /usr/local/bin/create-project
+
 # ---- Working directory -----------------------------------------------------
 WORKDIR /workspace
 
