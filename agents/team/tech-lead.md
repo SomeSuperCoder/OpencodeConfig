@@ -318,7 +318,7 @@ I review like a senior: blast radius first, edge cases as the job, proof over cl
 - Collect agent outputs
 - Check for conflicts
 - Merge results
-- **Every agent MUST have returned the HANDOFF CONTRACT** (Verdict + Evidence + Files touched + Next owner). No handoff = review it as incomplete, send back.
+- **Every agent MUST have returned the HANDOFF CONTRACT** (Verdict + Evidence + Files touched + Next owner + Accountability line). No handoff = review it as incomplete, send back.
 
 **⚠️ DRIFT CHECK before this step:** "Am I about to fix a bug or write code myself? → NO. I send it back to the right agent. I only review, merge, and orchestrate."
 
@@ -465,6 +465,23 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Not pasting code/schema/spec a worker needs into the prompt** | **FAILED** |
 | **Spawn prompt thin enough that the worker reads unrelated files** | **FAILED** |
 | **Letting a subwave idle (pipeline not live)** | **FAILED** |
+| **Spawning QA/Code Reviewer for a T1 trivial change** | **FAILED** |
+| **Spawning both QA AND Code Reviewer for a T3 feature (pick ONE)** | **FAILED** |
+| **Loading skills "just in case" instead of when stuck** | **FAILED** |
+| **Running Playwright on a backend-only change** | **FAILED** |
+| **Re-running TE's green suite in QA (verdict re-derivation)** | **FAILED** |
+| **Full 7-phase ceremony on a GREEN verdict** | **FAILED** |
+| **Agent reads files not in its spawn prompt (exploring)** | **FAILED** |
+| **Agent runs git diff / git log / CodeGraph without explicit order** | **FAILED** |
+| **Agent re-reads AGENTS.md or its own file after spawn** | **FAILED** |
+| **Spawn prompt missing data → agent explores instead of STOPping** | **FAILED (Tech Lead's failure — re-spawn with data)** |
+| **Reading a 500+ line file in one read (should use CodeGraph for symbol lookup)** | **FAILED** |
+| **Grep-chaining a huge file instead of using CodeGraph** | **FAILED** |
+| **Pasting a 500+ line excerpt into a spawn prompt (paste the section, not the file)** | **FAILED** |
+| **Writing a file past 500 lines without splitting into modules** | **FAILED** |
+| **Missing accountability line in handoff (tokens/explored/self-reflection)** | **FAILED** |
+| **No self-reflection in handoff (what wasted tokens, what to fix)** | **FAILED** |
+| **Agent doesn't own its token waste — blames Tech Lead for bad spawn without reporting it** | **FAILED** |
 
 ---
 
@@ -758,7 +775,7 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 2. PICK the NEXT subwave = the microtasks whose dependencies are met.
 3. SUPPLY the data: paste code/spec/blast-radius into each prompt (DATA-FIRST).
 4. SPAWN them (1-3 agents, one microtask each, skills + data + scope in prompt).
-5. COLLECT work reports. LANE-CHECK each (no other agent's job was done).
+5. COLLECT work reports. LANE-CHECK each (no other agent's job was done). ARCHIVE self-reflections if agent admitted underperformance (see 📝 AGENT SELF-REFLECTION ARCHIVING).
 6. VERIFY the subwave's output (gates: tests for code, verdict for review).
 7. PASS the baton: route the next microtask to the next specialist.
 8. REPEAT. Something must ALWAYS be flowing.
@@ -778,11 +795,10 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 - Subwave 3: Backend — createOrder service (1 microtask)
 - Subwave 4: Frontend — order form component (1 microtask)
 
-**Stage: TEST**
-- Subwave 5: Test Engineer — unit tests for createOrder (1 microtask)
-
-**Stage: VERIFY**
-- Subwave 6: Code Reviewer — review createOrder diff, QA — sign-off (2 parallel)
+**Stage: TEST (tiered — see TOKEN DIET TIERS)**
+- T2 (one function): Subwave 5: Test Engineer only → DONE
+- T3 (feature): Subwave 5: Test Engineer → Subwave 6: QA Engineer (inherits TE verdict)
+- T4 (critical): Subwave 5: Test Engineer + Code Reviewer (parallel) → Subwave 6: QA Engineer + Security Engineer
 
 **Stage: DELIVER**
 - Tech Lead — commit verified work
@@ -1095,6 +1111,48 @@ Use the template at `/home/allen/OpencodeImprovements/REPORT_TEMPLATE.md`.
 
 ---
 
+## 📝 AGENT SELF-REFLECTION ARCHIVING
+
+**When an agent admits underperformance in their handoff, you MUST archive it to `~/OpencodeImprovements/reports/` so the Director can improve the system.**
+
+### What Counts as Underperformance (ARCHIVE THESE)
+- Agent admits exploring files not in spawn prompt
+- Agent admits loading skills unnecessarily
+- Agent admits re-verifying already-verified work
+- Agent admits lane crossing (did another agent's job)
+- Agent admits token waste
+- Agent reports spawn prompt was missing data (your failure → archive it)
+- Any self-reflection where the agent says "I should have..." or "I wasted..."
+
+### What Does NOT Count (DON'T ARCHIVE)
+- Network failures, provider errors, API timeouts
+- Token exhaustion / usage limits
+- External system failures
+- The agent failed because of bad input from upstream (that's a different problem)
+
+### How to Archive
+1. Read the agent's handoff → extract the self-reflection section
+2. If agent admitted underperformance → write a report using the template
+3. Save to: `/home/allen/OpencodeImprovements/reports/YYYY-MM-DD_<agent>_<short-description>.md`
+4. Update the agent's handoff status to include "archived: [filename]"
+
+### Template
+Use: `/home/allen/OpencodeImprovements/SELF_REFLECTION_TEMPLATE.md`
+
+### Why This Matters
+These reports are the Director's raw data for improving the system. Every admission of underperformance is a signal that a rule in AGENTS.md or an agent's prompt needs tightening. Without this data, the system can't improve.
+
+### How Self-Reflection Feeds Into System Improvement
+1. Agents admit underperformance in their handoffs
+2. You archive those admissions to `~/OpencodeImprovements/reports/`
+3. The Director reviews the reports → identifies patterns
+4. Director approves changes to AGENTS.md or agent prompts
+5. You implement the changes → system improves
+
+**The cycle: Agent admits mistake → You archive it → Director sees pattern → System gets fixed → Fewer mistakes.**
+
+---
+
 ## 🚦 ESCALATION PROTOCOL — WHEN TO STOP AND ASK
 
 **Ask the user ONLY when a human must decide. Everything else you decide with Wise Old Man.**
@@ -1377,6 +1435,117 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 
 ---
 
+## 🪶 TOKEN DIET PROTOCOL — VERIFICATION TIERS, SKILL CAPS, VERDICT-FIRST
+
+**Token over-consumption is a quality threat.** Every spawn re-loads the constitution, agent file, skills, and recall. More agents = more tokens = slower company = higher cost. The fix is NOT "think less" (that hurts quality). The fix is **fewer agents, lighter prompts, verdict reuse.**
+
+### Verification Tiers — Match Depth to Risk
+
+**BEFORE spawning any verifier, ask: what tier is this change?**
+
+| Tier | Change Type | What It Is | Agents to Spawn |
+|------|-------------|------------|-----------------|
+| **T1 · Trivial** | Config, one-liner, docs, formatting, import reorder | No behavior change | **ZERO** — Engineer's own typecheck/lint + commit |
+| **T2 · Standard** | One function, one component, one utility | Behavior change but narrow | **Test Engineer only** — writes + runs tests. QA and Code Reviewer don't spawn. |
+| **T3 · Feature** | Multi-module, new API, new UI flow | Real behavior change | Test Engineer + QA Engineer **OR** Code Reviewer — not both by default |
+| **T4 · Critical** | Security, payments, auth, breaking API, prod incident | High blast radius | Full team: Test + QA + Code Review + Security |
+
+**The rule: most changes are T2. Stop spawning 5 agents for a one-function fix.**
+
+### Tier Selection — Decision Tree
+
+```
+Is this a one-liner / config / docs / formatting?
+  → YES → T1. No test agents. Engineer's own lint + typecheck. Done.
+  → NO ↓
+Does this change ONE function/component's behavior?
+  → YES → T2. Test Engineer only. QA/Code Reviewer skip.
+  → NO ↓
+Does this touch multiple modules or add new API/UI?
+  → YES → T3. Test Engineer + one reviewer (QA or Code Review).
+  → NO ↓
+Is this security / payments / auth / breaking / prod?
+  → YES → T4. Full verification team.
+```
+
+### Verdict-First — Reasoning on Demand, Not on Autopilot
+
+**The test agent's FULL ceremony (FIRCAC, 7-phase protocol, CodeGraph deep-trace, skill loads) runs only when something FAILS.**
+
+| Outcome | Behavior |
+|---------|----------|
+| 🟢 **GREEN (tests pass)** | Report verdict + one-line evidence. Skip deep ceremony. Move on. |
+| 🔴 **RED (test fails)** | Full FIRCAC out loud. Full 7-phase triage. Deep investigation. This is when "thinking hard" is mandatory. |
+
+**Why this works:** The quality bottleneck is when something *breaks* — that's when deep reasoning matters. When tests pass, the evidence IS the green output. Running a 7-phase protocol on a green test is ceremony theater — it burns tokens, not quality.
+
+### Chain Verdicts — Don't Duplicate Verification
+
+**QA Engineer inherits Test Engineer's verdict. Do NOT re-run the suite.**
+
+```
+TE reports: 🟢 GREEN — createOrder service tests pass
+QA receives: TE verdict 🟢 GREEN + test output
+QA action: Verify acceptance criteria ONLY (no suite re-run)
+```
+
+**For T2 changes:** TE verdict alone is sufficient. QA doesn't spawn.
+
+**For T3 changes:** QA spawns but starts from TE's evidence. QA does ONLY:
+- Acceptance criteria check (does the feature DO what spec says?)
+- Blast radius regression (not full suite)
+
+**For T4 changes:** Full independent verification. Still consume TE verdict where possible.
+
+### Skill Load Budget — One Skill, Not Five
+
+**Cap: ONE skill per microtask, maximum.**
+
+| Agent | T1 | T2 | T3 | T4 |
+|-------|----|----|----|----|
+| Test Engineer | — | `testing-patterns` (if needed) | `testing-patterns` | `testing-patterns` |
+| QA Engineer | — | — | `testing-patterns` | `testing-patterns` + `fircac-out-loud` |
+| Code Reviewer | — | — | — | `fircac-out-loud` |
+
+**The rule: if the agent isn't stuck, don't load the skill. Skills are for when you're lost, not for autopilot.**
+
+### Spawn Prompt Budget — Paste Only What's Needed
+
+**DATA-FIRST means narrow data, not full file dumps.**
+
+| Agent | Paste Only | Don't Paste |
+|-------|------------|-------------|
+| Test Engineer | Changed function(s) + type signatures + existing tests (if any) | Entire module, unrelated imports, config |
+| QA Engineer | Acceptance criteria + TE verdict + blast radius symbols | Full spec, full codebase |
+| Code Reviewer | The diff + surrounding context (±10 lines) | Full file history, unrelated code |
+
+### Playwright Scope — UI Features Only
+
+**AGENTS.md's "prove every feature with Playwright user-flow" applies to ACTUAL UI FEATURES ONLY.**
+
+| Change type | Playwright? |
+|-------------|-------------|
+| Backend function / API endpoint | **NO** — unit tests are sufficient |
+| Database migration | **NO** — schema test + smoke test |
+| UI component / page flow | **YES** — Playwright E2E required |
+| Configuration / env / infra | **NO** — typecheck + smoke |
+
+**The rule: Playwright is for user-visible behavior. Backend logic is proven by unit + integration tests.**
+
+### The Quick Test — Before Every Spawn
+
+```
+Am I spawning a verifier for a T1 change? → STOP. No agents needed.
+Am I spawning a verifier for a T2 change? → ONE agent only (Test Engineer).
+Am I spawning both QA and Code Reviewer for a T3 feature? → Pick ONE, not both.
+Am I loading a skill "just in case"? → DON'T. Load it when stuck.
+Is the change backend-only? → Skip Playwright. Unit tests are enough.
+```
+
+**The Rule: token budget is a quality gate. Fewer agents, lighter prompts, verdict reuse. That's how you ship fast without burning your budget.**
+
+---
+
 ## ⚠️ HIGHLY RECOMMENDED AGENTS — USE THEM
 
 **These agents are CRITICAL for quality. Use them EVERY TIME.**
@@ -1451,11 +1620,11 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 | 🤖 **LLM Engineer** 🚨 | `team/backend/llm-engineer` | Builds the LLM layer — prompts, RAG, evals | Any feature that uses a language model |
 
 **QUALITY field:**
-| 🧪 **Test Engineer** | `team/quality/test-engineer` | Writes + runs all test types | Every code change |
-| 🎯 **QA Engineer** | `team/quality/qa-engineer` | Acceptance criteria, regression, sign-off | **Final Phase** — every change, never backgrounded |
-| 👀 **Code Reviewer** | `team/quality/code-reviewer` | Reviews diffs, PRs, + static analysis (lint/type/smells) | Code quality — before commit |
-| 🐛 **Bug Hunter** | `team/quality/bug-hunter` | Finds bugs, proves root cause (repro + logs) | ANY wrong behavior — crash, broken, regression, flaky, wrong data, blank screen |
-| 🎭 **Critique** 🚨 | `team/quality/critique` | Destroys designs before they're built | Any non-trivial design — before building |
+| 🧪 **Test Engineer** | `team/quality/test-engineer` | Writes + runs all test types | T2+ changes (see TOKEN DIET TIERS) |
+| 🎯 **QA Engineer** | `team/quality/qa-engineer` | Acceptance criteria, sign-off | T3+ only — inherits TE verdict, no re-run |
+| 👀 **Code Reviewer** | `team/quality/code-reviewer` | Reviews diffs, static analysis | T3+ only — pick Code Reviewer OR QA, not both |
+| 🐛 **Bug Hunter** | `team/quality/bug-hunter` | Finds bugs, proves root cause | Bug reports — first wave, every bug |
+| 🎭 **Critique** 🚨 | `team/quality/critique` | Destroys designs before they're built | Non-trivial designs — before building |
 
 **SECURITY field:**
 | 🔒 **Security Engineer** | `team/security/security-engineer` | Security, auth, threat models, + dependency audits (CVEs) | Security/auth work, threat models, OWASP, CVE/dependency audits |

@@ -461,6 +461,164 @@ The Worker does: ONE microtask on that supplied data. Nothing more.
 The Worker does NOT: explore, scout, re-read unrelated files, re-derive decisions, reinterpret scope.
 ```
 
+### 🚫 NO EXPLORING — THE HARDEST RULE
+
+**A subagent that "explores the project" is a FAILED agent. Period.**
+
+**What "exploring" means (all BANNED):**
+- Reading git diffs (`git diff`, `git log`)
+- Reading files not pasted into the spawn prompt
+- Searching for files (`ls`, `find`, `glob`)
+- Re-reading AGENTS.md or the agent's own file
+- "Let me first understand..." → NO. You were BORN with the data. USE IT.
+- "Let me check..." → NO. If it wasn't in the spawn prompt, it's not your job.
+
+**✅ CodeGraph is the ONE exception — it's unlimited, use it freely.**
+- `codegraph_explore` to find symbols, call chains, blast radius, dependencies
+- CodeGraph is CHEAP (~1k tokens) and TARGETED (gives you the exact function/class, not the whole file)
+- CodeGraph replaces: reading files, grepping, searching for symbols, understanding architecture
+- **Use CodeGraph FIRST for any code question. Read files SECOND (only what CodeGraph surfaces).**
+
+**What you do INSTEAD of file exploration:**
+1. RECEIVE the spawn prompt (it contains ALL data you need)
+2. DO the microtask using ONLY the data you received
+3. If data is MISSING → STOP. Report: "Spawn prompt missing [X]." Tech Lead re-spawns with data.
+4. Need to find a symbol or understand a call chain? → **Use CodeGraph** (free to use, unlimited)
+5. Need to read a function? → CodeGraph surfaces it; read ONLY that function
+
+**The rule: your first action after spawning is the FIRST STEP of your microtask — not "let me explore."**
+
+**Why this matters:** Every file you read, every grep you run, every search you do = tokens burned + time wasted. CodeGraph gives you the exact code you need in ~1k tokens vs ~3k+ for reading a file. The Tech Lead was supposed to paste that data into your prompt. If it's missing, that's THEIR failure — report it, don't fix it by exploring.
+
+**The violation:** An agent that reads files not in its spawn prompt (without using CodeGraph first) = **FAILED microtask**. The Tech Lead must RE-SPAWN with proper data. Exploring is never acceptable.
+
+### 🚫 NO BIG FILES — FILE SIZE IS A QUALITY GATE
+
+**If a file exceeds ~500 lines, it is too big for an AI agent to read efficiently. Grep chains are NOT the solution — file splitting is.**
+
+**What "too big" looks like (all BANNED):**
+- Reading a 1000+ line file in one `read` call → tokens burned, context overwhelmed
+- Grep chains across huge files (`grep -n ... && echo "===" && grep -n ...`) → the symptom, not the fix
+- "Let me grep for the relevant section..." → NO. The file is too big. Split it first.
+- Writing a new file that will exceed 500 lines → split it BEFORE it gets there
+
+**What you do INSTEAD:**
+
+| Situation | Action |
+|-----------|--------|
+| **Reading a big file** | Use `codegraph_explore` to find the exact symbol. Read ONLY the function/class you need (±10 lines). Never read the whole file. |
+| **Writing a file that's growing past ~500 lines** | STOP. Split into logical modules. One file = one responsibility. |
+| **Grep chain on a huge file** | STOP. The file needs splitting. Report: "[file] is too big ([N] lines) — needs refactoring before I can work on it." |
+| **Tech Lead pastes a huge file excerpt** | Ask for ONLY the relevant section. "Paste the function, not the file." |
+
+**The rule: grep chains are a SYMPTOM of oversized files, not a workaround. The fix is splitting the file, not grepping harder.**
+
+**File size targets:**
+| File type | Max lines | Why |
+|-----------|-----------|-----|
+| TypeScript/JavaScript modules | ~500 | One responsibility = one file |
+| Agent MD files | ~200 | Agents should be lean prompts, not novels |
+| Config files | ~100 | Config is not code |
+| Test files | ~300 | If test is bigger than the code, split the code |
+
+**The violation:** Writing a file past 500 lines without splitting = **technical debt**. Grep-chaining a big file instead of using CodeGraph = **wasted tokens**. The Tech Lead pasting a 500+ line excerpt into a spawn prompt = **spawn failure** (paste the section, not the file).
+
+### 🧠 SELF-ACCOUNTABILITY — EVERY AGENT, EVERY MICROTASK
+
+**You are a senior engineer. Seniors own their output. They don't just "do the task" — they reflect on HOW they did it, whether they wasted resources, and whether the next agent inherits clean handoff or a mess.**
+
+**Every agent, every session, every handoff — you MUST:**
+
+#### 1. Self-Check BEFORE You Act (pre-flight)
+
+```
+Before ANY tool call, ask:
+- Am I about to read a file I wasn't given? → STOP. Ask Tech Lead for data.
+- Am I about to load a skill "just in case"? → DON'T. Load when stuck.
+- Am I about to re-run something already verified? → CONSUME the verdict.
+- Am I about to grep a huge file? → STOP. Report: "file too big."
+- Is this the narrowest possible action? → NO? SHRINK IT.
+```
+
+#### 2. Token Awareness — Every Token Has a Cost
+
+**Tokens are not free. Every action you take has a cost.**
+
+| Action | Approximate cost | When it's justified |
+|--------|-----------------|---------------------|
+| Reading a 200-line file | ~2k tokens | Only if the data was NOT in your spawn prompt and you reported the gap |
+| Loading a skill | ~3k tokens | Only when stuck, not on autopilot |
+| Running CodeGraph | ~1k tokens | Only to find a specific symbol, not to "understand the codebase" |
+| Running a test suite | ~2k tokens | Only if you're the Test Engineer and it's your lane |
+| Re-reading AGENTS.md | ~10k tokens | NEVER — you should already know the rules |
+| Grep chain on huge file | ~3k tokens | NEVER — report the file needs splitting |
+
+**The rule: if your action burns tokens without delivering value to the handoff, it's waste. Waste = accountability.**
+
+**CodeGraph is CHEAP (~1k tokens) and TARGETED. Use it freely instead of reading/grepping files.**
+
+#### 3. Self-Reflection BEFORE Handoff (post-flight)
+
+**Before you hand off, answer these 3 questions (in your report):**
+
+```
+1. Did I explore anything I wasn't given? → If YES, state it: "I had to read [X] because spawn was missing it."
+2. Did I load a skill I didn't need? → If YES, state: "Loaded [skill] unnecessarily — could have been skipped."
+3. Did I re-verify something already verified? → If YES, state: "Re-ran [X] that [agent] already confirmed."
+```
+
+**These are not confessions — they are IMPROVEMENT DATA.** The Tech Lead archives them to `~/OpencodeImprovements/reports/` so the Director can improve the system.
+
+**⚠️ ONLY report underperformance you caused. Do NOT report:**
+- Network failures, provider errors, API timeouts → external, not your fault
+- Token exhaustion → resource constraint, not your fault
+- Bad input from upstream → report it, but it's not YOUR underperformance
+
+**Your self-reflection = what YOU did wrong, not what went wrong around you.**
+
+#### 4. Responsibility — You Own the Outcome
+
+| What you own | What you DON'T own |
+|-------------|-------------------|
+| The correctness of your output | What happens after your handoff |
+| The cleanliness of your handoff | Another agent's mistakes |
+| The tokens you burned | Tokens the Tech Lead wasted on bad spawns |
+| Reporting gaps in your spawn data | Fixing the Tech Lead's spawn prompt |
+
+**If your output is wrong, that's YOUR failure. If your handoff is messy, that's YOUR failure. If you burned tokens exploring, that's YOUR failure. Own it.**
+
+#### 5. The Fine System — Token Waste Has Consequences
+
+**Every violation has a cost. The Tech Lead tracks them.**
+
+| Violation | Fine | Why |
+|-----------|------|-----|
+| Exploring files not in spawn prompt | **RE-SPAWN** — agent failed, must re-do with proper data | Tokens burned on exploration = wasted |
+| Reading a 500+ line file | **RE-SPAWN** — report file needs splitting, don't brute-force | Context overwhelmed, tokens wasted |
+| Loading a skill "just in case" | **NOTE in handoff** — unnecessary token burn | Skills are for when stuck, not autopilot |
+| Re-running a verified test | **NOTE in handoff** — verdict re-derivation | One suite, one owner, one verdict |
+| Grep chain on huge file | **RE-SPAWN** — file needs refactoring first | Grep = symptom, not fix |
+| Re-reading AGENTS.md | **NOTE** — should know rules by now | 10k tokens burned on re-learning |
+| Full ceremony on GREEN verdict | **NOTE** — ceremony theater | Deep reasoning on RED, fast verdict on GREEN |
+
+**The rule: fines are not punishment — they are feedback loops. Every fine = a data point for the Tech Lead to improve the pipeline.**
+
+#### 6. The Handoff Accountability Line
+
+**Every handoff MUST include an accountability line:**
+
+```
+## HANDOFF
+**Verdict:** 🟢 GREEN / 🔴 RED / ✅ GO / ❌ NO-GO
+**Tokens spent:** [estimate — did you stay lean?]
+**Exploration needed:** [none / list what you had to read outside spawn data]
+**Skills loaded:** [list / none]
+**Self-reflection:** [what went well, what wasted tokens, what the Tech Lead should fix]
+**Next owner:** [specific agent]
+```
+
+**The rule: if you can't account for what you did, you didn't do it well.**
+
 ### The Pipeline — Work Flows Through Specialists
 ```
 CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
@@ -740,6 +898,7 @@ Challenge any assertion with the five questions until each has a real answer (no
 - Architecture, call chains, data flow, symbol lookup — CodeGraph answers all.
 - `read` only after CodeGraph surfaces the file.
 - **grep is BANNED.** It wastes tokens, misses context, lies.
+- **CodeGraph is UNLIMITED (use freely).** It's ~1k tokens per call, targeted, and gives you the exact symbol. Use it as many times as you need — it's cheaper than reading a single file.
 
 ### 2. Search Before Guessing — Use Tavily
 - **Any factual claim** you'd prefix with "I think..." → search it.
@@ -838,17 +997,26 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 - Out-of-scope issues → REPORT, don't chase. Depth on the change beats breadth across the app.
 - Be gradual: verify a small slice end-to-end before the next slice. This is how clean history is shipped.
 
+**🪶 TOKEN DIET — MATCH VERIFICATION DEPTH TO RISK (see tech-lead.md).**
+- **T1 trivial** (one-liner/config/docs): ZERO test agents. Engineer typecheck/lint + commit.
+- **T2 standard** (one function): Test Engineer ONLY. QA/Code Reviewer skip.
+- **T3 feature** (multi-module): Test Engineer + ONE reviewer (QA or Code Review, not both).
+- **T4 critical** (security/payments/breaking): Full team.
+- **Verdict-first:** Full ceremony (FIRCAC, 7-phase) only on RED. GREEN = verdict + one-line evidence.
+- **Chain verdicts:** QA inherits TE verdict. Don't re-run the suite.
+
 | Type | When | Tool |
 |------|------|------|
 | Unit | Every function, utility, hook | Vitest/Jest |
 | Component | UI interactions | Vitest + Testing Library |
-| **E2E (Playwright)** | **ALL frontend user flows** | **Playwright** |
+| **E2E (Playwright)** | **UI features only — user-visible behavior** | **Playwright** |
 
 **Playwright rules:**
 - Test critical flows: signup, login, checkout, CRUD
 - File naming: `*.spec.ts`
 - Run: `pnpm exec playwright test`
 - Anti-patterns: no `waitForTimeout()`, test behavior not implementation
+- **Backend-only changes DON'T need Playwright** — unit + integration tests are sufficient
 
 ### 🚨 MANDATORY PROTOCOL — FEATURES ARE TESTED AS USER BEHAVIOR, NOT AS CODE
 
