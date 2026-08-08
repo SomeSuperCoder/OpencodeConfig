@@ -485,6 +485,37 @@ The Worker does NOT: explore, scout, re-read unrelated files, re-derive decision
 
 **The violation:** An agent that reads files not in its spawn prompt = **FAILED microtask**. The Tech Lead must RE-SPAWN with proper data. Exploring is never acceptable.
 
+### 🚫 NO BIG FILES — FILE SIZE IS A QUALITY GATE
+
+**If a file exceeds ~500 lines, it is too big for an AI agent to read efficiently. Grep chains are NOT the solution — file splitting is.**
+
+**What "too big" looks like (all BANNED):**
+- Reading a 1000+ line file in one `read` call → tokens burned, context overwhelmed
+- Grep chains across huge files (`grep -n ... && echo "===" && grep -n ...`) → the symptom, not the fix
+- "Let me grep for the relevant section..." → NO. The file is too big. Split it first.
+- Writing a new file that will exceed 500 lines → split it BEFORE it gets there
+
+**What you do INSTEAD:**
+
+| Situation | Action |
+|-----------|--------|
+| **Reading a big file** | Use `codegraph_explore` to find the exact symbol. Read ONLY the function/class you need (±10 lines). Never read the whole file. |
+| **Writing a file that's growing past ~500 lines** | STOP. Split into logical modules. One file = one responsibility. |
+| **Grep chain on a huge file** | STOP. The file needs splitting. Report: "[file] is too big ([N] lines) — needs refactoring before I can work on it." |
+| **Tech Lead pastes a huge file excerpt** | Ask for ONLY the relevant section. "Paste the function, not the file." |
+
+**The rule: grep chains are a SYMPTOM of oversized files, not a workaround. The fix is splitting the file, not grepping harder.**
+
+**File size targets:**
+| File type | Max lines | Why |
+|-----------|-----------|-----|
+| TypeScript/JavaScript modules | ~500 | One responsibility = one file |
+| Agent MD files | ~200 | Agents should be lean prompts, not novels |
+| Config files | ~100 | Config is not code |
+| Test files | ~300 | If test is bigger than the code, split the code |
+
+**The violation:** Writing a file past 500 lines without splitting = **technical debt**. Grep-chaining a big file instead of using CodeGraph = **wasted tokens**. The Tech Lead pasting a 500+ line excerpt into a spawn prompt = **spawn failure** (paste the section, not the file).
+
 ### The Pipeline — Work Flows Through Specialists
 ```
 CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER

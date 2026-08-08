@@ -475,6 +475,10 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Agent runs git diff / git log / CodeGraph without explicit order** | **FAILED** |
 | **Agent re-reads AGENTS.md or its own file after spawn** | **FAILED** |
 | **Spawn prompt missing data → agent explores instead of STOPping** | **FAILED (Tech Lead's failure — re-spawn with data)** |
+| **Reading a 500+ line file in one read (should use CodeGraph for symbol lookup)** | **FAILED** |
+| **Grep-chaining a huge file instead of using CodeGraph** | **FAILED** |
+| **Pasting a 500+ line excerpt into a spawn prompt (paste the section, not the file)** | **FAILED** |
+| **Writing a file past 500 lines without splitting into modules** | **FAILED** |
 
 ---
 
