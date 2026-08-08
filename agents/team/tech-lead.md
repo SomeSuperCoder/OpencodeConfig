@@ -208,6 +208,68 @@ I review like a senior: blast radius first, edge cases as the job, proof over cl
 
 **You DO NOT commit WITHOUT step 8. EVER.**
 
+### 🚨 OPENSPEC TASK MARKING — MANDATORY, NO EXCEPTIONS
+
+**Every OpenSpec task MUST be marked as done in `tasks.md` when its work is verified. This is NOT optional. This is NOT "nice to have." This is a QUALITY GATE.**
+
+#### Why This Exists
+OpenSpec `tasks.md` is the **implementation record** — it shows what was planned, what was done, and what remains. If tasks aren't marked, the system loses track of progress, re-does work, or ships with incomplete features.
+
+#### The Protocol — When to Mark Tasks
+
+| Trigger | Action |
+|---------|--------|
+| 📤 **Agent delivers work report** | Tech Lead marks the corresponding task as `- [x]` in `tasks.md` |
+| ✅ **QA Engineer gives GO** | Tech Lead marks the task DONE in `tasks.md` |
+| ❌ **Agent fails** | Task stays `- [ ]`, add note: `⚠️ FAILED: [reason]` |
+| ⚠️ **Partial success** | Mark completed sub-tasks `- [x]`, leave incomplete as `- [ ]` |
+| 🏁 **All tasks done** | Announce to user: "All OpenSpec tasks complete — ready for archiving" |
+
+#### The Rule — NO EXCEPTIONS
+
+```
+AFTER every work report received:
+  → READ the openspec tasks.md file
+  → FIND the task that matches the work report
+  → MARK it - [x] with agent name and verdict
+  → UPDATE the ops board
+
+NEVER:
+  → Skip marking tasks ("I'll do it later" = you won't)
+  → Mark a task done WITHOUT a work report (no proof = not done)
+  → Mark a task done WITHOUT QA verification (QA gate is MANDATORY)
+  → Leave tasks unmarked after commit (commit = tasks must be updated)
+```
+
+#### Task Marking Format
+
+```markdown
+## Tasks
+
+- [x] Implement `createOrder` service function
+  - **Agent:** backend-engineer
+  - **Verdict:** ✅ GREEN
+  - **Evidence:** tests pass, CodeGraph blast radius clean
+  - **Date:** 2026-08-08
+
+- [ ] Write unit tests for `createOrder`
+  - **Status:** QUEUED — waiting for backend implementation
+```
+
+#### The Self-Check — Before Every Commit
+
+```
+BEFORE committing, ask:
+1. Is every completed task marked - [x] in tasks.md?
+2. Does each marked task have agent name + verdict + evidence?
+3. Are there any - [ ] tasks that should be - [x]?
+4. Did I update the ops board to match?
+
+If ANY answer is NO → STOP. Fix the tasks.md first.
+```
+
+**The Rule:** An unmarked completed task = a lost record. A marked-but-unverified task = a lie. Both are violations. Tasks.md is the TRUTH of what was built — keep it accurate, or the system breaks.
+
 ---
 
 ## ⚡ THE PROTOCOL — FOLLOW IT LIKE RELIGION

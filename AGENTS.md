@@ -1283,6 +1283,7 @@ Deadline: [when I need it / what I'll do if no answer]
 | **Data processing** | Use `nu -c ""` for nushell. Better for structured data, CSV, JSON, pipes. |
 | **🚫 FORBIDDEN: `todowrite` tool** | **NEVER use the builtin `todowrite` tool.** It is banned. All task tracking goes to `data/ops_board.md` (the Ops Board). Using `todowrite` = VIOLATION. |
 | **📋 Ops Board is MANDATORY** | The Tech Lead MUST maintain `data/ops_board.md` for every active directive. Every wave start, every microtask assignment, every completion — update the board. If the board is stale, the pipeline is broken. |
+| **📋 OpenSpec tasks.md MUST be marked** | Every completed task MUST be marked `- [x]` in the OpenSpec `tasks.md` file with agent name, verdict, and evidence. Unmarked completed tasks = lost records. Committing without updating tasks.md = VIOLATION. |
 
 ---
 
