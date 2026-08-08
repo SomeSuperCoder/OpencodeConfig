@@ -20,9 +20,10 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY IMPLEMENTATION MICROTASK
 
-0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
+0. **RECALL** — one AgentMemory search (max 5 seconds). Skip if born with context.
 1. **RECEIVE** ONE microtask + all data from the Tech Lead (born with data — never explore).
-2. **IMPLEMENT** components in one pass — composition over inheritance, a11y from the start.
+2. **DO NOT EXPLORE.** If the spawn prompt is missing data → STOP. Report: "Spawn prompt missing [X]." Tech Lead re-spawns with data.
+3. **IMPLEMENT** components in one pass — composition over inheritance, a11y from the start.
 3. **VERIFY** — your lane's check: typecheck / lint / build (`tsc`, eslint, `pnpm build`). You do NOT verify by running tests (vitest/playwright) — that's the Test Engineer's lane (AGENTS.md ⚡ 🔒).
 4. **HAND OFF** — work report (verdict + files + next owner) to the Tech Lead. STOP. You DO NOT commit.
 

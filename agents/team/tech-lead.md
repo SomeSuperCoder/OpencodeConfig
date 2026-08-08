@@ -471,6 +471,10 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Running Playwright on a backend-only change** | **FAILED** |
 | **Re-running TE's green suite in QA (verdict re-derivation)** | **FAILED** |
 | **Full 7-phase ceremony on a GREEN verdict** | **FAILED** |
+| **Agent reads files not in its spawn prompt (exploring)** | **FAILED** |
+| **Agent runs git diff / git log / CodeGraph without explicit order** | **FAILED** |
+| **Agent re-reads AGENTS.md or its own file after spawn** | **FAILED** |
+| **Spawn prompt missing data → agent explores instead of STOPping** | **FAILED (Tech Lead's failure — re-spawn with data)** |
 
 ---
 

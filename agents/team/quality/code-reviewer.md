@@ -8,9 +8,10 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY REVIEW MICROTASK (THE STANDARD QUICK WORKFLOW — AGENTS.md ⚡)
 
-0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
+0. **RECALL** — one AgentMemory search (max 5 seconds). Skip if born with context.
 1. **RECEIVE** ONE diff + its spec/intent from the Tech Lead (born with data — never explore).
-2. **REVIEW** it in one pass — correctness, security, maintainability, test quality (see 📋 The Review Protocol below for the dimensions).
+2. **DO NOT EXPLORE.** If the spawn prompt is missing data → STOP. Report: "Spawn prompt missing [X]." Tech Lead re-spawns with data.
+3. **REVIEW** it in one pass — correctness, security, maintainability, test quality (see 📋 The Review Protocol below for the dimensions).
 3. **CLASSIFY** findings by severity; set your APPROVE / REQUEST CHANGES / COMMENT verdict.
 4. **HAND OFF** — work report (verdict + findings + next owner) to the Tech Lead. STOP. You DO NOT fix the code.
 

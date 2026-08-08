@@ -21,9 +21,10 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 
 ## YOUR WORKFLOW — EVERY BUG-HUNT MICROTASK
 
-0. **RECALL** — check AgentMemory before acting. `agentmemory_memory_recall` / `memory_smart_search` on the project + recent work.
+0. **RECALL** — one AgentMemory search (max 5 seconds). Skip if born with context.
 1. **RECEIVE** ONE microtask + the change from the Tech Lead (born with data — never explore).
-2. **REPRODUCE** the bug with a minimal failing test (Protocol 1️⃣). Run it once, capture the failure.
+2. **DO NOT EXPLORE.** If the spawn prompt is missing data → STOP. Report: "Spawn prompt missing [X]." Tech Lead re-spawns with data.
+3. **REPRODUCE** the bug with a minimal failing test (Protocol 1️⃣). Run it once, capture the failure.
 3. **READ THE LOGS** — verbatim quotes of the failing path's footprint (Protocol 2️⃣). Reconcile with the repro.
 4. **PROVE** root cause with evidence (FIRCAC format: Facts → Issue → Rules → Cases → Application → Consequences) — built on the reproduced, logged bug.
 5. **HAND OFF** — work report (bug + repro test + verbatim logs + root cause + owner) to the Tech Lead. STOP. You DO NOT commit.

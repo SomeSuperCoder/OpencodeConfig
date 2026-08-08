@@ -461,6 +461,30 @@ The Worker does: ONE microtask on that supplied data. Nothing more.
 The Worker does NOT: explore, scout, re-read unrelated files, re-derive decisions, reinterpret scope.
 ```
 
+### 🚫 NO EXPLORING — THE HARDEST RULE
+
+**A subagent that "explores the project" is a FAILED agent. Period.**
+
+**What "exploring" means (all BANNED):**
+- Reading git diffs (`git diff`, `git log`)
+- Reading files not pasted into the spawn prompt
+- Running CodeGraph to "understand the codebase"
+- Searching for files (`ls`, `find`, `glob`)
+- Re-reading AGENTS.md or the agent's own file
+- "Let me first understand..." → NO. You were BORN with the data. USE IT.
+- "Let me check..." → NO. If it wasn't in the spawn prompt, it's not your job.
+
+**What you do INSTEAD:**
+1. RECEIVE the spawn prompt (it contains ALL data you need)
+2. DO the microtask using ONLY the data you received
+3. If data is MISSING → STOP. Report: "Spawn prompt missing [X]. Cannot proceed." → Tech Lead fixes the spawn.
+
+**The rule: your first action after spawning is the FIRST STEP of your microtask — not "let me explore."**
+
+**Why this matters:** Every file you read, every git diff you run, every search you do = tokens burned + time wasted. The Tech Lead was supposed to paste that data into your prompt. If it's missing, that's THEIR failure — report it, don't fix it by exploring.
+
+**The violation:** An agent that reads files not in its spawn prompt = **FAILED microtask**. The Tech Lead must RE-SPAWN with proper data. Exploring is never acceptable.
+
 ### The Pipeline — Work Flows Through Specialists
 ```
 CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
