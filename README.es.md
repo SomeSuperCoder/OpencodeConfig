@@ -2,11 +2,13 @@
 
 > **Deja de pedirle a un asistente. Empieza a dirigir una empresa.**
 
+**🌐 Idiomas:** [English](./README.md) · [Español (España)](./README.es.md) · [Русский](./README.ru.md)
+
 Un único CLI de IA para programar se convierte en una **empresa de software autoorganizada** — un Jefe de Equipo que comanda, 15 Líderes de Campo que orquestan, 61 especialistas sénior que ejecutan, y un pipeline de microtareas tan rápido que una funcionalidad completa se publica en minutos, no en horas. Cada cambio está probado. Cada cambio está documentado. Cada cambio está verificado antes de tocar tu código.
 
 **Tú eres el Director. Tú decides lo que importa. El sistema hace el resto.**
 
-🐳 **[Configuración del Contenedor](./CONTAINER_SETUP.es.md)** — Ejecuta opencode en un contenedor Podman reproducible con todas las dependencias preinstaladas.
+🐳 **[Configuración del Contenedor](./CONTAINER_SETUP.es.md)** · [Русский](./CONTAINER_SETUP.ru.md) — Ejecuta opencode en un contenedor Podman reproducible con todas las dependencias preinstaladas.
 
 ---
 
@@ -114,152 +116,254 @@ Cualquiera puede lanzar 30 agentes. El caos es fácil. **La verificación es la 
 
 ---
 
-## 🏛️ La Plantilla — 61 Especialistas, Una Especialidad Cada Uno
+## 🔌 Plugins — La Infraestructura Invisible
 
-Cada agente es un **ingeniero sénior con una única especialidad** — hacen su único trabajo mejor que cualquier generalista, porque es todo lo que hacen. La subordinación está construida en la estructura de archivos: `agents/team/` es la empresa, cada campo vive en su propio directorio, y los Líderes de Campo aconsejan al Jefe de Equipo sobre la orquestación.
+Cuatro plugins funcionan silenciosamente en segundo plano, haciendo el sistema más inteligente sin que lo notes:
 
-**👑 El Rey**
-`tech-lead` — el orquestador. El único que decide y lanza.
+| Plugin | Qué Hace |
+|--------|----------|
+| 🧹 **opencode-dynamic-context-pruning** | Poda dinámica del contexto para mantenerse dentro de los límites de tokens — los agentes nunca alcanzan el techo |
+| 🔍 **opencode-tool-search** | Descubrimiento inteligente de herramientas — los agentes encuentran la herramienta correcta sin hardcodear |
+| 📢 **opencode-notifier** | Envía notificaciones cuando las tareas se completan — sabes cuándo algo se publica |
+| 🔄 **opencode-auto-resume** | Reanuda automáticamente sesiones interrumpidas — retomas exactamente donde lo dejaste |
 
-**🧑‍💼 Líderes de Campo (advisory — ellos planifican, tú lanzas)**
-`team/lead/frontend-lead` · `backend-lead` · `quality-lead` · `security-lead` · `platform-lead` · `product-lead` · `research-lead` · `telegram-lead` · `pinescript-lead` · `mobile-lead` · `web3-lead` · `seo-lead` · `lgtm-lead` · `engagement-lead` · `highload-lead`
-
-**🎯 Orquestación y criterio**
-`team/core/scout` (los ojos — recopila contexto) · `team/core/wise-old-man` (consejo en decisiones difíciles) · `team/product/product-understander` (el PORQUÉ) · `team/product/requirements-analyst` · `team/product/software-architect` · `team/backend/api-designer` · `team/quality/critique` (destruye diseños antes de que se construyan)
-
-**💻 Campo Frontend** (`team/frontend/`)
-`frontend-engineer` · `frontend-ui-designer` (la estética) · `ux-designer` (el flujo, accesibilidad) · `frontend-animations-engineer` (el movimiento) · `design-system-engineer` · `i18n-engineer`
-
-**⚙️ Campo Backend** (`team/backend/`)
-`backend-engineer` · `api-designer` · `database-engineer` (esquema + migraciones) · `data-engineer` (modelo de datos de producto) · `integration-engineer` · `llm-engineer`
-
-**🧪 Campo Calidad** (`team/quality/`)
-`test-engineer` (dueño de la suite) · `qa-engineer` (aceptación) · `code-reviewer` (revisiones + análisis estático) · `bug-hunter` (prueba la causa raíz con una reproducción antes de que nadie arregle nada) · `critique`
-
-**🔒 Campo Seguridad** (`team/security/`)
-`security-engineer` (defensivo) · `team/security/pentest/*` — la suite de hacking ético (desactivada por defecto)
-
-**🚀 Campo Plataforma** (`team/platform/`)
-`devops-engineer` · `observability-engineer` · `performance-engineer`
-
-**🔬 Campo Investigación** (`team/research/`)
-`research-agent` · `domain-expert` · `documentation-writer` · `skill-generator`
-
-**🤖 Campo Telegram** (`team/telegram/`)
-`telegram-bot-engineer` (núcleo del bot — handlers, teclados, estado, webhooks) · `telegram-mini-app-engineer` (Telegram Mini Apps) · `telegram-integration-engineer` (pagos, integraciones de terceros, automatización de canales)
-
-**📈 Campo PineScript** (`team/pinescript/`)
-`pinescript-indicator-developer` (indicadores de TradingView — cálculos, plots, alertas) · `pinescript-strategy-developer` (estrategias — entradas/salidas, dimensionado, backtests) · `pro-quant` (valida «esta estrategia funciona» — estadísticas, walk-forward, veredictos GO/NO-GO)
-
-**📱 Campo Móvil** (`team/mobile/`)
-`mobile-engineer` (multiplataforma — React Native/Flutter) · `mobile-native-engineer` (nativo Swift/Kotlin) · `mobile-performance-engineer` (arranque, memoria, batería)
-
-**⛓️ Campo Web3** (`team/web3/`)
-`smart-contract-developer` (Solidity, listo para auditorías) · `web3-dapp-engineer` (wallets, cadenas, frontend↔cadena) · `defi-analyst` (tokenomics, AMMs, rendimiento)
-
-**📣 Campo SEO & Marketing** (`team/seo/`)
-`seo-engineer` (SEO técnico, CWV, datos estructurados) · `seo-content-strategist` (palabras clave, briefs, on-page) · `seo-analytics-specialist` (GA4, Search Console, rankings)
-
-**📊 Campo LGTM — stack de observabilidad Grafana** (`team/lgtm/`)
-`loki-logging-engineer` (logs) · `grafana-dashboard-engineer` (visualización) · `tempo-tracing-engineer` (traces) · `mimir-metrics-engineer` (métricas a largo plazo)
-
-**🎮 Campo Engagement — apps atractivas, con gamificación y retención** (`team/engagement/`)
-`gamification-engineer` (puntos, insignias, rachas, niveles, rankings) · `behavioral-designer` (bucles de enganche, hábito, onboarding) · `retention-analyst` (D1/D7/D30, churn, cohortes)
-
-**⚡ Campo High-Load — sistemas distribuidos y optimización** (`team/highload/`)
-`highload-architect` (sharding, colas, caché, async) · `highload-engineer` (rutas calientes, concurrencia, memoria) · `load-testing-engineer` (pruebas de carga/esfuerzo/saturación con k6, planificación de capacidad)
-
-**👁️ Vision Reader** (`team/core/vision-reader`) — el único agente con ojos. Todos los demás especialistas usan un modelo solo-texto; este usa MiMo (con visión) y lee fotos, capturas, diagramas y mockups de UI para todo el equipo.
-
-**🛡️ Suite de hacking ético (desactivada por defecto)** — `team/security/pentest/pentest-lead` · `pentest-recon` · `pentest-webapp` · `pentest-exploitation`. Un equipo de evaluación de seguridad autorizado que cartografía un objetivo acotado, lo sondea con herramientas de pentesting (nmap, sqlmap, nuclei, pruebas manuales estilo OWASP) y verifica los hallazgos con PoCs mínimos y reversibles. La suite **nunca se enruta de forma proactiva** — se activa **solo cuando tú pides explícitamente** un pentest o una evaluación de seguridad. El trabajo de seguridad diario queda en manos del 🔒 Security Engineer.
-
-> **El patrón que causa infrautilización:** "Scout + Backend + QA es suficiente." Nunca lo es. Cada especialista existe porque un generalista hace ese trabajo peor. **Enruta por trabajo, no por costumbre.**
+Configurado en `opencode.jsonc`:
+```jsonc
+"plugin": [
+  "opencode-dynamic-context-pruning",
+  "opencode-tool-search",
+  "@mohak34/opencode-notifier@latest",
+  "opencode-auto-resume"
+]
+```
 
 ---
 
-## 🎨 Patrones de Diseño y Estilo de Código
+## 🧠 Servidores MCP — La Extensión Cerebral
 
-La empresa sigue patrones de diseño probados. Guías completas en [`CODE_STYLE.md`](./CODE_STYLE.md).
+Dos servidores MCP dan a los agentes superpoderes más allá de lo que el LLM puede hacer:
 
-**Patrones principales que usamos:**
+| Servidor | Tipo | Qué Hace |
+|----------|------|----------|
+| **CodeGraph** | Local (incluido) | Inteligencia del código — lookup de símbolos, cadenas de llamadas, radio de impacto. Reemplaza grep con un grafo de conocimiento. |
+| **Tavily** | Remoto | Búsqueda web, extracción de docs, investigación. Los agentes verifican afirmaciones en lugar de adivinar. |
+| **AgentMemory** | Local (incluido) | Memoria persistente entre sesiones — hechos, patrones, decisiones de arquitectura sobreviven reinicios. |
 
-| Patrone | Cuándo | Anti-patrón que elimina |
-|---------|--------|------------------------|
-| **Inversión de Control** | Dependencias externas | Código que llama a bibliotecas en vez de ser llamado |
-| **Parsear, No Validar** | Manejo de entrada | Chequeos en runtime que dejan tipos sin tipar |
-| **Tipo Result** | Fallos esperados | Excepciones para flujo de control |
-| **Capa Anti-Corruptción** | APIs externas | Lógica de negocio enredada con Stripe/DB/SMTP |
-| **Patrón de Especificación** | Reglas de negocio | Cadenas if-else esparcidas |
-| **Contexto Acotado** | Modelado de dominio | Objetos Dios que sirven para todo |
-| **Objeto Centinela** | Valores especiales | Números mágicos y chequeos de null |
-| **Límite de Fallo Rápido** | Manejo de errores | Errores crudos filtrándose entre capas |
-
-**La meta-regla:** El código es un medio de comunicación. Si el lector debe mirar la implementación para entender la llamada, la abstracción está mal.
+```jsonc
+"mcp": {
+  "codegraph": {
+    "type": "local",
+    "command": ["codegraph", "serve", "--mcp"]
+  },
+  "tavily": {
+    "type": "remote",
+    "url": "https://mcp.tavily.com/mcp/?tavilyApiKey={file:.secrets/tavily.key}"
+  }
+}
+```
 
 ---
 
 ## 🧰 El Arsenal — Skills, Cargadas Bajo Demanda
 
-17 skills de patrones, nunca pre-cargadas, que se extraen al instante en que una microtarea las necesita:
+19 skills, nunca pre-cargadas, que se extraen al instante en que una microtarea las necesita:
 
-`fircac-out-loud` (razonamiento + verificación) · `testing-patterns` · `api-patterns` · `error-patterns` · `state-patterns` · `caching-patterns` · `refactoring-patterns` · `security-patterns` · `a11y-patterns` · `algorithm-patterns` · `domain-knowledge` · `compliance-patterns` · `git-patterns` · `research-patterns` · `performance-patterns` · `find-skills` · `impeccable` (el estándar de diseño — **DESIGN.md es ley** para todo agente frontend)
+**Razonamiento y verificación:**
+`fircac-out-loud` (razonamiento + verificación ABC) · `find-skills` (descubrir nuevas capacidades)
+
+**Oficio de código:**
+`testing-patterns` · `api-patterns` · `error-patterns` · `state-patterns` · `caching-patterns` · `refactoring-patterns` · `performance-patterns` · `algorithm-patterns` · `git-patterns`
+
+**Dominio y cumplimiento:**
+`security-patterns` · `compliance-patterns` · `domain-knowledge` · `research-patterns`
+
+**Frontend y diseño:**
+`a11y-patterns` · `impeccable` (oficio de diseño — **DESIGN.md es ley**) · `ux-psychology` (optimización de conversión) · `ux-redesign-examples` (patrones de tests AB reales)
 
 **El principio de dispersión:** AGENTS.md = el suelo universal. Skills = profundas, raras, bajo demanda. Agentes = solo lo específico del rol. El Jefe de Equipo es la única excepción — sus protocolos viven inline porque los usa en cada sesión.
 
 ---
 
-## 🚀 Dirige La Empresa — Cómo Se Siente Desde Tu Escritorio
+## 🎨 Patrones de Diseño — La Biblia del Estilo de Código
 
+La empresa sigue 15 patrones de diseño probados. Guías completas en [`CODE_STYLE.md`](./CODE_STYLE.md).
+
+| Patrón | Cuándo | Anti-patrón que elimina |
+|--------|--------|------------------------|
+| **Inversión de Control** | Dependencias externas | Código que llama a bibliotecas en vez de ser llamado |
+| **Dependencia Explícita** | Todas las dependencias | Acoplamiento oculto a través de globales, singletons o service locators |
+| **Parsear, No Validar** | Manejo de entrada | Chequeos en runtime que dejan tipos sin tipar |
+| **Patrón Tri-state** | Valores opcionales | Confusión null/undefined — Presente/Ausente/Error |
+| **Límite de Fallo Rápido** | Manejo de errores | Errores crudos filtrándose entre capas |
+| **Un Solo Nivel de Abstracción** | Diseño de funciones | Mezclar orquestación de alto nivel con detalles de bajo nivel |
+| **Lector Tolerante** | Datos externos | Parsers frágiles que se rompen con entrada inesperada |
+| **Patrón de Valor de Error** | Fallos esperados | Excepciones para flujo de control — errores como valores, nunca throw |
+| **Builder Tipado-Seguro** | Construcción compleja | Objetos parcialmente inicializados, constructores telescópicos |
+| **Capa Anti-Corruptción** | APIs externas | Lógica de negocio enredada con Stripe/DB/SMTP |
+| **Composición Sobre Herencia** | Reutilización de código | Jerarquías de herencia profundas que bloquean comportamiento |
+| **Objeto Centinela** | Valores especiales | Números mágicos y chequeos de null |
+| **Patrón de Especificación** | Reglas de negocio | Cadenas if-else esparcidas |
+| **Tipo Result** | Fallos esperados | Excepciones para flujo de control — Ok/Err, nunca throw |
+| **Contexto Acotado** | Modelado de dominio | Objetos Dios que sirven para todo |
+
+**La meta-regla:** El código es un medio de comunicación. Si el lector debe mirar la implementación para entender la llamada, la abstracción está mal.
+
+---
+
+## 📜 El Playbook del Director
+
+Tu manual completo de comandos vive en [`DIRECTOR.md`](./DIRECTOR.md). Aquí está la esencia:
+
+### Tus 7 Poderes
+
+| Poder | Qué Significa |
+|-------|---------------|
+| 🎯 **Dirigir** | "Publica X" — una línea, la empresa maneja el resto |
+| 📊 **Priorizar** | "Haz X antes de Y" — el Jefe de Equipo reordena el pipeline |
+| ✅ **Aprobar** | "Publicalo" o "rehazlo" — la empresa espera tu veredicto |
+| ⚖️ **Decidir** | "¿Opción A o B?" — la empresa presenta opciones, tú eliges |
+| 🔧 **Contratar/Despedir** | "Quita la suite de pentest" — la empresa se reestructura |
+| 📋 **Revisar** | "Muéstrame qué se publicó" — la empresa informa con evidencias |
+| 🌑 **Modo Oscuro** | "Me voy" — modo autónomo completo, decisiones documentadas |
+
+### Qué Vuelve a Ti
+
+| Artefacto | Qué Contiene |
+|-----------|--------------|
+| 📦 **Entregable** | Código funcional, probado, verificado |
+| 📋 **Informe de Estado** | Qué se publicó, qué está en vuelo, qué está bloqueado |
+| ⚠️ **Escalada** | Una decisión que solo tú puedes tomar — opciones + trade-offs + plazo |
+| 📜 **Actas del Consejo** | Cada decisión tomada mientras estabas fuera (modo autónomo) |
+
+---
+
+## 🛠️ Scripts — El Cinturón de Herramientas
+
+Cuatro scripts automatizan el flujo de trabajo del contenedor:
+
+| Script | Qué Hace |
+|--------|----------|
+| `launcher.sh` | Lanza el contenedor Podman — maneja build, mounts, X11, secrets, mapeo de UID |
+| `create-project` | Genera un nuevo proyecto opencode — git init, codegraph init, config .opencode |
+| `setup-project` | Conecta un proyecto existente para opencode — OpenSpec + CodeGraph init |
+| `first-run.sh` | Entry point del contenedor — ejecuta pnpm install en el primer lanzamiento, luego bash |
+
+**Uso:**
+```bash
+# Proyecto nuevo
+create-project my-api --dir ~/projects
+
+# Proyecto existente
+setup-project /path/to/project
+
+# Contenedor
+./scripts/launcher.sh ~/code          # montar tu carpeta de proyectos
+./scripts/launcher.sh --build         # forzar rebuild
 ```
-Tú:         Arregla el bug de pago en la página de checkout.
-Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
-            Bug Hunter → Backend Engineer → Test Engineer → QA.
-            Informa: causa raíz demostrada, fix verificado, tests verdes, publicado.
+
+Documentación completa del contenedor: **[CONTAINER_SETUP.md](./CONTAINER_SETUP.md)** · [Español](./CONTAINER_SETUP.es.md) · [Русский](./CONTAINER_SETUP.ru.md)
+
+---
+
+## ⚙️ Configuración
+
+### opencode.jsonc — El Panel de Control
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-dynamic-context-pruning", "opencode-tool-search", "..."],
+  "mcp": { "codegraph": { ... }, "tavily": { ... } },
+  "default_agent": "team/tech-lead",          // ← El Rey es tu agente por defecto
+  "permission": {
+    "external_directory": { "/tmp": "allow", "/home/*/OpencodeImprovements": "allow" },
+    "bash": { "* /tmp*": "allow", "*/home/*/OpencodeImprovements*": "allow" }
+  }
+}
 ```
 
-**O, para la experiencia completa:**
+| Configuración | Qué Hace |
+|---------------|----------|
+| `default_agent` | Qué agente ejecuta al iniciar opencode (default: `team/tech-lead`) |
+| `permission.external_directory` | Qué directorios del host pueden acceder los agentes |
+| `permission.bash` | Qué comandos bash pueden ejecutar los agentes sin preguntar |
 
-1. **Da una directiva** — una línea. `"Publica X"`, `"Arregla Y"`, `"Investiga Z"`, `"Refactoriza la autenticación"`.
-2. **El Jefe de Equipo lo maneja todo** — planificar, formar equipo, revisar, verificar, commit.
-3. **Recibe un informe con evidencia** — veredicto, tests ejecutados, archivos tocados, siguiente responsable. Nada de vibraciones.
-4. **Di `Me voy`** → modo autónomo completo. La empresa trabaja sola, documenta cada decisión en "Actas del Consejo" y te informa cuando vuelves.
-5. **Llama a cualquier especialista a mano** — `task team/security/security-engineer` — para una revisión puntual, cuando quieras.
-6. **Las escaladas llegan como decisiones**, no como preguntas — opciones, trade-offs, plazo.
+### Variables de Entorno
+
+| Variable | Propósito |
+|----------|-----------|
+| `TAVILY_API_KEY` | Clave API de Tavily para búsqueda web (también en `.secrets/tavily.key`) |
+
+### Archivos de Configuración
+
+| Archivo | Propósito |
+|---------|-----------|
+| `opencode.jsonc` | Config principal — plugins, MCP, permisos, agente por defecto |
+| `AGENTS.md` | La constitución — este documento de 1.400 líneas que todo agente obedece |
+| `DIRECTOR.md` | Tu playbook — cómo comandar la empresa |
+| `CODE_STYLE.md` | 15 patrones de diseño que la empresa sigue |
+| `tui.json` | Configuración del TUI (placeholder vacío actualmente) |
 
 ---
 
 ## 📁 La Sala de Máquinas
 
 ```
- ~/.config/opencode/
-├── README.md           ← estás aquí
-├── AGENTS.md           ← la constitución (todo agente la obedece)
-├── DIRECTOR.md         ← tu playbook — cómo comandar la empresa
-├── opencode.jsonc      ← config: servidores MCP, agente por defecto, plugins
+~/.config/opencode/
+├── README.md                   ← estás aquí
+├── AGENTS.md                   ← la constitución (todo agente la obedece)
+├── DIRECTOR.md                 ← tu playbook — cómo comandar la empresa
+├── CODE_STYLE.md               ← 15 patrones de diseño
+├── opencode.jsonc              ← config: servidores MCP, plugins, permisos, agente por defecto
+├── Containerfile               ← definición de build del contenedor (Fedora 44)
+│
 ├── agents/
-│   └── team/                          ← la empresa (el namespace `team/*`)
-│       ├── tech-lead.md               ← EL REY — el orquestador (agente por defecto)
-│       ├── lead/                      ← 🧑‍💼 LÍDERES DE CAMPO (advisory — planifican, nunca lanzan)
+│   └── team/                                  ← la empresa (el namespace `team/*`)
+│       ├── tech-lead.md                       ← EL REY — el orquestador (agente por defecto)
+│       ├── lead/                              ← 🧑‍💼 LÍDERES DE CAMPO (advisory — planifican, nunca lanzan)
 │       │   ├── frontend-lead.md · backend-lead.md · quality-lead.md
-│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md · telegram-lead.md · pinescript-lead.md · mobile-lead.md · web3-lead.md · seo-lead.md · lgtm-lead.md · engagement-lead.md · highload-lead.md
-│       ├── core/                      ← transversales (scout · wise-old-man · vision-reader)
-│       ├── frontend/                  ← engineer · ui-designer · ux-designer · design-system · animations · i18n
-│       ├── backend/                   ← engineer · api-designer · database · data · integration · llm
-│       ├── quality/                   ← test · qa · code-reviewer · bug-hunter · critique
-│       ├── security/                  ← security-engineer · pentest/ (⛔ suite off por defecto)
-│       ├── platform/                  ← devops · observability · performance
-│       ├── product/                   ← product-understander · requirements · architect · refactoring
-│       ├── research/                  ← research-agent · domain-expert · documentation · skill-generator
-│       ├── telegram/                  ← bot-engineer · mini-app-engineer · integration-engineer
-│       ├── pinescript/                ← indicator-developer · strategy-developer · pro-quant
-│       ├── mobile/                    ← engineer · native-engineer · performance-engineer
-│       ├── web3/                      ← smart-contract · dapp-engineer · defi-analyst
-│       ├── seo/                       ← seo-engineer · content-strategist · analytics-specialist
-│       ├── lgtm/                      ← loki · grafana-dashboard · tempo · mimir
-│       ├── engagement/                ← gamification-engineer · behavioral-designer · retention-analyst
-│       └── highload/                  ← architect · engineer · load-testing-engineer
-└── skills/
-    └── (17 skills de patrones, cargadas bajo demanda)
+│       │   └── security-lead.md · platform-lead.md · product-lead.md · research-lead.md
+│       │       · telegram-lead.md · pinescript-lead.md · mobile-lead.md · web3-lead.md
+│       │       · seo-lead.md · lgtm-lead.md · engagement-lead.md · highload-lead.md
+│       ├── core/                              ← transversales (scout · wise-old-man · vision-reader)
+│       ├── frontend/                          ← engineer · ui-designer · ux-designer · design-system · animations · i18n
+│       ├── backend/                           ← engineer · api-designer · database · data · integration · llm
+│       ├── quality/                           ← test · qa · code-reviewer · bug-hunter · critique
+│       ├── security/                          ← security-engineer · pentest/ (⛔ suite off por defecto)
+│       ├── platform/                          ← devops · observability · performance
+│       ├── product/                           ← product-understander · requirements · architect · refactoring
+│       ├── research/                          ← research-agent · domain-expert · documentation · skill-generator
+│       ├── telegram/                          ← bot-engineer · mini-app-engineer · integration-engineer
+│       ├── pinescript/                        ← indicator-developer · strategy-developer · pro-quant
+│       ├── mobile/                            ← engineer · native-engineer · performance-engineer
+│       ├── web3/                              ← smart-contract · dapp-engineer · defi-analyst
+│       ├── seo/                               ← seo-engineer · content-strategist · analytics-specialist
+│       ├── lgtm/                              ← loki · grafana-dashboard · tempo · mimir
+│       ├── engagement/                        ← gamification-engineer · behavioral-designer · retention-analyst
+│       └── highload/                          ← architect · engineer · load-testing-engineer
+│
+├── skills/                                       ← 19 skills de patrones, carga bajo demanda
+│   ├── fircac-out-loud/ · testing-patterns/ · api-patterns/ · error-patterns/
+│   ├── state-patterns/ · caching-patterns/ · refactoring-patterns/ · security-patterns/
+│   ├── a11y-patterns/ · algorithm-patterns/ · domain-knowledge/ · compliance-patterns/
+│   ├── git-patterns/ · research-patterns/ · performance-patterns/ · find-skills/
+│   ├── impeccable/ · ux-psychology/ · ux-redesign-examples/
+│
+├── scripts/
+│   ├── launcher.sh              ← lanzador del contenedor Podman
+│   ├── create-project           ← scaffolding de proyecto opencode nuevo
+│   ├── setup-project            ← conectar proyecto existente (OpenSpec + CodeGraph)
+│   └── first-run.sh             ← entry point del contenedor
+│
+├── recommendations/             ← seguimiento persistente de mejoras
+│   ├── security/ · performance/ · quality/ · testing/
+│   ├── accessibility/ · architecture/ · general/
+│
+├── data/                        ← estado de opencode (state_store.db, stream_store, ops_board.md)
+├── plans/                       ← planes de trabajo activos
+├── .secrets/                    ← claves API (gitignored)
+├── .env.example                 ← plantilla de variables de entorno
+└── node_modules/                ← dependencias de plugins
 ```
 
 ---
@@ -279,11 +383,39 @@ Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
 
 Cualquier agente puede reportar problemas con el propio arnés de IA. El sistema mejora escuchando a sus propios operadores.
 
-**Directorio:** `/home/allen/OpencodeImprovements/reports/`
+**Directorio:** `~/OpencodeImprovements/reports/`
 
-Los informes se escriben como archivos markdown. Cuando un agente encuentra una regla rota, un rol faltante, un cuello de botella en el flujo de trabajo o un problema de configuración, escribe un informe. El Director revisa y aprueba cambios. El Jefe de Equipo los implementa.
+Los informes se escriben como archivos markdown usando la [REPORT_TEMPLATE.md](~/OpencodeImprovements/REPORT_TEMPLATE.md). Cuando un agente encuentra una regla rota, un rol faltante, un cuello de botella en el flujo de trabajo o un problema de configuración, escribe un informe. El Director revisa y aprueba cambios. El Jefe de Equipo los implementa.
+
+**Protocolo de Auto-Reflexión** — todo agente, antes de entregar, responde:
+1. ¿Investigué algo que no me habían dado?
+2. ¿Cargué un skill que no necesitaba?
+3. ¿Re-verifiqué algo que ya estaba verificado?
 
 **La Regla:** el arnés es código. Se revisa como código. Se mejora. Los agentes son la primera línea de defensa contra la degradación del arnés.
+
+---
+
+## 📋 Recomendaciones — Seguimiento Persistente de Mejoras
+
+Cada "pasa con recomendaciones" de QA, seguridad, revisión de código o cualquier agente de verificación se guarda en `recommendations/` — no se pierde en el historial del chat.
+
+```
+recommendations/
+├── security/          ← mejoras de seguridad
+├── performance/       ← recomendaciones de rendimiento
+├── quality/           ← sugerencias de calidad de código
+├── testing/           ← mejoras de tests
+├── accessibility/     ← recomendaciones de accesibilidad
+├── architecture/      ← mejoras arquitectónicas
+└── general/           ← otras recomendaciones
+```
+
+**Formato:** `YYYY-MM-DD-topic.md` con Estado, Prioridad, Esfuerzo, Razonamiento, Evidencia.
+
+**Comando del usuario:** `"Implementa todas las recomendaciones anteriores"` → El Jefe de Equipo escanea, agrupa por dominio, lanza especialistas, implementa.
+
+Protocolo completo: [`recommendations/README.md`](./recommendations/README.md)
 
 ---
 
@@ -298,6 +430,13 @@ Toda salida dirigida al usuario debe estar en el idioma que el usuario habla. De
 | **Código, comandos, rutas de archivos** | Siempre inglés (nunca se traduce) |
 
 **Los términos técnicos se mantienen en inglés.** Palabras como "container", "MCP", "opencode", "FIRCAC" se mantienen en inglés incluso en mensajes no en inglés.
+
+**Traducciones disponibles:**
+
+| Documento | Idiomas |
+|-----------|---------|
+| README | [English](./README.md) · [Español](./README.es.md) · [Русский](./README.ru.md) |
+| Configuración del Contenedor | [English](./CONTAINER_SETUP.md) · [Español](./CONTAINER_SETUP.es.md) · [Русский](./CONTAINER_SETUP.ru.md) |
 
 ---
 
@@ -323,24 +462,23 @@ AgentMemory es un servidor MCP independiente que da a cada agente memoria persis
 
 ---
 
-## 📋 Recomendaciones — Seguimiento Persistente de Mejoras
-
-Cada "pasa con recomendaciones" de QA, seguridad, revisión de código o cualquier agente de verificación se guarda en `recommendations/` — no se pierde en el historial del chat.
+## 🚀 Dirige La Empresa — Cómo Se Siente Desde Tu Escritorio
 
 ```
-recommendations/
-├── security/          ← mejoras de seguridad
-├── performance/       ← recomendaciones de rendimiento
-├── quality/           ← sugerencias de calidad de código
-├── testing/           ← mejoras de tests
-├── accessibility/     ← recomendaciones de accesibilidad
-├── architecture/      ← mejoras arquitectónicas
-└── general/           ← otras recomendaciones
+Tú:         Arregla el bug de pago en la página de checkout.
+Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
+            Bug Hunter → Backend Engineer → Test Engineer → QA.
+            Informa: causa raíz demostrada, fix verificado, tests verdes, publicado.
 ```
 
-**Formato:** `YYYY-MM-DD-topic.md` con Estado, Prioridad, Esfuerzo, Razonamiento, Evidencia.
+**O, para la experiencia completa:**
 
-**Comando del usuario:** `"Implementa todas las recomendaciones anteriores"` → El Jefe de Equipo escanea, agrupa por dominio, lanza especialistas, implementa.
+1. **Da una directiva** — una línea. `"Publica X"`, `"Arregla Y"`, `"Investiga Z"`, `"Refactoriza la autenticación"`.
+2. **El Jefe de Equipo lo maneja todo** — planificar, formar equipo, revisar, verificar, commit.
+3. **Recibe un informe con evidencia** — veredicto, tests ejecutados, archivos tocados, siguiente responsable. Nada de vibraciones.
+4. **Di `Me voy`** → modo autónomo completo. La empresa trabaja sola, documenta cada decisión en "Actas del Consejo" y te informa cuando vuelves.
+5. **Llama a cualquier especialista a mano** — `task team/security/security-engineer` — para una revisión puntual, cuando quieras.
+6. **Las escaladas llegan como decisiones**, no como preguntas — opciones, trade-offs, plazo.
 
 ---
 
@@ -354,11 +492,3 @@ La empresa tiene dos contraseñas — prueba de que estás hablando con el siste
 ---
 
 > *No estás escribiendo código. Estás dirigiendo una empresa que publica software que importa.*
-
----
-
-## 🌐 Localización
-
-- **Español (España):** este documento
-- **Русский (Ruso):** [README.ru.md](./README.ru.md)
-- **English:** [README.md](./README.md)
