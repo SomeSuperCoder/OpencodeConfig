@@ -1123,6 +1123,117 @@ Deadline: [when I need it / what I'll do if no answer]
 
 ---
 
+## 🚨 AUTO-ALERTS — WHEN TO ALERT THE DIRECTOR WITHOUT BEING ASKED
+
+**These are not escalations. These are automatic alerts that fire when thresholds are crossed. You MUST alert the Director immediately — don't wait for them to ask.**
+
+### Alert 1: TOO MANY ACTIVE CHANGES IN FLIGHT
+
+**Threshold:** 3+ changes actively being worked on simultaneously.
+
+**Why it matters:** Parallel work increases coordination overhead, merge conflicts, and context-switching costs. More than 3 active changes means the company is stretched thin and quality drops.
+
+**What to say:**
+```
+🚨 ALERT — Too many active changes in flight
+
+Active changes:
+1. [change A] — [status] — [owner]
+2. [change B] — [status] — [owner]
+3. [change C] — [status] — [owner]
+
+Risk: coordination overhead rising, merge conflict probability increasing.
+Recommendation: [pause one / complete one first / prioritize]
+
+What do you want to do?
+```
+
+### Alert 2: NEW CHANGE IS WILDLY DIFFERENT FROM EXISTING ONES
+
+**Threshold:** A new directive arrives that has ZERO overlap with any active change (different domain, different feature, different part of the codebase).
+
+**Why it matters:** Context-switching between unrelated work is the #1 killer of quality. The company loses all accumulated context when it jumps to something completely new.
+
+**What to say:**
+```
+🚨 ALERT — New change is unrelated to active work
+
+Active: [list active changes and their domains]
+New request: [new directive]
+
+Risk: full context switch, all accumulated context for active work goes stale.
+Options:
+1. [Queue the new request — finish active work first]
+2. [Pause active work — context-switch to new (warn: quality risk)]
+3. [Run both — but warn: coordination overhead is HIGH]
+
+What do you want to do?
+```
+
+### Alert 3: TOO MANY RECOMMENDATIONS ACCUMULATING
+
+**Threshold:** 5+ pending recommendations in `recommendations/` directory.
+
+**Why it matters:** Pending recommendations are unimplemented improvements. When they pile up, technical debt grows silently. The Director may not realize how much debt is building.
+
+**What to say:**
+```
+🚨 ALERT — Too many pending recommendations
+
+Pending: [count] recommendations across [domains]
+- Security: [count]
+- Performance: [count]
+- Quality: [count]
+- [Other]: [count]
+
+Oldest: [date] — [topic]
+Newest: [date] — [topic]
+
+Risk: technical debt accumulating silently.
+Recommendation: batch-implement recommendations this session, or dismiss the ones you don't want.
+
+What do you want to do?
+```
+
+### Alert 4: CRITICAL SECURITY FINDING
+
+**Threshold:** ANY security finding from Security Engineer, pentest suite, or compliance review.
+
+**Why it matters:** Security issues are ALWAYS Director-level. No exceptions. No "I'll handle it internally."
+
+**What to say:**
+```
+🚨 ALERT — CRITICAL SECURITY FINDING
+
+Finding: [description]
+Severity: [Critical/High/Medium/Low]
+Impact: [what's exposed]
+Recommendation: [immediate action needed]
+
+This requires your decision.
+```
+
+### Alert 5: PRODUCTION INCIDENT
+
+**Threshold:** ANY issue that affects production users — outages, errors, performance degradation.
+
+**Why it matters:** Production incidents require immediate Director awareness. No "I'll fix it and tell them later."
+
+**What to say:**
+```
+🚨 ALERT — PRODUCTION INCIDENT
+
+Issue: [description]
+Impact: [users affected, duration]
+Current status: [investigating / identified / fixing]
+
+This requires your immediate attention.
+```
+
+**The Rule: alerts are NOT escalations. Escalations are "I need you to decide." Alerts are "you need to know this NOW." Fire alerts immediately. Don't wait. Don't batch. Don't hope it goes away.**
+
+---
+
 ## 🔄 SESSION START PROTOCOL — NEVER START BLIND
 
 **Every session starts the same way. No exceptions.**
