@@ -60,23 +60,27 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh \
     | bash -s -- --to /usr/local/bin --tag ${JUST_VERSION}
 
 # ---- User setup (changes rarely) ------------------------------------------
+# Generic user — works for ANY host user via --userns keep-id in Podman
+ARG USERNAME=dev
+ARG USER_UID=1000
+
 # Create non-root user, directories, fix ownership, set git identity
-RUN useradd -m -u 1000 -s /usr/bin/bash allen \
+RUN useradd -m -u ${USER_UID} -s /usr/bin/bash ${USERNAME} \
     && mkdir -p \
-        /home/allen/.config/opencode \
-        /home/allen/.local/bin \
-        /home/allen/.opencode/bin \
-        /home/allen/.agentmemory \
+        /home/${USERNAME}/.config/opencode \
+        /home/${USERNAME}/.local/bin \
+        /home/${USERNAME}/.opencode/bin \
+        /home/${USERNAME}/.agentmemory \
         /workspace \
-    && chown -R allen:allen /home/allen /workspace \
-    && chown -R allen:allen /home/allen/.cargo /home/allen/.rustup 2>/dev/null || true
+    && chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} /workspace \
+    && chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.cargo /home/${USERNAME}/.rustup 2>/dev/null || true
 
 # Persistent env
-ENV PATH="/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
-    HOME="/home/allen" \
-    PNPM_HOME="/home/allen/.local/share/pnpm"
+ENV PATH="/home/${USERNAME}/.local/share/pnpm/bin:/home/${USERNAME}/.cargo/bin:/home/${USERNAME}/.local/bin:/home/${USERNAME}/.opencode/bin:/usr/local/bin:/usr/bin" \
+    HOME="/home/${USERNAME}" \
+    PNPM_HOME="/home/${USERNAME}/.local/share/pnpm"
 
-USER allen
+USER ${USERNAME}
 
 # Git identity (inside user layer — rarely changes)
 RUN git config --global user.email "opencode@container" \
@@ -96,24 +100,24 @@ RUN export PATH="$PNPM_HOME:$PATH" \
 # ---- Config files (changes on config edits) -------------------------------
 # Baked into image — host config is NOT mounted.
 # To update container config, rebuild the image.
-COPY --chown=allen:allen agents /home/allen/.config/opencode/agents
-COPY --chown=allen:allen skills /home/allen/.config/opencode/skills
-COPY --chown=allen:allen AGENTS.md /home/allen/.config/opencode/AGENTS.md
-COPY --chown=allen:allen opencode.jsonc /home/allen/.config/opencode/opencode.jsonc
-COPY --chown=allen:allen opencode.json /home/allen/.config/opencode/opencode.json
-COPY --chown=allen:allen package.json /home/allen/.config/opencode/package.json
-COPY --chown=allen:allen package-lock.json /home/allen/.config/opencode/package-lock.json
+COPY --chown=${USERNAME}:${USERNAME} agents /home/${USERNAME}/.config/opencode/agents
+COPY --chown=${USERNAME}:${USERNAME} skills /home/${USERNAME}/.config/opencode/skills
+COPY --chown=${USERNAME}:${USERNAME} AGENTS.md /home/${USERNAME}/.config/opencode/AGENTS.md
+COPY --chown=${USERNAME}:${USERNAME} opencode.jsonc /home/${USERNAME}/.config/opencode/opencode.jsonc
+COPY --chown=${USERNAME}:${USERNAME} opencode.json /home/${USERNAME}/.config/opencode/opencode.json
+COPY --chown=${USERNAME}:${USERNAME} package.json /home/${USERNAME}/.config/opencode/package.json
+COPY --chown=${USERNAME}:${USERNAME} package-lock.json /home/${USERNAME}/.config/opencode/package-lock.json
 
 # ---- Scripts (changes most often) -----------------------------------------
 USER root
-COPY --chown=allen:allen scripts/ /tmp/scripts/
+COPY --chown=${USERNAME}:${USERNAME} scripts/ /tmp/scripts/
 RUN mkdir -p /usr/local/bin \
     && mv /tmp/scripts/first-run.sh /usr/local/bin/first-run \
     && mv /tmp/scripts/create-project /usr/local/bin/create-project \
     && mv /tmp/scripts/setup-project /usr/local/bin/setup-project \
     && chmod +x /usr/local/bin/first-run /usr/local/bin/create-project /usr/local/bin/setup-project \
     && rm -rf /tmp/scripts
-USER allen
+USER ${USERNAME}
 
 # ---- Working directory -----------------------------------------------------
 WORKDIR /workspace

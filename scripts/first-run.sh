@@ -4,14 +4,14 @@ set -euo pipefail
 # first-run.sh — Container entrypoint
 # Handles first-run setup, then drops into bash.
 
-MARKER="/home/allen/.config/opencode/.initialized"
+MARKER="${HOME}/.config/opencode/.initialized"
 
 if [[ ! -f "$MARKER" ]]; then
     echo "🔧 First-run setup..."
 
-    if [[ -f /home/allen/.config/opencode/package.json ]]; then
+    if [[ -f "${HOME}/.config/opencode/package.json" ]]; then
         echo "   Installing config dependencies..."
-        cd /home/allen/.config/opencode
+        cd "${HOME}/.config/opencode"
         pnpm install --no-frozen-lockfile 2>&1 || true
     fi
 

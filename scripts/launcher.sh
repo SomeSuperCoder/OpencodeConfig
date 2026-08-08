@@ -26,9 +26,11 @@ readonly SCRIPT_NAME="opencode-container"
 readonly IMAGE_NAME="opencode-env"
 readonly CONTAINER_HOSTNAME="opencode-env"
 readonly CONTAINER_WORKDIR="/workspace"
+readonly CONTAINER_USER="dev"
 readonly STATE_VOLUME="opencode-state"
 readonly AGENTMEMORY_HOST_DIR="${HOME}/.agentmemory"
 readonly IMPROVEMENTS_DIR="${HOME}/OpencodeImprovements"
+readonly CONTAINER_HOME="/home/${CONTAINER_USER}"
 
 # --- Resolve script location (for finding Containerfile) ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -176,7 +178,7 @@ TAVILY_KEY_FILE="${SECRETS_DIR}/tavily.key"
 TAVILY_MOUNT=""
 
 if [[ -f "$TAVILY_KEY_FILE" ]]; then
-    VOLUME_MOUNTS+=("--volume" "${TAVILY_KEY_FILE}:/home/allen/.config/opencode/.secrets/tavily.key:ro")
+    VOLUME_MOUNTS+=("--volume" "${TAVILY_KEY_FILE}:${CONTAINER_HOME}/.config/opencode/.secrets/tavily.key:ro")
 else
     echo "🔑 Tavily API key not found."
     echo "   Tavily is needed for web search in opencode."
@@ -187,7 +189,7 @@ else
         mkdir -p "$SECRETS_DIR"
         echo -n "$TAVILY_KEY" > "$TAVILY_KEY_FILE"
         chmod 600 "$TAVILY_KEY_FILE"
-        VOLUME_MOUNTS+=("--volume" "${TAVILY_KEY_FILE}:/home/allen/.config/opencode/.secrets/tavily.key:ro")
+        VOLUME_MOUNTS+=("--volume" "${TAVILY_KEY_FILE}:${CONTAINER_HOME}/.config/opencode/.secrets/tavily.key:ro")
         echo "   ✅ Key saved to ${TAVILY_KEY_FILE}"
     else
         echo "   ⚠️  Skipping — Tavily search won't work without a key."
@@ -203,8 +205,8 @@ if [[ -n "${DISPLAY:-}" ]]; then
         X11_MOUNTS+=("--volume" "/tmp/.X11-unix:/tmp/.X11-unix")
     fi
     if [[ -e "${XAUTHORITY:-$HOME/.Xauthority}" ]]; then
-        X11_MOUNTS+=("--volume" "${XAUTHORITY:-$HOME/.Xauthority}:/home/allen/.Xauthority")
-        X11_MOUNTS+=("--env" "XAUTHORITY=/home/allen/.Xauthority")
+        X11_MOUNTS+=("--volume" "${XAUTHORITY:-$HOME/.Xauthority}:${CONTAINER_HOME}/.Xauthority")
+        X11_MOUNTS+=("--env" "XAUTHORITY=${CONTAINER_HOME}/.Xauthority")
     fi
 fi
 
@@ -215,9 +217,9 @@ mkdir -p "${AGENTMEMORY_HOST_DIR}"
 echo "🚀 Launching opencode container..."
 echo ""
 echo "   Workspace:      ${WORKSPACE_DIR} → ${CONTAINER_WORKDIR}"
-echo "   State volume:   ${STATE_VOLUME} → /home/allen/.config/opencode/data"
-echo "   Agentmemory:    ${AGENTMEMORY_HOST_DIR} ↔ /home/allen/.agentmemory"
-echo "   Improvements:   ${IMPROVEMENTS_DIR} ↔ /home/allen/OpencodeImprovements"
+echo "   State volume:   ${STATE_VOLUME} → ${CONTAINER_HOME}/.config/opencode/data"
+echo "   Agentmemory:    ${AGENTMEMORY_HOST_DIR} ↔ ${CONTAINER_HOME}/.agentmemory"
+echo "   Improvements:   ${IMPROVEMENTS_DIR} ↔ ${CONTAINER_HOME}/OpencodeImprovements"
 echo "   Config:         baked into image (not mounted from host)"
 echo "   User:           $(id -u):$(id -g)"
 echo "   Hostname:       ${CONTAINER_HOSTNAME}"
@@ -235,12 +237,12 @@ exec podman run \
     --workdir "$CONTAINER_WORKDIR" \
     --security-opt label=disable \
     --env "SHELL=/usr/bin/bash" \
-    --env "HOME=/home/allen" \
-    --env "PATH=/home/allen/.config/opencode/scripts:/home/allen/.local/share/pnpm/bin:/home/allen/.cargo/bin:/home/allen/.local/bin:/home/allen/.opencode/bin:/usr/local/bin:/usr/bin" \
+    --env "HOME=${CONTAINER_HOME}" \
+    --env "PATH=${CONTAINER_HOME}/.config/opencode/scripts:${CONTAINER_HOME}/.local/share/pnpm/bin:${CONTAINER_HOME}/.cargo/bin:${CONTAINER_HOME}/.local/bin:${CONTAINER_HOME}/.opencode/bin:/usr/local/bin:/usr/bin" \
     --volume "${WORKSPACE_DIR}:${CONTAINER_WORKDIR}" \
-    --volume "${STATE_VOLUME}:/home/allen/.config/opencode/data" \
-    --volume "${AGENTMEMORY_HOST_DIR}:/home/allen/.agentmemory" \
-    --volume "${IMPROVEMENTS_DIR}:/home/allen/OpencodeImprovements" \
+    --volume "${STATE_VOLUME}:${CONTAINER_HOME}/.config/opencode/data" \
+    --volume "${AGENTMEMORY_HOST_DIR}:${CONTAINER_HOME}/.agentmemory" \
+    --volume "${IMPROVEMENTS_DIR}:${CONTAINER_HOME}/OpencodeImprovements" \
     ${VOLUME_MOUNTS[@]+"${VOLUME_MOUNTS[@]}"} \
     ${X11_MOUNTS[@]+"${X11_MOUNTS[@]}"} \
     ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} \
