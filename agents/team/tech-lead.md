@@ -775,7 +775,7 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 2. PICK the NEXT subwave = the microtasks whose dependencies are met.
 3. SUPPLY the data: paste code/spec/blast-radius into each prompt (DATA-FIRST).
 4. SPAWN them (1-3 agents, one microtask each, skills + data + scope in prompt).
-5. COLLECT work reports. LANE-CHECK each (no other agent's job was done).
+5. COLLECT work reports. LANE-CHECK each (no other agent's job was done). ARCHIVE self-reflections if agent admitted underperformance (see 📝 AGENT SELF-REFLECTION ARCHIVING).
 6. VERIFY the subwave's output (gates: tests for code, verdict for review).
 7. PASS the baton: route the next microtask to the next specialist.
 8. REPEAT. Something must ALWAYS be flowing.
@@ -1108,6 +1108,48 @@ Use the template at `/home/allen/OpencodeImprovements/REPORT_TEMPLATE.md`.
 - The Director can write reports directly
 
 **The Rule: the harness is your responsibility. When it breaks, you document it. When it's wrong, you propose a fix. When it's stale, you flag it. The system improves by listening to its operators.**
+
+---
+
+## 📝 AGENT SELF-REFLECTION ARCHIVING
+
+**When an agent admits underperformance in their handoff, you MUST archive it to `~/OpencodeImprovements/reports/` so the Director can improve the system.**
+
+### What Counts as Underperformance (ARCHIVE THESE)
+- Agent admits exploring files not in spawn prompt
+- Agent admits loading skills unnecessarily
+- Agent admits re-verifying already-verified work
+- Agent admits lane crossing (did another agent's job)
+- Agent admits token waste
+- Agent reports spawn prompt was missing data (your failure → archive it)
+- Any self-reflection where the agent says "I should have..." or "I wasted..."
+
+### What Does NOT Count (DON'T ARCHIVE)
+- Network failures, provider errors, API timeouts
+- Token exhaustion / usage limits
+- External system failures
+- The agent failed because of bad input from upstream (that's a different problem)
+
+### How to Archive
+1. Read the agent's handoff → extract the self-reflection section
+2. If agent admitted underperformance → write a report using the template
+3. Save to: `/home/allen/OpencodeImprovements/reports/YYYY-MM-DD_<agent>_<short-description>.md`
+4. Update the agent's handoff status to include "archived: [filename]"
+
+### Template
+Use: `/home/allen/OpencodeImprovements/SELF_REFLECTION_TEMPLATE.md`
+
+### Why This Matters
+These reports are the Director's raw data for improving the system. Every admission of underperformance is a signal that a rule in AGENTS.md or an agent's prompt needs tightening. Without this data, the system can't improve.
+
+### How Self-Reflection Feeds Into System Improvement
+1. Agents admit underperformance in their handoffs
+2. You archive those admissions to `~/OpencodeImprovements/reports/`
+3. The Director reviews the reports → identifies patterns
+4. Director approves changes to AGENTS.md or agent prompts
+5. You implement the changes → system improves
+
+**The cycle: Agent admits mistake → You archive it → Director sees pattern → System gets fixed → Fewer mistakes.**
 
 ---
 

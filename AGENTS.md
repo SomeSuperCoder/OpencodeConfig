@@ -559,15 +559,22 @@ Before ANY tool call, ask:
 
 #### 3. Self-Reflection BEFORE Handoff (post-flight)
 
-**Before you hand off, answer these 3 questions (internally, in your report):**
+**Before you hand off, answer these 3 questions (in your report):**
 
 ```
-1. Did I explore anything I wasn't given? → If YES, flag it: "I had to read [X] because spawn was missing it."
-2. Did I load a skill I didn't need? → If YES, note: "Loaded [skill] unnecessarily — could have been skipped."
-3. Did I re-verify something already verified? → If YES, note: "Re-ran [X] that [agent] already confirmed."
+1. Did I explore anything I wasn't given? → If YES, state it: "I had to read [X] because spawn was missing it."
+2. Did I load a skill I didn't need? → If YES, state: "Loaded [skill] unnecessarily — could have been skipped."
+3. Did I re-verify something already verified? → If YES, state: "Re-ran [X] that [agent] already confirmed."
 ```
 
-**These are not confessions — they are IMPROVEMENT DATA.** The Tech Lead uses them to fix spawn prompts, reduce waste, and tighten the pipeline.
+**These are not confessions — they are IMPROVEMENT DATA.** The Tech Lead archives them to `~/OpencodeImprovements/reports/` so the Director can improve the system.
+
+**⚠️ ONLY report underperformance you caused. Do NOT report:**
+- Network failures, provider errors, API timeouts → external, not your fault
+- Token exhaustion → resource constraint, not your fault
+- Bad input from upstream → report it, but it's not YOUR underperformance
+
+**Your self-reflection = what YOU did wrong, not what went wrong around you.**
 
 #### 4. Responsibility — You Own the Outcome
 
