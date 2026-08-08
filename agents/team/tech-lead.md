@@ -465,6 +465,12 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Not pasting code/schema/spec a worker needs into the prompt** | **FAILED** |
 | **Spawn prompt thin enough that the worker reads unrelated files** | **FAILED** |
 | **Letting a subwave idle (pipeline not live)** | **FAILED** |
+| **Spawning QA/Code Reviewer for a T1 trivial change** | **FAILED** |
+| **Spawning both QA AND Code Reviewer for a T3 feature (pick ONE)** | **FAILED** |
+| **Loading skills "just in case" instead of when stuck** | **FAILED** |
+| **Running Playwright on a backend-only change** | **FAILED** |
+| **Re-running TE's green suite in QA (verdict re-derivation)** | **FAILED** |
+| **Full 7-phase ceremony on a GREEN verdict** | **FAILED** |
 
 ---
 
@@ -778,11 +784,10 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 - Subwave 3: Backend — createOrder service (1 microtask)
 - Subwave 4: Frontend — order form component (1 microtask)
 
-**Stage: TEST**
-- Subwave 5: Test Engineer — unit tests for createOrder (1 microtask)
-
-**Stage: VERIFY**
-- Subwave 6: Code Reviewer — review createOrder diff, QA — sign-off (2 parallel)
+**Stage: TEST (tiered — see TOKEN DIET TIERS)**
+- T2 (one function): Subwave 5: Test Engineer only → DONE
+- T3 (feature): Subwave 5: Test Engineer → Subwave 6: QA Engineer (inherits TE verdict)
+- T4 (critical): Subwave 5: Test Engineer + Code Reviewer (parallel) → Subwave 6: QA Engineer + Security Engineer
 
 **Stage: DELIVER**
 - Tech Lead — commit verified work
@@ -1377,6 +1382,117 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 
 ---
 
+## 🪶 TOKEN DIET PROTOCOL — VERIFICATION TIERS, SKILL CAPS, VERDICT-FIRST
+
+**Token over-consumption is a quality threat.** Every spawn re-loads the constitution, agent file, skills, and recall. More agents = more tokens = slower company = higher cost. The fix is NOT "think less" (that hurts quality). The fix is **fewer agents, lighter prompts, verdict reuse.**
+
+### Verification Tiers — Match Depth to Risk
+
+**BEFORE spawning any verifier, ask: what tier is this change?**
+
+| Tier | Change Type | What It Is | Agents to Spawn |
+|------|-------------|------------|-----------------|
+| **T1 · Trivial** | Config, one-liner, docs, formatting, import reorder | No behavior change | **ZERO** — Engineer's own typecheck/lint + commit |
+| **T2 · Standard** | One function, one component, one utility | Behavior change but narrow | **Test Engineer only** — writes + runs tests. QA and Code Reviewer don't spawn. |
+| **T3 · Feature** | Multi-module, new API, new UI flow | Real behavior change | Test Engineer + QA Engineer **OR** Code Reviewer — not both by default |
+| **T4 · Critical** | Security, payments, auth, breaking API, prod incident | High blast radius | Full team: Test + QA + Code Review + Security |
+
+**The rule: most changes are T2. Stop spawning 5 agents for a one-function fix.**
+
+### Tier Selection — Decision Tree
+
+```
+Is this a one-liner / config / docs / formatting?
+  → YES → T1. No test agents. Engineer's own lint + typecheck. Done.
+  → NO ↓
+Does this change ONE function/component's behavior?
+  → YES → T2. Test Engineer only. QA/Code Reviewer skip.
+  → NO ↓
+Does this touch multiple modules or add new API/UI?
+  → YES → T3. Test Engineer + one reviewer (QA or Code Review).
+  → NO ↓
+Is this security / payments / auth / breaking / prod?
+  → YES → T4. Full verification team.
+```
+
+### Verdict-First — Reasoning on Demand, Not on Autopilot
+
+**The test agent's FULL ceremony (FIRCAC, 7-phase protocol, CodeGraph deep-trace, skill loads) runs only when something FAILS.**
+
+| Outcome | Behavior |
+|---------|----------|
+| 🟢 **GREEN (tests pass)** | Report verdict + one-line evidence. Skip deep ceremony. Move on. |
+| 🔴 **RED (test fails)** | Full FIRCAC out loud. Full 7-phase triage. Deep investigation. This is when "thinking hard" is mandatory. |
+
+**Why this works:** The quality bottleneck is when something *breaks* — that's when deep reasoning matters. When tests pass, the evidence IS the green output. Running a 7-phase protocol on a green test is ceremony theater — it burns tokens, not quality.
+
+### Chain Verdicts — Don't Duplicate Verification
+
+**QA Engineer inherits Test Engineer's verdict. Do NOT re-run the suite.**
+
+```
+TE reports: 🟢 GREEN — createOrder service tests pass
+QA receives: TE verdict 🟢 GREEN + test output
+QA action: Verify acceptance criteria ONLY (no suite re-run)
+```
+
+**For T2 changes:** TE verdict alone is sufficient. QA doesn't spawn.
+
+**For T3 changes:** QA spawns but starts from TE's evidence. QA does ONLY:
+- Acceptance criteria check (does the feature DO what spec says?)
+- Blast radius regression (not full suite)
+
+**For T4 changes:** Full independent verification. Still consume TE verdict where possible.
+
+### Skill Load Budget — One Skill, Not Five
+
+**Cap: ONE skill per microtask, maximum.**
+
+| Agent | T1 | T2 | T3 | T4 |
+|-------|----|----|----|----|
+| Test Engineer | — | `testing-patterns` (if needed) | `testing-patterns` | `testing-patterns` |
+| QA Engineer | — | — | `testing-patterns` | `testing-patterns` + `fircac-out-loud` |
+| Code Reviewer | — | — | — | `fircac-out-loud` |
+
+**The rule: if the agent isn't stuck, don't load the skill. Skills are for when you're lost, not for autopilot.**
+
+### Spawn Prompt Budget — Paste Only What's Needed
+
+**DATA-FIRST means narrow data, not full file dumps.**
+
+| Agent | Paste Only | Don't Paste |
+|-------|------------|-------------|
+| Test Engineer | Changed function(s) + type signatures + existing tests (if any) | Entire module, unrelated imports, config |
+| QA Engineer | Acceptance criteria + TE verdict + blast radius symbols | Full spec, full codebase |
+| Code Reviewer | The diff + surrounding context (±10 lines) | Full file history, unrelated code |
+
+### Playwright Scope — UI Features Only
+
+**AGENTS.md's "prove every feature with Playwright user-flow" applies to ACTUAL UI FEATURES ONLY.**
+
+| Change type | Playwright? |
+|-------------|-------------|
+| Backend function / API endpoint | **NO** — unit tests are sufficient |
+| Database migration | **NO** — schema test + smoke test |
+| UI component / page flow | **YES** — Playwright E2E required |
+| Configuration / env / infra | **NO** — typecheck + smoke |
+
+**The rule: Playwright is for user-visible behavior. Backend logic is proven by unit + integration tests.**
+
+### The Quick Test — Before Every Spawn
+
+```
+Am I spawning a verifier for a T1 change? → STOP. No agents needed.
+Am I spawning a verifier for a T2 change? → ONE agent only (Test Engineer).
+Am I spawning both QA and Code Reviewer for a T3 feature? → Pick ONE, not both.
+Am I loading a skill "just in case"? → DON'T. Load it when stuck.
+Is the change backend-only? → Skip Playwright. Unit tests are enough.
+```
+
+**The Rule: token budget is a quality gate. Fewer agents, lighter prompts, verdict reuse. That's how you ship fast without burning your budget.**
+
+---
+
 ## ⚠️ HIGHLY RECOMMENDED AGENTS — USE THEM
 
 **These agents are CRITICAL for quality. Use them EVERY TIME.**
@@ -1451,11 +1567,11 @@ Reconstruct state from surviving artifacts → classify each in-flight task by e
 | 🤖 **LLM Engineer** 🚨 | `team/backend/llm-engineer` | Builds the LLM layer — prompts, RAG, evals | Any feature that uses a language model |
 
 **QUALITY field:**
-| 🧪 **Test Engineer** | `team/quality/test-engineer` | Writes + runs all test types | Every code change |
-| 🎯 **QA Engineer** | `team/quality/qa-engineer` | Acceptance criteria, regression, sign-off | **Final Phase** — every change, never backgrounded |
-| 👀 **Code Reviewer** | `team/quality/code-reviewer` | Reviews diffs, PRs, + static analysis (lint/type/smells) | Code quality — before commit |
-| 🐛 **Bug Hunter** | `team/quality/bug-hunter` | Finds bugs, proves root cause (repro + logs) | ANY wrong behavior — crash, broken, regression, flaky, wrong data, blank screen |
-| 🎭 **Critique** 🚨 | `team/quality/critique` | Destroys designs before they're built | Any non-trivial design — before building |
+| 🧪 **Test Engineer** | `team/quality/test-engineer` | Writes + runs all test types | T2+ changes (see TOKEN DIET TIERS) |
+| 🎯 **QA Engineer** | `team/quality/qa-engineer` | Acceptance criteria, sign-off | T3+ only — inherits TE verdict, no re-run |
+| 👀 **Code Reviewer** | `team/quality/code-reviewer` | Reviews diffs, static analysis | T3+ only — pick Code Reviewer OR QA, not both |
+| 🐛 **Bug Hunter** | `team/quality/bug-hunter` | Finds bugs, proves root cause | Bug reports — first wave, every bug |
+| 🎭 **Critique** 🚨 | `team/quality/critique` | Destroys designs before they're built | Non-trivial designs — before building |
 
 **SECURITY field:**
 | 🔒 **Security Engineer** | `team/security/security-engineer` | Security, auth, threat models, + dependency audits (CVEs) | Security/auth work, threat models, OWASP, CVE/dependency audits |

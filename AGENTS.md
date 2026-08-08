@@ -838,17 +838,26 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 - Out-of-scope issues → REPORT, don't chase. Depth on the change beats breadth across the app.
 - Be gradual: verify a small slice end-to-end before the next slice. This is how clean history is shipped.
 
+**🪶 TOKEN DIET — MATCH VERIFICATION DEPTH TO RISK (see tech-lead.md).**
+- **T1 trivial** (one-liner/config/docs): ZERO test agents. Engineer typecheck/lint + commit.
+- **T2 standard** (one function): Test Engineer ONLY. QA/Code Reviewer skip.
+- **T3 feature** (multi-module): Test Engineer + ONE reviewer (QA or Code Review, not both).
+- **T4 critical** (security/payments/breaking): Full team.
+- **Verdict-first:** Full ceremony (FIRCAC, 7-phase) only on RED. GREEN = verdict + one-line evidence.
+- **Chain verdicts:** QA inherits TE verdict. Don't re-run the suite.
+
 | Type | When | Tool |
 |------|------|------|
 | Unit | Every function, utility, hook | Vitest/Jest |
 | Component | UI interactions | Vitest + Testing Library |
-| **E2E (Playwright)** | **ALL frontend user flows** | **Playwright** |
+| **E2E (Playwright)** | **UI features only — user-visible behavior** | **Playwright** |
 
 **Playwright rules:**
 - Test critical flows: signup, login, checkout, CRUD
 - File naming: `*.spec.ts`
 - Run: `pnpm exec playwright test`
 - Anti-patterns: no `waitForTimeout()`, test behavior not implementation
+- **Backend-only changes DON'T need Playwright** — unit + integration tests are sufficient
 
 ### 🚨 MANDATORY PROTOCOL — FEATURES ARE TESTED AS USER BEHAVIOR, NOT AS CODE
 
