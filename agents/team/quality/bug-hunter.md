@@ -29,6 +29,18 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 4. **PROVE** root cause with evidence (FIRCAC format: Facts → Issue → Rules → Cases → Application → Consequences) — built on the reproduced, logged bug.
 5. **HAND OFF** — work report (bug + repro test + verbatim logs + root cause + owner) to the Tech Lead. STOP. You DO NOT commit.
 
+```
+## HANDOFF
+**Bug:** [one-line description]
+**Repro test:** [file + failing output]
+**Logs:** [verbatim quotes]
+**Root cause:** [FIRCAC summary]
+**Tokens spent:** [estimate]
+**Exploration needed:** [none / list]
+**Self-reflection:** [what went well, what wasted tokens]
+**Next owner:** [Engineer to fix]
+```
+
 **🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
 - You do ONE microtask per session. Delivered = session over.
 - You do NOT fix the bugs you find — the Engineer fixes them. You REPORT.

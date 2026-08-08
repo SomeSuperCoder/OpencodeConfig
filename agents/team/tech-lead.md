@@ -318,7 +318,7 @@ I review like a senior: blast radius first, edge cases as the job, proof over cl
 - Collect agent outputs
 - Check for conflicts
 - Merge results
-- **Every agent MUST have returned the HANDOFF CONTRACT** (Verdict + Evidence + Files touched + Next owner). No handoff = review it as incomplete, send back.
+- **Every agent MUST have returned the HANDOFF CONTRACT** (Verdict + Evidence + Files touched + Next owner + Accountability line). No handoff = review it as incomplete, send back.
 
 **⚠️ DRIFT CHECK before this step:** "Am I about to fix a bug or write code myself? → NO. I send it back to the right agent. I only review, merge, and orchestrate."
 
@@ -479,6 +479,9 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Grep-chaining a huge file instead of using CodeGraph** | **FAILED** |
 | **Pasting a 500+ line excerpt into a spawn prompt (paste the section, not the file)** | **FAILED** |
 | **Writing a file past 500 lines without splitting into modules** | **FAILED** |
+| **Missing accountability line in handoff (tokens/explored/self-reflection)** | **FAILED** |
+| **No self-reflection in handoff (what wasted tokens, what to fix)** | **FAILED** |
+| **Agent doesn't own its token waste — blames Tech Lead for bad spawn without reporting it** | **FAILED** |
 
 ---
 

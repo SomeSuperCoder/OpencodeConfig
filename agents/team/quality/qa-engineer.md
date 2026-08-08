@@ -50,6 +50,9 @@ Your action: Verify acceptance criteria ONLY (no suite re-run)
 **TE verdict consumed:** 🟢 GREEN / 🔴 RED
 **Acceptance criteria:** [list, each PASS/FAIL]
 **Evidence:** [what you observed]
+**Tokens spent:** [estimate — did you stay lean?]
+**Exploration needed:** [none / list what you had to read outside spawn data]
+**Self-reflection:** [what went well, what wasted tokens]
 **Blockers (if NO-GO):** [list]
 **Next owner:** Tech Lead if GO, Engineer if NO-GO
 ```

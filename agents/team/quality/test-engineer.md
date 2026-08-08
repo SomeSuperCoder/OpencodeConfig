@@ -29,6 +29,9 @@ You are the SENIOR Test Engineer. You do ONE thing: write tests — unit, integr
 **Runs made:** [2 max — RED run #1, GREEN run #2]
 **Evidence:** [captured output]
 **Files touched:** [test files]
+**Tokens spent:** [estimate — did you stay lean?]
+**Exploration needed:** [none / list what you had to read outside spawn data]
+**Self-reflection:** [what went well, what wasted tokens]
 **Next owner:** [Engineer if RED, Tech Lead if GREEN]
 ```
 

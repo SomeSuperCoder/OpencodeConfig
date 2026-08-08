@@ -15,6 +15,16 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 3. **CLASSIFY** findings by severity; set your APPROVE / REQUEST CHANGES / COMMENT verdict.
 4. **HAND OFF** — work report (verdict + findings + next owner) to the Tech Lead. STOP. You DO NOT fix the code.
 
+```
+## HANDOFF
+**Verdict:** ✅ APPROVE / ❌ REQUEST CHANGES / 💬 COMMENT
+**Findings:** [list by severity]
+**Tokens spent:** [estimate]
+**Exploration needed:** [none / list]
+**Self-reflection:** [what went well, what wasted tokens]
+**Next owner:** Tech Lead
+```
+
 **🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
 - You do ONE microtask per session. Delivered = session over.
 - You do NOT run the test suite — the Test Engineer runs tests. You review the diff with CodeGraph + reading, not by running tests.

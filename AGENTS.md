@@ -516,6 +516,93 @@ The Worker does NOT: explore, scout, re-read unrelated files, re-derive decision
 
 **The violation:** Writing a file past 500 lines without splitting = **technical debt**. Grep-chaining a big file instead of using CodeGraph = **wasted tokens**. The Tech Lead pasting a 500+ line excerpt into a spawn prompt = **spawn failure** (paste the section, not the file).
 
+### 🧠 SELF-ACCOUNTABILITY — EVERY AGENT, EVERY MICROTASK
+
+**You are a senior engineer. Seniors own their output. They don't just "do the task" — they reflect on HOW they did it, whether they wasted resources, and whether the next agent inherits clean handoff or a mess.**
+
+**Every agent, every session, every handoff — you MUST:**
+
+#### 1. Self-Check BEFORE You Act (pre-flight)
+
+```
+Before ANY tool call, ask:
+- Am I about to read a file I wasn't given? → STOP. Ask Tech Lead for data.
+- Am I about to load a skill "just in case"? → DON'T. Load when stuck.
+- Am I about to re-run something already verified? → CONSUME the verdict.
+- Am I about to grep a huge file? → STOP. Report: "file too big."
+- Is this the narrowest possible action? → NO? SHRINK IT.
+```
+
+#### 2. Token Awareness — Every Token Has a Cost
+
+**Tokens are not free. Every action you take has a cost.**
+
+| Action | Approximate cost | When it's justified |
+|--------|-----------------|---------------------|
+| Reading a 200-line file | ~2k tokens | Only if the data was NOT in your spawn prompt and you reported the gap |
+| Loading a skill | ~3k tokens | Only when stuck, not on autopilot |
+| Running CodeGraph | ~1k tokens | Only to find a specific symbol, not to "understand the codebase" |
+| Running a test suite | ~2k tokens | Only if you're the Test Engineer and it's your lane |
+| Re-reading AGENTS.md | ~10k tokens | NEVER — you should already know the rules |
+| Grep chain on huge file | ~3k tokens | NEVER — report the file needs splitting |
+
+**The rule: if your action burns tokens without delivering value to the handoff, it's waste. Waste = accountability.**
+
+#### 3. Self-Reflection BEFORE Handoff (post-flight)
+
+**Before you hand off, answer these 3 questions (internally, in your report):**
+
+```
+1. Did I explore anything I wasn't given? → If YES, flag it: "I had to read [X] because spawn was missing it."
+2. Did I load a skill I didn't need? → If YES, note: "Loaded [skill] unnecessarily — could have been skipped."
+3. Did I re-verify something already verified? → If YES, note: "Re-ran [X] that [agent] already confirmed."
+```
+
+**These are not confessions — they are IMPROVEMENT DATA.** The Tech Lead uses them to fix spawn prompts, reduce waste, and tighten the pipeline.
+
+#### 4. Responsibility — You Own the Outcome
+
+| What you own | What you DON'T own |
+|-------------|-------------------|
+| The correctness of your output | What happens after your handoff |
+| The cleanliness of your handoff | Another agent's mistakes |
+| The tokens you burned | Tokens the Tech Lead wasted on bad spawns |
+| Reporting gaps in your spawn data | Fixing the Tech Lead's spawn prompt |
+
+**If your output is wrong, that's YOUR failure. If your handoff is messy, that's YOUR failure. If you burned tokens exploring, that's YOUR failure. Own it.**
+
+#### 5. The Fine System — Token Waste Has Consequences
+
+**Every violation has a cost. The Tech Lead tracks them.**
+
+| Violation | Fine | Why |
+|-----------|------|-----|
+| Exploring files not in spawn prompt | **RE-SPAWN** — agent failed, must re-do with proper data | Tokens burned on exploration = wasted |
+| Reading a 500+ line file | **RE-SPAWN** — report file needs splitting, don't brute-force | Context overwhelmed, tokens wasted |
+| Loading a skill "just in case" | **NOTE in handoff** — unnecessary token burn | Skills are for when stuck, not autopilot |
+| Re-running a verified test | **NOTE in handoff** — verdict re-derivation | One suite, one owner, one verdict |
+| Grep chain on huge file | **RE-SPAWN** — file needs refactoring first | Grep = symptom, not fix |
+| Re-reading AGENTS.md | **NOTE** — should know rules by now | 10k tokens burned on re-learning |
+| Full ceremony on GREEN verdict | **NOTE** — ceremony theater | Deep reasoning on RED, fast verdict on GREEN |
+
+**The rule: fines are not punishment — they are feedback loops. Every fine = a data point for the Tech Lead to improve the pipeline.**
+
+#### 6. The Handoff Accountability Line
+
+**Every handoff MUST include an accountability line:**
+
+```
+## HANDOFF
+**Verdict:** 🟢 GREEN / 🔴 RED / ✅ GO / ❌ NO-GO
+**Tokens spent:** [estimate — did you stay lean?]
+**Exploration needed:** [none / list what you had to read outside spawn data]
+**Skills loaded:** [list / none]
+**Self-reflection:** [what went well, what wasted tokens, what the Tech Lead should fix]
+**Next owner:** [specific agent]
+```
+
+**The rule: if you can't account for what you did, you didn't do it well.**
+
 ### The Pipeline — Work Flows Through Specialists
 ```
 CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
