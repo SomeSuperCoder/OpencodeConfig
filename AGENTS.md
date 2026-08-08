@@ -468,22 +468,29 @@ The Worker does NOT: explore, scout, re-read unrelated files, re-derive decision
 **What "exploring" means (all BANNED):**
 - Reading git diffs (`git diff`, `git log`)
 - Reading files not pasted into the spawn prompt
-- Running CodeGraph to "understand the codebase"
 - Searching for files (`ls`, `find`, `glob`)
 - Re-reading AGENTS.md or the agent's own file
 - "Let me first understand..." → NO. You were BORN with the data. USE IT.
 - "Let me check..." → NO. If it wasn't in the spawn prompt, it's not your job.
 
-**What you do INSTEAD:**
+**✅ CodeGraph is the ONE exception — it's unlimited, use it freely.**
+- `codegraph_explore` to find symbols, call chains, blast radius, dependencies
+- CodeGraph is CHEAP (~1k tokens) and TARGETED (gives you the exact function/class, not the whole file)
+- CodeGraph replaces: reading files, grepping, searching for symbols, understanding architecture
+- **Use CodeGraph FIRST for any code question. Read files SECOND (only what CodeGraph surfaces).**
+
+**What you do INSTEAD of file exploration:**
 1. RECEIVE the spawn prompt (it contains ALL data you need)
 2. DO the microtask using ONLY the data you received
-3. If data is MISSING → STOP. Report: "Spawn prompt missing [X]. Cannot proceed." → Tech Lead fixes the spawn.
+3. If data is MISSING → STOP. Report: "Spawn prompt missing [X]." Tech Lead re-spawns with data.
+4. Need to find a symbol or understand a call chain? → **Use CodeGraph** (free to use, unlimited)
+5. Need to read a function? → CodeGraph surfaces it; read ONLY that function
 
 **The rule: your first action after spawning is the FIRST STEP of your microtask — not "let me explore."**
 
-**Why this matters:** Every file you read, every git diff you run, every search you do = tokens burned + time wasted. The Tech Lead was supposed to paste that data into your prompt. If it's missing, that's THEIR failure — report it, don't fix it by exploring.
+**Why this matters:** Every file you read, every grep you run, every search you do = tokens burned + time wasted. CodeGraph gives you the exact code you need in ~1k tokens vs ~3k+ for reading a file. The Tech Lead was supposed to paste that data into your prompt. If it's missing, that's THEIR failure — report it, don't fix it by exploring.
 
-**The violation:** An agent that reads files not in its spawn prompt = **FAILED microtask**. The Tech Lead must RE-SPAWN with proper data. Exploring is never acceptable.
+**The violation:** An agent that reads files not in its spawn prompt (without using CodeGraph first) = **FAILED microtask**. The Tech Lead must RE-SPAWN with proper data. Exploring is never acceptable.
 
 ### 🚫 NO BIG FILES — FILE SIZE IS A QUALITY GATE
 
@@ -547,6 +554,8 @@ Before ANY tool call, ask:
 | Grep chain on huge file | ~3k tokens | NEVER — report the file needs splitting |
 
 **The rule: if your action burns tokens without delivering value to the handoff, it's waste. Waste = accountability.**
+
+**CodeGraph is CHEAP (~1k tokens) and TARGETED. Use it freely instead of reading/grepping files.**
 
 #### 3. Self-Reflection BEFORE Handoff (post-flight)
 
@@ -882,6 +891,7 @@ Challenge any assertion with the five questions until each has a real answer (no
 - Architecture, call chains, data flow, symbol lookup — CodeGraph answers all.
 - `read` only after CodeGraph surfaces the file.
 - **grep is BANNED.** It wastes tokens, misses context, lies.
+- **CodeGraph is UNLIMITED (use freely).** It's ~1k tokens per call, targeted, and gives you the exact symbol. Use it as many times as you need — it's cheaper than reading a single file.
 
 ### 2. Search Before Guessing — Use Tavily
 - **Any factual claim** you'd prefix with "I think..." → search it.
