@@ -998,34 +998,89 @@ After parallel scouting:
 
 ---
 
-## 📋 OPENSPEC vs OPENCODE TODOS
+## 📋 OPS BOARD — YOUR SINGLE SOURCE OF TRUTH
 
-**OpenSpec tasks ≠ OpenCode built-in todos. They serve different purposes.**
+**The Ops Board (`data/ops_board.md`) replaces ALL other task tracking. Not OpenCode todos. Not chat history. Not memory. The board.**
 
-| Feature | OpenCode Todos | OpenSpec Tasks |
-|---------|----------------|----------------|
-| **Purpose** | Track progress | Define implementation |
-| **Scope** | Session-level | Project-level |
-| **Detail** | Simple checklist | Detailed specs |
-| **Ownership** | Anyone | Tech Lead owns |
-| **Persistence** | Session only | Saved in AgentMemory |
-| **When to Use** | Quick tracking | Feature development |
+### Why This Exists
+OpenCode's builtin `todowrite` tool is:
+- **Session-only** — vanishes when the session ends
+- **Not shared** — each agent has its own isolated todo list
+- **Not auditable** — no persistent record of what was done
+- **Not visible to the Director** — you can't see progress at a glance
 
-### When to Use OpenCode Todos
-- Quick task tracking
-- Session-level progress
-- Simple checklists
-- Temporary notes
+The Ops Board solves all of this: persistent, shared, audible, visible.
 
-### When to Use OpenSpec Tasks
-- Feature development
-- Bug fixes
-- Refactoring
-- Any multi-step implementation
+### 🚫 THE TODOWRITE BAN — NON-NEGOTIABLE
+
+**You are FORBIDDEN from using the `todowrite` tool. EVER.**
+
+| ❌ BANNED | ✅ MANDATORY |
+|-----------|-------------|
+| `todowrite` tool | `data/ops_board.md` |
+| Session-only tracking | Persistent, auditable tracking |
+| Isolated per-agent | Shared across all agents |
+| Invisible to Director | Visible at a glance |
+
+**The violation:** Using `todowrite` = INSTANT VIOLATION. The Tech Lead must use the ops board. No exceptions.
+
+### The Board Format
+
+```markdown
+# 🪧 OPS BOARD
+**Directive:** [one-line description]
+**Spec:** [link or brief]
+
+## 🌊 ACTIVE WAVE
+| # | Microtask | Agent | Status | Next owner |
+|---|-----------|-------|--------|------------|
+| A1 | [task] | [agent] | QUEUED/IN PROGRESS/DONE | [who] |
+
+## ⏳ PIPELINE
+- [x] Step — DONE
+- [ ] Step
+
+## 🔵 IN-FLIGHT
+- (none)
+
+## 🚦 BLOCKERS
+- ⚠️ [blocker]
+
+## 📜 DECISIONS
+- [decision]
+```
+
+### When You MUST Update the Board
+
+| Trigger | Action |
+|---------|--------|
+| 🌊 Spawning a wave | Set microtasks to IN PROGRESS, add agents |
+| 📤 Agent delivers | Set to DONE, add next owner, check PIPELINE |
+| ❌ Agent fails | Set to FAILED, add BLOCKER, plan re-spawn |
+| ⚠️ Blocker found | Add to BLOCKERS with emoji |
+| 🏁 Directive done | Mark all PIPELINE items DONE |
+| 🔄 Session starts | READ the board, orient, announce |
+| 🛑 Session ends | Verify all statuses are current |
 
 ### The Rule
-- **OpenCode Todos:** "What am I doing now?"
-- **OpenSpec Tasks:** "What are we building?"
+
+```
+BEFORE spawning any agent:
+  → READ data/ops_board.md
+  → UPDATE the ACTIVE WAVE table
+  → SET status to IN PROGRESS
+
+AFTER receiving a work report:
+  → READ data/ops_board.md
+  → SET completed microtask to DONE
+  → SET next microtask status
+  → UPDATE PIPELINE checkboxes
+
+NEVER:
+  → Use todowrite tool
+  → Skip updating the board
+  → Leave orphaned IN PROGRESS items
+```
 
 ---
 

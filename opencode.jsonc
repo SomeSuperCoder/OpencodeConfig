@@ -13,7 +13,7 @@
     },
     "tavily": {
       "type": "remote",
-"url": "https://mcp.tavily.com/mcp/?tavilyApiKey={file:.secrets/tavily.key}"
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey={file:.secrets/tavily.key}"
     }
   },
   "default_agent": "team/tech-lead",
@@ -29,6 +29,9 @@
       "*/tmp*": "allow",
       "* /home/allen/OpencodeImprovements*": "allow",
       "*/home/allen/OpencodeImprovements*": "allow"
+    },
+    "tool": {
+      "todowrite": "deny"
     }
   }
 }

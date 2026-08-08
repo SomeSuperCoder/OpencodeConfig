@@ -1281,6 +1281,102 @@ Deadline: [when I need it / what I'll do if no answer]
 | **Commit** | Only VERIFIED work, at feature boundaries. `fix:` commits = previous commit shipped unverified work = FAILURE. Never commit broken code. |
 | **Tests before commit** | **MANDATORY.** Run lint/typecheck/tests and see them PASS before any commit. "They don't exist" is not an excuse — write them. |
 | **Data processing** | Use `nu -c ""` for nushell. Better for structured data, CSV, JSON, pipes. |
+| **🚫 FORBIDDEN: `todowrite` tool** | **NEVER use the builtin `todowrite` tool.** It is banned. All task tracking goes to `data/ops_board.md` (the Ops Board). Using `todowrite` = VIOLATION. |
+| **📋 Ops Board is MANDATORY** | The Tech Lead MUST maintain `data/ops_board.md` for every active directive. Every wave start, every microtask assignment, every completion — update the board. If the board is stale, the pipeline is broken. |
+
+---
+
+## 📋 OPS BOARD — MANDATORY TASK TRACKING (NON-NEGOTIABLE)
+
+**The Ops Board (`data/ops_board.md`) is the SINGLE SOURCE OF TRUTH for all active work. Not OpenCode todos. Not chat history. Not memory. The board.**
+
+### Why This Exists
+OpenCode's builtin `todowrite` tool is:
+- **Session-only** — vanishes when the session ends
+- **Not shared** — each agent has its own isolated todo list
+- **Not auditable** — no persistent record of what was done
+- **Not visible to the Director** — you can't see progress at a glance
+
+The Ops Board solves all of this: persistent, shared, audible, visible.
+
+### The Format — Every Directive Gets One
+
+```markdown
+# 🪧 OPS BOARD
+**Directive:** [one-line description of what we're building]
+**Spec:** [link or brief]
+
+## 🌊 ACTIVE WAVE (current subwave)
+| # | Microtask | Agent | Status | Next owner |
+|---|-----------|-------|--------|------------|
+| A1 | [task] | [agent] | QUEUED/IN PROGRESS/DONE | [who gets it next] |
+
+## ⏳ PIPELINE
+- [x] Step description — DONE
+- [ ] Step description
+
+## 🔵 IN-FLIGHT (background agents not yet reported)
+- (none) or [agent] — [status]
+
+## 🚦 BLOCKERS / ESCALATIONS
+- ⚠️ [blocker description]
+
+## 📜 DECISIONS MADE
+- [decision and rationale]
+```
+
+### Status Values
+| Status | Meaning |
+|--------|---------|
+| `QUEUED` | Not started, waiting for previous step |
+| `IN PROGRESS` | Agent is working on it |
+| `DONE` | Completed, verified, handed off |
+| `BLOCKED` | Cannot proceed — waiting on dependency or escalation |
+| `FAILED` | Agent failed, needs re-spawn or escalation |
+
+### The Mandatory Update Protocol
+
+**The Tech Lead MUST update the board:**
+
+| When | What to Update |
+|------|----------------|
+| 🌊 **Wave starts** | Set microtask statuses to `IN PROGRESS`, add agents |
+| 📤 **Microtask delivered** | Set status to `DONE`, add next owner, update PIPELINE checkboxes |
+| ❌ **Agent fails** | Set status to `FAILED`, add to BLOCKERS, note re-spawn plan |
+| ⚠️ **Blocker found** | Add to BLOCKERS with ⚠️ emoji, note who's unblocking |
+| 🏁 **Directive complete** | Mark all PIPELINE items as `DONE`, archive or close the board |
+| 🔄 **Session starts** | Read the board first, orient the team, announce current state |
+| 🛑 **Session ends** | Ensure every IN PROGRESS item has a status update and next owner |
+
+### The Rule — NO EXCEPTIONS
+
+```
+BEFORE spawning any agent:
+  → READ data/ops_board.md
+  → UPDATE the ACTIVE WAVE table with the agent's microtask
+  → SET status to IN PROGRESS
+
+AFTER receiving a work report:
+  → READ data/ops_board.md
+  → SET the completed microtask to DONE
+  → SET the next microtask to QUEUED or IN PROGRESS
+  → UPDATE PIPELINE checkboxes
+
+NEVER:
+  → Use todowrite tool (BANNED)
+  → Track tasks only in chat (ephemeral)
+  → Skip updating the board ("I'll do it later" = you won't)
+  → Leave IN PROGRESS items without a next owner
+```
+
+### Self-Reflection — Board Accountability
+
+Before every session end, the Tech Lead answers:
+1. **Is the board current?** Every microtask has the right status?
+2. **Are there orphaned IN PROGRESS items?** No agent working but status says IN PROGRESS?
+3. **Are PIPELINE checkboxes accurate?** Done = checked, not done = unchecked?
+
+**If the board is wrong, the pipeline is wrong. The board IS the pipeline.**
 
 ---
 
