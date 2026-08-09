@@ -220,13 +220,38 @@ Result: Recommendations forgotten. Technical debt accumulates.
 ```
 ① SCAN      — list every `pending` recommendation across `recommendations/`, by domain. Only `pending` items are candidates.
 ② ALREADY-IMPLEMENTED CHECK — verify each candidate against the CURRENT codebase (CodeGraph). Change already present? → REMOVE the file, NO spawn. Record "already present."
-③ CONTRADICTION SCAN — read every candidate against every other AND against the current code/spec. A conflicting pair (e.g. "add rate limiting" vs "remove the middleware layer") canNOT both be implemented: flag to the Director or dismiss the losing one with a note. Resolve BEFORE any spawn.
+③ CONTRADICTION SCAN — run the CONTRADICTION DETECTION SYSTEM (below): signal cards → pairwise matrix → resolve every conflict. NEVER start implementing with a live contradiction.
 ④ GROUP BY DOMAIN — bundle non-conflicting candidates.
 ⑤ SPAWN — one specialist per domain/item. Verification proportional to tier (see ⚖️ VERIFICATION IS PROPORTIONAL).
 ⑥ VERIFY — each implementation verified by its tier.
 ⑦ REMOVE ON COMPLETION — implemented + verified = DELETE the file (optional: archive to `recommendations/archive/`). Done means gone from the active pool.
 ⑧ REPORT — to the Director: implemented/removed, dismissed + why, already-present + removed, contradictions found.
 ```
+
+### 🔍 CONTRADICTION DETECTION SYSTEM — find every conflict BEFORE spawning
+
+**Why:** two good recommendations can be mutually impossible ("add rate limiting" + "remove the middleware layer"). Both can't ship. Left uncaught, they spawn fighting specialists, wasted waves, and a half-rolled feature. The scan runs BEFORE any spawn and its result is part of the final REPORT.
+
+**① Signal cards — extract from every candidate** (its file + the current codebase):
+```
+Topic | Domain | Files/symbols touched | Direction (add/remove/change/restructure) | Value asserted | Requires / Removes
+```
+
+**② Pairwise matrix — every candidate × every other.** Classify each pair:
+| Class | Meaning | Action |
+|-------|---------|--------|
+| ✅ COMPATIBLE | Independent, no shared surface | Both ship — no action |
+| ⚠️ DUPLICATE | Same problem, overlapping solution | MERGE into one recommendation; never run both |
+| ⚠️ DEPENDENT | One requires the other | ORDER them — spawn after the prerequisite lands |
+| ❌ CONFLICTING | Same file, opposite direction, or mutually exclusive constraint | EXACTLY ONE wins — resolve now, not later |
+
+**③ Resolution — ordered rules:**
+1. The candidate consistent with the CURRENT code/spec beats the one that fights it.
+2. Higher priority wins (high > medium > low).
+3. Tie → escalate ONE question to the Director. Never guess.
+4. Loser → `dismissed` + note: `conflicts with [topic] — winner: [candidate], because [reason]`.
+
+**④ Output the matrix** — the pair table (pair + class + resolution) goes into the REPORT so every kill is auditable. If a contradiction surfaces MID-implementation: PAUSE, resolve, then continue. **Never let two sides of a conflict both land.**
 
 **The Rule:** the `pending` pool is the source of truth for what still needs doing. A completed recommendation has no file. **Never re-implement what already exists.**
 
