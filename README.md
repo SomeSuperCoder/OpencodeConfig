@@ -178,7 +178,7 @@ Two MCP servers give agents superpowers beyond what the LLM can do:
 `security-patterns` · `compliance-patterns` · `domain-knowledge` · `research-patterns`
 
 **Frontend & design:**
-`a11y-patterns` · `impeccable` (design craft — **DESIGN.md is law**) · `ux-psychology` (conversion optimization) · `ux-redesign-examples` (real AB test patterns)
+`a11y-patterns` · `impeccable` (command-driven design tool — run `context.mjs`, route to a subcommand; **DESIGN.md is law**) · `ux-psychology` (conversion optimization) · `ux-redesign-examples` (real AB test patterns)
 
 **The scatter principle:** AGENTS.md = the universal floor. Skills = deep, rare, on-demand. Agents = only what's role-specific. The Team Lead is the one exception — its protocols live inline because it uses them every single session.
 

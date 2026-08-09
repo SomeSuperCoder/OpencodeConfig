@@ -127,7 +127,7 @@ Load this skill when redesigning paywalls, pricing screens, booking flows, or an
 ## Integration
 - **MCPs:** Browser MCP for testing conversion flows
 - **AgentMemory:** Save A/B test results, conversion patterns
-- **Related Skills:** ux-psychology (core principles), impeccable (design craft)
+- **Related Skills:** ux-psychology (core principles), impeccable (command-driven design tool)
 
 ## Common Mistakes
 - ❌ Asking "Is this worth $X?" instead of "Can I try for free?"

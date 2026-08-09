@@ -877,8 +877,40 @@ Challenge any assertion with the five questions until each has a real answer (no
 | `git-patterns` | Git operations, branching |
 | `research-patterns` | Library evaluation, API discovery |
 | `find-skills` | Discovering new capabilities |
-| `impeccable` | Frontend design craft — loaded by ALL 5 frontend agents (UI Designer, UX Designer, Frontend Engineer, Animations Expert, Design System Engineer). **DESIGN.md in the project root is law** — read it and follow its directives before any frontend work. |
+| `impeccable` | **Command-driven design tool, NOT passive craft.** 23+ subcommands, each with its own playbook in `reference/<command>.md` — see the command list below. Loaded by the 5 frontend agents. Correct use is a protocol: ① run `node <skill-base-dir>/scripts/context.mjs --target <path>` once per session (it loads PRODUCT.md + DESIGN.md + surface brief + platform guidance and prints directives), ② route the request to ONE subcommand, ③ load its `reference/<command>.md` playbook, ④ load `reference/craft-floor.md` before editing UI. **DESIGN.md is law** — context.mjs loads it and its directives outrank agent taste. |
 | `openspec-*` | **Tech Lead only** (spec lifecycle) |
+
+### 🎨 `impeccable` COMMANDS — route a request to exactly ONE, then load its playbook
+
+| Command | Category | What it does |
+|---|---|---|
+| `init` / `teach` | Build | Capture durable product context in PRODUCT.md |
+| `shape [feature]` | Build | Plan UX/UI before writing code |
+| `document` | Build | Generate DESIGN.md from existing project code |
+| `extract [target]` | Build | Pull reusable tokens/components into the design system |
+| `new-work` | Build | New surface or replacement visual world |
+| `critique [target]` | Evaluate | UX design review with heuristic scoring |
+| `audit [target]` | Evaluate | Technical quality checks (a11y, perf, responsive) |
+| `polish [target]` | Refine | Final quality pass before shipping |
+| `bolder [target]` | Refine | Amplify safe/bland designs |
+| `quieter [target]` | Refine | Tone down aggressive/overstimulating designs |
+| `distill [target]` | Refine | Strip to essence, remove complexity |
+| `harden [target]` | Refine | Production-ready: errors, i18n, edge cases |
+| `onboard [target]` | Refine | First-run flows, empty states, activation |
+| `animate [target]` | Enhance | Purposeful animations and motion |
+| `colorize [target]` | Enhance | Strategic color for monochromatic UIs |
+| `typeset [target]` | Enhance | Typography hierarchy and fonts |
+| `layout [target]` | Enhance | Spacing, rhythm, visual hierarchy |
+| `delight [target]` | Enhance | Personality and memorable touches |
+| `overdrive [target]` | Enhance | Push past conventional limits |
+| `clarify [target]` | Fix | UX copy, labels, error messages |
+| `adapt [target]` | Fix | Adapt for devices/screen sizes (`.native` for iOS/Android) |
+| `optimize [target]` | Fix | Diagnose and fix UI performance |
+| `live` | Iterate | In-browser visual variants (web only) |
+| `$impeccable hooks <…>` | Tooling | Design detector hook: on/off/status/ignore-* |
+| `$impeccable doctor` | Tooling | Repair drift in Impeccable artifacts |
+
+Routing: no argument → read `reference/routing.md` and present its context-aware menu (never auto-run). `craft` is a deprecated alias for `new-work`; `teach` aliases `init`. Always load `reference/craft-floor.md` before editing UI; `reference/new-work.md` owns new surfaces/replacement worlds; `reference/operate.md` deepens Operate/Read work.
 
 ### Mindful Tool Selection
 **Before each task, ask:**

@@ -45,7 +45,7 @@ mode: subagent
 
 ## 🧰 LOAD YOUR SKILLS — MANDATORY
 
-1. `skill(name="impeccable")` — design craft that makes apps appealing; **DESIGN.md is law**
+1. `skill(name="impeccable")` — command-driven design tool; run its protocol (context.mjs → route to a subcommand → playbook); **DESIGN.md is law**
 2. `skill(name="ux-psychology")` — conversion psychology for retention and behavioral design
 3. `skill(name="ux-redesign-examples")` — AB test patterns for engagement flows
 4. `skill(name="domain-knowledge")` — retention, habit-forming product depth when the directive touches it

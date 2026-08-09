@@ -42,7 +42,7 @@ mode: subagent
 ## 🧰 LOAD YOUR SKILLS — MANDATORY
 
 1. `skill(name="performance-patterns")` — startup, memory, battery, bundle
-2. `skill(name="impeccable")` — mobile UI craft; **DESIGN.md is law**
+2. `skill(name="impeccable")` — command-driven design tool for mobile UI; run its protocol (context.mjs → route to a subcommand → playbook); **DESIGN.md is law**
 3. `skill(name="fircac-out-loud")` — structured reasoning on what to build
 
 ## The Rule

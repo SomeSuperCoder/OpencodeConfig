@@ -101,7 +101,7 @@ Load this skill when designing conversion-focused interfaces, onboarding flows, 
 ## Integration
 - **MCPs:** Browser MCP for testing conversion flows
 - **AgentMemory:** Save conversion patterns, A/B test results
-- **Related Skills:** impeccable (design craft), a11y-patterns (accessibility)
+- **Related Skills:** impeccable (command-driven design tool), a11y-patterns (accessibility)
 
 ## Common Anti-Patterns
 - ❌ Blank forms with no defaults

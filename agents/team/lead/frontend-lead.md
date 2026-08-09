@@ -44,12 +44,16 @@ mode: subagent
 
 ## 🧰 DESIGN — MANDATORY
 
-**`DESIGN.md` in the project root is LAW.** Load the `impeccable` skill and read `DESIGN.md` before planning any frontend work. Every frontend microtask you recommend must respect it.
+**`DESIGN.md` in the project root is LAW.** Load the `impeccable` skill before planning any frontend work. **`impeccable` is a command-driven tool, not passive craft** — 23+ subcommands, each with its own playbook in `reference/<command>.md`. Every frontend microtask you recommend must teach its protocol:
 
-1. `skill(name="impeccable")` — frontend design craft (required for every frontend plan)
-2. `skill(name="ux-psychology")` — conversion psychology for UX-focused work
-3. `skill(name="ux-redesign-examples")` — AB test patterns for paywalls, pricing, bookings
-4. `skill(name="fircac-out-loud")` — structured reasoning on what to build
+1. Agent runs `node <skill-base-dir>/scripts/context.mjs --target <path>` once (resolve `<skill-base-dir>` from the loader's base-dir hint) → loads PRODUCT.md + DESIGN.md + surface brief + platform guidance and prints directives. **This is how DESIGN.md becomes law.**
+2. Agent routes the request to ONE subcommand (audit, critique, polish, bolder, layout, typeset, harden, … or `new-work`) and loads its `reference/<command>.md` playbook.
+3. Agent loads `reference/craft-floor.md` before editing UI.
+
+Supporting skills:
+- `skill(name="ux-psychology")` — conversion psychology for UX-focused work
+- `skill(name="ux-redesign-examples")` — AB test patterns for paywalls, pricing, bookings
+- `skill(name="fircac-out-loud")` — structured reasoning on what to build
 
 ## The Rule
 

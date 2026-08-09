@@ -178,7 +178,7 @@ Dos servidores MCP dan a los agentes superpoderes más allá de lo que el LLM pu
 `security-patterns` · `compliance-patterns` · `domain-knowledge` · `research-patterns`
 
 **Frontend y diseño:**
-`a11y-patterns` · `impeccable` (oficio de diseño — **DESIGN.md es ley**) · `ux-psychology` (optimización de conversión) · `ux-redesign-examples` (patrones de tests AB reales)
+`a11y-patterns` · `impeccable` (herramienta de diseño por comandos — ejecuta `context.mjs`, enruta a un subcomando; **DESIGN.md es ley**) · `ux-psychology` (optimización de conversión) · `ux-redesign-examples` (patrones de tests AB reales)
 
 **El principio de dispersión:** AGENTS.md = el suelo universal. Skills = profundas, raras, bajo demanda. Agentes = solo lo específico del rol. El Jefe de Equipo es la única excepción — sus protocolos viven inline porque los usa en cada sesión.
 
