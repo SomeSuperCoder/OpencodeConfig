@@ -707,13 +707,13 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - Use FIRCAC for every bug/decision (load the `fircac-out-loud` skill first — see REASONING PROTOCOLS)
 - Use ABC for verification (load the `fircac-out-loud` skill first — see REASONING PROTOCOLS)
 - Use the Sorotic method when a solution feels too easy or a belief goes unquestioned (see REASONING PROTOCOLS — no skill needed)
-- Write tests for every feature/fix, Playwright for frontend
-- **Prove every feature from the user's side: Playwright user-behavior flows, mock-or-cleanup for integration tests (see 🚨 MANDATORY PROTOCOL — FEATURES ARE TESTED AS USER BEHAVIOR)**
+- Write tests **proportional to the change** — full verification for features, minimal for trivial fixes (see ⚖️ VERIFICATION IS PROPORTIONAL)
+- **Prove every T3/T4 feature from the user's side: Playwright user-behavior flows, mock-or-cleanup for integration tests (see 🚨 MANDATORY PROTOCOL — FEATURES (T3/T4) ARE TESTED AS USER BEHAVIOR)**
 - Follow SOLID, SSOT, DRY, UNIX
 - Use pnpm, never npm or npx
 - Check Justfile before manual commands
 - Commit only VERIFIED work, at feature boundaries: `git add -A && git commit -m "<type>: <summary>"` — NEVER commit unverified code that will need a follow-up fix. A `fix:` commit means the previous commit shipped unverified work. That is a failure.
-- **Run tests BEFORE committing — mandatory, not "if they exist". Red, green, THEN commit.**
+- **Run the verification YOUR TIER OWES before committing — mandatory, not "if they exist". T1 = your own typecheck/lint/affected-tests. T2+ = the tier's tests. Red, green, THEN commit.**
 - **SPAWN PARALLEL SUBAGENTS for any task with 2+ independent parts**
 - **NEVER use the builtin `explore` agent — it's bad. Use `team/core/scout` instead.**
 - **STAY IN YOUR LANE — do YOUR job only, never another agent's job**
@@ -1019,22 +1019,30 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 
 ---
 
-## 🎭 TESTING MANDATE
+## ⚖️ VERIFICATION IS PROPORTIONAL — TOKEN SPEND MATCHES RISK
 
-**Write tests for EVERY feature, bugfix, refactor. No exceptions.**
+**Big change → deep verification. Simple change → minimal verification. Token spend scales with the change's risk and blast radius — never with habit.**
 
-**🎯 LASER SCOPE — TEST/QA/AUDIT THE CHANGE, NOT THE PROJECT.**
-- Test, QA, and audit agents work on a **narrow thing**: the delivered change + its blast radius.
-- NEVER default to whole-project sweeps. The Tech Lead assigns the narrowest job that covers the change.
-- Out-of-scope issues → REPORT, don't chase. Depth on the change beats breadth across the app.
-- Be gradual: verify a small slice end-to-end before the next slice. This is how clean history is shipped.
+**🔬 THE VERIFIER ROI GATE — the business law.** Test Engineers, QA, Code Reviewers, and auditors exist to **reduce** tokens spent on later fixes. Spawn one ONLY when its run costs LESS than the problems it catches would cost to find-and-fix later:
 
-**🪶 TOKEN DIET — MATCH VERIFICATION DEPTH TO RISK (see tech-lead.md).**
-- **T1 trivial** (one-liner/config/docs): ZERO test agents. Engineer typecheck/lint + commit.
-- **T2 standard** (one function): Test Engineer ONLY. QA/Code Reviewer skip.
-- **T3 feature** (multi-module): Test Engineer + ONE reviewer (QA or Code Review, not both).
-- **T4 critical** (security/payments/breaking): Full team.
-- **Verdict-first:** Full ceremony (FIRCAC, 7-phase) only on RED. GREEN = verdict + one-line evidence.
+```
+Cost(verifier run) < Expected cost of the problems it catches (late fixes + rework + re-runs)
+```
+
+If running a verifier won't reduce total token spend — it re-checks what's already verified, or a problem would surface cheaper elsewhere — **DON'T spawn it.**
+
+| Tier | Change | Waves | Verification |
+|------|--------|-------|--------------|
+| **T1 · trivial** | one-liner, config, docs, typo, rename | **1** (implementer only) | **NO verifier agents.** Engineer's own typecheck/lint + affected tests. Commit directly. |
+| **T2 · standard** | one function/component, small fix | 1–2 | **Test Engineer ONLY** — and only when real new logic needs locking. NO QA. NO Code Reviewer. |
+| **T3 · feature** | multi-module, new API/screen/flow | 2 | Engineer → Test Engineer → **ONE** reviewer (QA **or** Code Reviewer — never both). |
+| **T4 · critical** | security, payments, auth, data loss, breaking | full | Full pipeline. Every verifier pays. |
+
+**🌊 WAVES SCALE WITH THE CHANGE:** a simple change = ONE wave (implement → own-lane verify → commit). A feature = TWO waves (implement+test → review). A critical change = the full pipeline. **Never stretch a simple change into a multi-wave ceremony. Never shortcut a critical one.**
+
+**🪶 TOKEN DIET RULES:**
+- **Laser scope:** test/QA/audit the change + blast radius, never the project. Out-of-scope issues → REPORT, don't chase.
+- **Verdict-first:** full ceremony (FIRCAC, 7-phase) only on RED. GREEN = verdict + one-line evidence.
 - **Chain verdicts:** QA inherits TE verdict. Don't re-run the suite.
 
 | Type | When | Tool |
@@ -1050,9 +1058,9 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 - Anti-patterns: no `waitForTimeout()`, test behavior not implementation
 - **Backend-only changes DON'T need Playwright** — unit + integration tests are sufficient
 
-### 🚨 MANDATORY PROTOCOL — FEATURES ARE TESTED AS USER BEHAVIOR, NOT AS CODE
+### 🚨 MANDATORY PROTOCOL — FEATURES (T3/T4) ARE TESTED AS USER BEHAVIOR, NOT AS CODE
 
-**Every feature — no exceptions — must be proven from the user's side before it is "done."**
+**Every T3/T4 feature — the ones that ship to users — must be proven from the user's side before it is "done." T1/T2 changes are covered by unit tests + the engineer's own checks; they do NOT trigger Playwright or E2E.**
 
 - **🦾 Simulate the user, don't verify the code.** Any feature is tested via **Playwright** by scripting the *behavior a real user performs*: click through the real flow, type into the real inputs, navigate the real pages, submit the real forms. The verdict is "a user doing this exact thing is NOT broken," proven by a browser run — not by a unit test that calls the function directly.
 - **🚀 The launch test = the user's first run.** Before a feature launches, the same user-behavior Playwright flow must pass against the launched instance — so "it worked in tests but broke for the user" becomes impossible. The E2E flow IS the acceptance test.
@@ -1126,9 +1134,10 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 
 **The Rule: one suite, one owner, one verdict, many consumers. Re-running someone else's green is not verification — it's waste.**
 
-### 🚫 WHO RUNS TESTS — THE ENGINEER DOES NOT RUN
+### 🚫 WHO RUNS TESTS — THE ENGINEER DOES NOT RUN (T1 EXCEPTED)
 **The ONLY lane that runs tests is the Test Engineer.** This is not a suggestion — if you are not the Test Engineer, **you do NOT run tests, period.**
 - **Engineer/implementer:** you change code, you do NOT run the suite. Your verification = CodeGraph blast-radius check + handoff to the Test Engineer. If a test breaks, that's the Test Engineer's run to discover — not yours.
+- **T1 carve-out (proportionality):** for a T1 trivial change (one-liner, config, docs, typo, rename) the implementer runs the affected tests as part of their OWN verify step — spawning a whole Test Engineer for a rename is overhead, not verification. This is the ONLY exception to the lane.
 - **QA / Code Reviewer / Security / Tech Lead:** you consume the Test Engineer's GREEN/RED verdict. You do NOT re-run.
 - **You need a verdict but none exists?** ASK the Tech Lead to spawn the Test Engineer. Do not run the suite yourself.
 - **You wrote a new test or fixed a test as the Test Engineer?** You run it. That's the one exception — the owner.
@@ -1142,17 +1151,15 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 5. Report your 🟢/🔴 verdict — the rest of the company consumes it, never re-runs it
 ```
 
-### When to Run Full Suite — SCOPE FOR THE TEST ENGINEER
+### When to Run Full Suite — SCOPE FOR THE TEST ENGINEER (PROPORTIONAL)
 | Situation | Action (Test Engineer's run) |
 |-----------|------------------------------|
-| After single file change | Run affected tests only |
-| After multiple file changes | Run affected tests only |
-| Before commit (end of task) | Full suite — owned by the **Test Engineer**; verdict consumed by the commit gate |
-| Before push (end of workflow) | Full suite — owned by the **Test Engineer** |
-| Release/deploy | Full suite — owned by the **Test Engineer** |
+| T1/T2 change | Affected tests only — NEVER the full suite |
+| T3 feature (commit gate) | Affected tests + the change's blast radius |
+| T4 critical / release / deploy | Full suite — owned by the **Test Engineer**; verdict consumed by the commit gate |
 
 ### The Rule
-**Small changes → affected tests only. End of workflow → full suite (Test Engineer owns the run, everyone consumes the verdict).**
+**Affected tests for small changes. Full suite only at T4/release boundaries — never for a routine commit. A simple change that triggers a full-suite run is a Tech Lead planning failure.**
 
 ---
 
@@ -1230,7 +1237,7 @@ nu -c "pnpm outdated --format json | from json | select package current latest"
 
 ### Universal DoD (every task)
 - [ ] Meets the spec / acceptance criteria (or a stated reason it can't)
-- [ ] Tests written and passing (unit for logic, Playwright for UI flows)
+- [ ] Verification per tier (T1: typecheck/lint + affected tests; T2: unit tests for new logic; T3/T4: tests + review verdict)
 - [ ] No regressions in the affected blast radius (CodeGraph-checked)
 - [ ] No dead code, no debug leftovers, no TODOs
 - [ ] Type-clean (if typed language), lint-clean

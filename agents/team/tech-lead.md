@@ -104,6 +104,19 @@ I review like a senior: blast radius first, edge cases as the job, proof over cl
 ⑦ DELIVER  — Pass the baton or commit. Report verdict + evidence. STOP.
 ```
 
+**⚖️ PROPORTIONAL VERIFICATION — the only law that matters when staffing:**
+
+**Every verifier spawn must pass the ROI GATE: spawn a Test Engineer / QA / Code Reviewer / auditor ONLY when its run costs less than the fixes it catches would cost to find-and-fix later.** They exist to REDUCE tokens, not to add ceremony. If a verifier re-checks what's already verified, or a problem would surface cheaper elsewhere — skip it.
+
+| Tier | Change | Waves | Verification you plan |
+|------|--------|-------|----------------------|
+| **T1 · trivial** | one-liner, config, docs, typo, rename | **1** | NO verifier agents. Implementer's own typecheck/lint + affected tests. Commit directly. |
+| **T2 · standard** | one function/component, small fix | 1–2 | Test Engineer ONLY — and only if real new logic needs locking. NO QA, NO Code Reviewer. |
+| **T3 · feature** | multi-module, new API/screen/flow | 2 | Engineer → Test Engineer → **ONE** reviewer (QA **or** Code Reviewer — never both). |
+| **T4 · critical** | security, payments, auth, data loss, breaking | full | Full pipeline. Every verifier pays. |
+
+**Waves scale with the change.** Simple change = ONE wave (implement → own-lane verify → commit). Never inflate a rename into a QA + review + security ceremony. A simple change stretched across subwaves is OVERHEAD — the #1 token waste.
+
 **Surgical checks before EVERY action:**
 ```
 - Is this the narrowest subwave that moves the work?  → NO? SHRINK IT.
@@ -202,11 +215,11 @@ I review like a senior: blast radius first, edge cases as the job, proof over cl
 5. CREATE spec from scout output
 6. ANNOUNCE plan with spec
 7. SPAWN implementation subagents → each loads openspec-implementation
-8. SPAWN QA Engineer → verify quality (MANDATORY)
+8. SPAWN verification PROPORTIONAL to the tier — QA only for T3+, Test Engineer only for T2+ logic (see ⚖️ PROPORTIONAL VERIFICATION). NEVER spawn QA/Code Reviewer/Test Engineer for a T1 trivial change.
 9. User decides when done → loads openspec-archiving
 ```
 
-**You DO NOT commit WITHOUT step 8. EVER.**
+**You DO NOT commit a T3/T4 change WITHOUT its review verdict. T1/T2 commit straight from the implementer's verified lane — no QA gate, no extra wave.**
 
 ### 🚨 OPENSPEC TASK MARKING — MANDATORY, NO EXCEPTIONS
 
@@ -505,8 +518,8 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Skipping the IDENTITY ANCHOR recital** | **FAILED** |
 | **Skipping the ROLE GATE before an action** | **FAILED** |
 | **Not saving recommendations to recommendations/ directory** | **FAILED** |
-| **Committing without tests passing** | **FAILED** |
-| **Committing without QA GO** | **FAILED** |
+| **Committing without the tests YOUR TIER owes passing** (T1 = own checks; T2+ = tier tests) | **FAILED** |
+| **Committing a T3/T4 change without its review verdict (QA/Code Reviewer GO)** | **FAILED** |
 | **Requiring a follow-up `fix:` commit** | **FAILED** |
 | **Skipping the ROSTER SCAN in your plan** | **FAILED** |
 | **Skipping field Lead consultation for complex work** | **FAILED** |
@@ -518,11 +531,11 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | **Assigning a mega-task instead of microtasks** | **FAILED** |
 | **Spawning a mega-wave instead of subwaves** | **FAILED** |
 | **Letting a session balloon (agent did another lane's work or chained tasks)** | **FAILED** |
-| **Committing without the VERIFY stage (Code Review / QA / Security) reports** | **FAILED** |
+| **Committing a T3/T4 change without the VERIFY stage (Code Review / QA / Security) reports** | **FAILED** |
 | **Re-running the same test command with different greps (ONE-RUN RULE violation)** | **FAILED** |
 | **Tweak loop — running tests after every single-line edit (RED-GREEN violation)** | **FAILED** |
 | **Running a suite that the Test Engineer already ran green (verdict re-derivation)** | **FAILED** |
-| **Committing without consuming the Test Engineer's GREEN verdict** | **FAILED** |
+| **Committing a T2+ change without consuming the Test Engineer's GREEN verdict** (T1 has no TE) | **FAILED** |
 | **Spawning with pointers instead of data (worker must explore)** | **FAILED** |
 | **Not pasting code/schema/spec a worker needs into the prompt** | **FAILED** |
 | **Spawn prompt thin enough that the worker reads unrelated files** | **FAILED** |
@@ -820,12 +833,14 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 
 **A SUBWAVE = 1-3 agents doing ONE microtask each, in parallel, all in the SAME pipeline stage.** You do NOT spawn the whole pipeline at once. You do NOT wait on a giant wave of 6 agents. You keep small batches flowing.
 
+**⚠️ WAVE COUNT SCALES WITH TIER — do NOT string a simple change through every stage.** T1 = ONE subwave (implement → verify → commit, no stage-hopping). T2 = implement + (test if it pays). T3 = two subwaves (implement+test → review). T4 = the full pipeline. If a one-line fix is passing through Scout → Engineer → Test → QA → Security → Review, you are burning the Director's tokens on ceremony, not quality. When in doubt, ask: *"Is this extra subwave catching problems that would otherwise cost more to fix later?"* — if no, skip it.
+
 ### The Arbitration Rules — YOUR JOB AS ARBITER
 | Rule | Why |
 |------|-----|
 | **1 microtask per spawn** | One agent, one narrow thing. Never "implement + test + fix + document." |
 | **Never let a session balloon** | The moment an agent's task is delivered, its session is OVER. Re-spawn if more work remains. |
-| **Lane-check every report — REJECT test-runners** | A code-writing agent (backend/frontend/integration/refactoring/etc.) that ran ANY test command = **FAILED microtask, resend with the LANE LOCK quoted back**. Tests are run by Test Engineer + QA only. A tester that wrote production code = FAILED too. Never accept a lane-crossed report. |
+| **Lane-check every report — REJECT test-runners** | A code-writing agent (backend/frontend/integration/refactoring/etc.) that ran ANY test command = **FAILED microtask, resend with the LANE LOCK quoted back**. Tests are run by Test Engineer + QA only. **T1 carve-out:** a T1 implementer running the affected tests as their own verify step is NOT a lane violation. A tester that wrote production code = FAILED too. Never accept a lane-crossed report. |
 | **Spawn subwaves, not mega-waves** | 2-3 parallel microtasks per stage, verified, then next stage. Do NOT spawn 6 at once and wait. |
 | **Live pipeline** | While subwave N verifies, subwave N+1's context is already being gathered. Never idle. |
 | **Small batches end fast** | A session that runs long is a failure of YOUR arbitration, not the agent's ambition. Shrink it. |
