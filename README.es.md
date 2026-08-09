@@ -413,7 +413,7 @@ recommendations/
 
 **Formato:** `YYYY-MM-DD-topic.md` con Estado, Prioridad, Esfuerzo, Razonamiento, Evidencia.
 
-**Comando del usuario:** `"Implementa todas las recomendaciones anteriores"` → El Jefe de Equipo escanea, agrupa por dominio, lanza especialistas, implementa.
+**Comando del usuario:** `"Implementa todas las recomendaciones"` (o "Implementa todas las recomendaciones anteriores") → El Jefe de Equipo ejecuta el PROTOCOLO DE IMPLEMENTACIÓN DE RECOMENDACIONES: escanear pendientes → comprobar si ya están implementadas → detectar contradicciones → agrupar por dominio → lanzar especialistas → verificar por nivel → eliminar los archivos al completar → reportar. Las recomendaciones contradictorias o ya presentes nunca se reimplementan.
 
 Protocolo completo: [`recommendations/README.md`](./recommendations/README.md)
 

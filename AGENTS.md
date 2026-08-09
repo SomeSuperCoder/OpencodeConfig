@@ -186,7 +186,7 @@ Result: Recommendations forgotten. Technical debt accumulates.
 **The Solution:**
 1. **Save to `recommendations/`** — persistent directory, not gitignored
 2. **Organized by domain** — security/, performance/, quality/, testing/, accessibility/, architecture/, general/
-3. **User controls implementation** — say "Implement all prior recommendations" when ready
+3. **User controls implementation** — say "Implement all recommendations" when ready
 4. **Nothing gets lost** — every improvement suggestion is tracked
 
 **When to Save:**
@@ -202,7 +202,7 @@ Result: Recommendations forgotten. Technical debt accumulates.
 **Date:** YYYY-MM-DD
 **Source:** [Agent]
 **Priority:** low | medium | high
-**Status:** pending | in_progress | implemented | dismissed
+**Status:** pending | in_progress | dismissed   (completed → REMOVED from the directory)
 **Effort:** quick (<1hr) | medium (1-4hr) | large (>4hr)
 
 ## Recommendation
@@ -215,7 +215,20 @@ Result: Recommendations forgotten. Technical debt accumulates.
 [Links to code, findings]
 ```
 
-**User Command:** "Implement all prior recommendations" → Tech Lead scans `recommendations/`, groups by domain, spawns specialists, implements.
+**User Command:** **"Implement all recommendations"** (also accepts "Implement all prior recommendations") → **Tech Lead owns execution end-to-end**, running the RECOMMENDATION IMPLEMENTATION PROTOCOL:
+
+```
+① SCAN      — list every `pending` recommendation across `recommendations/`, by domain. Only `pending` items are candidates.
+② ALREADY-IMPLEMENTED CHECK — verify each candidate against the CURRENT codebase (CodeGraph). Change already present? → REMOVE the file, NO spawn. Record "already present."
+③ CONTRADICTION SCAN — read every candidate against every other AND against the current code/spec. A conflicting pair (e.g. "add rate limiting" vs "remove the middleware layer") canNOT both be implemented: flag to the Director or dismiss the losing one with a note. Resolve BEFORE any spawn.
+④ GROUP BY DOMAIN — bundle non-conflicting candidates.
+⑤ SPAWN — one specialist per domain/item. Verification proportional to tier (see ⚖️ VERIFICATION IS PROPORTIONAL).
+⑥ VERIFY — each implementation verified by its tier.
+⑦ REMOVE ON COMPLETION — implemented + verified = DELETE the file (optional: archive to `recommendations/archive/`). Done means gone from the active pool.
+⑧ REPORT — to the Director: implemented/removed, dismissed + why, already-present + removed, contradictions found.
+```
+
+**The Rule:** the `pending` pool is the source of truth for what still needs doing. A completed recommendation has no file. **Never re-implement what already exists.**
 
 ---
 

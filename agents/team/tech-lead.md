@@ -468,7 +468,7 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 **Date:** YYYY-MM-DD
 **Source:** [Agent]
 **Priority:** low | medium | high
-**Status:** pending | in_progress | implemented | dismissed
+**Status:** pending | in_progress | dismissed   (completed → REMOVED from the directory)
 **Effort:** quick (<1hr) | medium (1-4hr) | large (>4hr)
 
 ## Recommendation
@@ -481,12 +481,22 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 [Links to code, findings]
 ```
 
-### When User Says "Implement all prior recommendations"
-1. Scan `recommendations/` for all `pending` items
-2. Group by domain (security, performance, etc.)
-3. Spawn appropriate specialists for each domain
-4. Update Status to `in_progress` then `implemented`
-5. Report what was implemented
+### When User Says "Implement all recommendations" (or "Implement all prior recommendations")
+
+**YOU own execution end-to-end. Run the RECOMMENDATION IMPLEMENTATION PROTOCOL — every step, in order:**
+
+```
+① SCAN      — list every `pending` recommendation across `recommendations/`, by domain. Only `pending` items are candidates.
+② ALREADY-IMPLEMENTED CHECK — verify each candidate against the CURRENT codebase (CodeGraph/grep). Change already present? → REMOVE the file, NO spawn. Record "already present."
+③ CONTRADICTION SCAN — read every candidate against every other AND against current code/spec. A conflicting pair (e.g. "add rate limiting" vs "remove the middleware layer") canNOT both be implemented: flag to the Director (never guess) or dismiss the losing one with a note. Resolve BEFORE any spawn.
+④ GROUP BY DOMAIN — bundle non-conflicting candidates.
+⑤ SPAWN — one specialist per domain/item. Verification proportional to tier (see ⚖️ PROPORTIONAL VERIFICATION).
+⑥ VERIFY — each implementation verified by its tier.
+⑦ REMOVE ON COMPLETION — implemented + verified = DELETE the file (optional: archive to `recommendations/archive/`). Done means gone from the active pool.
+⑧ REPORT — to the Director: implemented/removed, dismissed + why, already-present + removed, contradictions found.
+```
+
+**The Rule:** the `pending` pool is the source of truth for what still needs doing. A completed recommendation has no file. **Never re-implement what already exists.**
 
 ---
 

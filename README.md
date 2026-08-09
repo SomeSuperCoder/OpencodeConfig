@@ -402,7 +402,7 @@ recommendations/
 
 **Format:** `YYYY-MM-DD-topic.md` with Status, Priority, Effort, Rationale, Evidence.
 
-**User command:** `"Implement all prior recommendations"` → Tech Lead scans, groups by domain, spawns specialists, implements.
+**User command:** `"Implement all recommendations"` (or "Implement all prior recommendations") → Tech Lead runs the RECOMMENDATION IMPLEMENTATION PROTOCOL: scan pending → already-implemented check → contradiction scan → group by domain → spawn per domain → verify per tier → remove files on completion → report. Contradicting or already-present recommendations never get re-implemented.
 
 Full protocol: [`recommendations/README.md`](./recommendations/README.md)
 

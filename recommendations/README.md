@@ -40,7 +40,7 @@ Each recommendation file follows this template:
 **Date:** YYYY-MM-DD
 **Source:** [Agent that generated this] (e.g., QA Engineer, Security Engineer)
 **Priority:** low | medium | high
-**Status:** pending | in_progress | implemented | dismissed
+**Status:** pending | in_progress | dismissed   (completed → REMOVED from the directory)
 **Effort:** quick (<1hr) | medium (1-4hr) | large (>4hr)
 
 ## Recommendation
@@ -70,12 +70,20 @@ When an agent gives a non-blocking suggestion:
 4. Reference the source agent and their findings
 
 ### Implementing Recommendations
-When the user says "Implement all prior recommendations":
-1. Tech Lead scans `recommendations/` for all `pending` items
-2. Groups by domain (security, performance, etc.)
-3. Spawns appropriate specialists for each domain
-4. Updates Status to `in_progress` then `implemented`
-5. Reports what was implemented
+When the user says **"Implement all recommendations"** (or "Implement all prior recommendations"), the Tech Lead owns execution end-to-end via the RECOMMENDATION IMPLEMENTATION PROTOCOL:
+
+```
+① SCAN      — list every `pending` recommendation across the directory, by domain. Only `pending` items are candidates.
+② ALREADY-IMPLEMENTED CHECK — verify each candidate against the CURRENT codebase (CodeGraph). Change already present? → REMOVE the file, no spawn. Record "already present."
+③ CONTRADICTION SCAN — read every candidate against every other AND against current code/spec. A conflicting pair canNOT both be implemented: flag to the Director or dismiss the losing one with a note. Resolve BEFORE any spawn.
+④ GROUP BY DOMAIN — bundle non-conflicting candidates.
+⑤ SPAWN — one specialist per domain/item. Verification proportional to tier.
+⑥ VERIFY — each implementation verified by its tier.
+⑦ REMOVE ON COMPLETION — implemented + verified = DELETE the file (optional: archive to `archive/`). Done means gone from the active pool.
+⑧ REPORT — to the Director: implemented/removed, dismissed + why, already-present + removed, contradictions found.
+```
+
+**The Rule:** the `pending` pool is the source of truth for what still needs doing. A completed recommendation has no file. Never re-implement what already exists.
 
 ### Dismissing Recommendations
 If a recommendation is rejected:
