@@ -467,7 +467,7 @@ AgentMemory — это автономный MCP-сервер, дающий ка�
 ```
 Вы:         Исправь баг оплаты на странице оформления заказа.
 Тимлид:     Просит Backend Lead составить план оркестрации → запускает
-            Bug Hunter → Backend Engineer → Test Engineer → QA.
+            Scout → Bug Hunter → Backend Engineer → Test Engineer → QA.
             Отчитывается: первопричина доказана, фикс проверен,
             тесты зелёные, выпущено.
 ```

@@ -778,6 +778,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - Use ABC for verification (load the `fircac-out-loud` skill first — see REASONING PROTOCOLS)
 - Use the Sorotic method when a solution feels too easy or a belief goes unquestioned (see REASONING PROTOCOLS — no skill needed)
 - Write tests **proportional to the change** — full verification for features, minimal for trivial fixes (see ⚖️ VERIFICATION IS PROPORTIONAL)
+- **Declare the change's COMPLEXITY out loud for every task and inject it into every spawn prompt** (see 🗣️ COMPLEXITY DECLARATION — ⚖️ VERIFICATION IS PROPORTIONAL)
 - **Prove every T3/T4 feature from the user's side: Playwright user-behavior flows, mock-or-cleanup for integration tests (see 🚨 MANDATORY PROTOCOL — FEATURES (T3/T4) ARE TESTED AS USER BEHAVIOR)**
 - Follow SOLID, SSOT, DRY, UNIX
 - **Architect for modularity with dependency injection** — boundaries by dependency direction, inject don't instantiate, one composition root (see 🏛️ SYSTEM DESIGN PRINCIPLES — THE ARCHITECTURE LAW)
@@ -1148,6 +1149,35 @@ If running a verifier won't reduce total token spend — it re-checks what's alr
 | **T4 · critical** | security, payments, auth, data loss, breaking | full | Full pipeline. Every verifier pays. |
 
 **🌊 WAVES SCALE WITH THE CHANGE:** a simple change = ONE wave (implement → own-lane verify → commit). A feature = TWO waves (implement+test → review). A critical change = the full pipeline. **Never stretch a simple change into a multi-wave ceremony. Never shortcut a critical one.**
+
+### 🗣️ COMPLEXITY DECLARATION — SAY IT OUT LOUD, INJECT IT INTO EVERY SPAWN
+
+**The Tech Lead MUST say the change's complexity OUT LOUD for every task — before planning, before spawning. A silent tier is a skipped tier. And that complexity MUST be injected into every subagent spawn prompt — so a T1 typo fix and a T4 project rework do NOT burn the same tokens, time, and ceremony.**
+
+**The declaration goes in the announced PLAN:**
+
+```
+⚙️ COMPLEXITY DECLARATION
+Tier: T1 (trivial) / T2 (standard) / T3 (feature) / T4 (critical)
+Effort budget: LEAN (minimal ceremony) / STANDARD (normal) / HEAVY (full ceremony)
+Overhead: [n waves] · [n agents] · [verification depth] · [skills loaded]
+Workflow size: ONE-WAVE quick pass / TWO-WAVE standard / FULL PIPELINE
+```
+
+**The injection rule — EVERY spawn prompt carries a ⚙️ COMPLEXITY field:**
+
+`⚙️ COMPLEXITY: T[X] · [LEAN / STANDARD / HEAVY]`
+
+**The worker scales its whole session to the injected tier:**
+
+| Injected | Worker session size |
+|----------|---------------------|
+| T1 · LEAN | ONE lean pass. No ceremony, no skill loads unless stuck, verdict + one-line evidence, minimal output. |
+| T2 · STANDARD | Normal pass. Max 1 skill load, affected-tests only, standard handoff. |
+| T3 · HEAVY | Thorough pass. Load the needed skills, verify the full blast radius, full handoff. |
+| T4 · MAXIMUM | Full ceremony everywhere. FIRCAC/SOLID where they apply, complete verification, maximum care. |
+
+**The law: match the effort to the injected tier.** A T1 agent that produces a T4 essay is token waste — a violation. A T4 agent that skips ceremony because "it looked small" is negligence — a violation. **The injected tier binds the worker; a report that ignores it is reportable drift.**
 
 **🪶 TOKEN DIET RULES:**
 - **Laser scope:** test/QA/audit the change + blast radius, never the project. Out-of-scope issues → REPORT, don't chase.

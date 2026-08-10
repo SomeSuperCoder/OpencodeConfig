@@ -435,7 +435,7 @@ AgentMemory is a standalone MCP server that gives every agent persistent memory 
 ```
 You:        Fix the payment bug on the checkout page.
 Tech Lead:  Asks Backend Lead for the orchestration plan → staffs
-            Bug Hunter → Backend Engineer → Test Engineer → QA.
+            Scout → Bug Hunter → Backend Engineer → Test Engineer → QA.
             Reports back: root cause proven, fix verified, tests green, shipped.
 ```
 

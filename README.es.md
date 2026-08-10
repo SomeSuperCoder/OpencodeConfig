@@ -467,7 +467,7 @@ AgentMemory es un servidor MCP independiente que da a cada agente memoria persis
 ```
 Tú:         Arregla el bug de pago en la página de checkout.
 Jefe de Equipo: Pide al Backend Lead el plan de orquestación → lanza
-            Bug Hunter → Backend Engineer → Test Engineer → QA.
+            Scout → Bug Hunter → Backend Engineer → Test Engineer → QA.
             Informa: causa raíz demostrada, fix verificado, tests verdes, publicado.
 ```
 
