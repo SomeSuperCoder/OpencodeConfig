@@ -219,7 +219,9 @@ Result: Recommendations forgotten. Technical debt accumulates.
 
 ```
 ① SCAN      — list every `pending` recommendation across `recommendations/`, by domain. Only `pending` items are candidates.
-② ALREADY-IMPLEMENTED CHECK — verify each candidate against the CURRENT codebase (CodeGraph). Change already present? → REMOVE the file, NO spawn. Record "already present."
+② PRE-EXISTING SCOUT — a quick, cheap check for FULL or PARTIAL implementation before ANY spawn. One CodeGraph call / one targeted grep, never a deep dive; if it's not obvious fast, note what you found and move on.
+- **FULLY present** → REMOVE the file, NO spawn. Record "already present."
+- **PARTIALLY present** → do NOT implement the whole recommendation. Trim the file's Recommendation to the REMAINING GAP (note what already exists and where), keep Status `pending`, implement only the gap. Never re-implement existing functionality.
 ③ CONTRADICTION SCAN — run the CONTRADICTION DETECTION SYSTEM (below): signal cards → pairwise matrix → resolve every conflict. NEVER start implementing with a live contradiction.
 ④ GROUP BY DOMAIN — bundle non-conflicting candidates.
 ⑤ SPAWN — one specialist per domain/item. Verification proportional to tier (see ⚖️ VERIFICATION IS PROPORTIONAL).
@@ -737,6 +739,36 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 
 ---
 
+## 🏛️ SYSTEM DESIGN PRINCIPLES — MODULARITY & DEPENDENCY INJECTION (THE ARCHITECTURE LAW)
+
+**Every system is designed around modularity and dependency injection. These are not optional patterns — they are the architecture law. Architects design by this law, engineers implement by this law, reviewers judge by this law.**
+
+### 🧩 Modularity — one responsibility per module, boundaries by dependency
+
+- **A module = one responsibility** (single reason to change), with a **public interface** and **private internals**.
+- **Boundaries follow dependency direction:** stable, low-level dependencies point inward; unstable, high-level policy points outward. No cycles.
+- **Modules communicate through interfaces, never through each other's internals.** Cross-module access happens through the public API only.
+- **Hidden coupling is a defect.** If module A reaches into module B's internals, that is a boundary violation — refactor, don't document.
+- **Every interface exists for a consumer.** If nothing depends on it, it's speculative surface — delete it or justify it.
+
+### 💉 Dependency Injection — inject, never instantiate
+
+- **Depend on abstractions, not concretions** (the D in SOLID). High-level modules never import low-level details — they depend on the interface the detail implements.
+- **Inject dependencies, never construct them inside the consumer.** No `new HttpClient()` inside a service, no `getInstance()` hidden inside a module. The consumer receives what it needs.
+- **Composition root** — the ONE place where everything is wired together (module boundary, app entry, DI container). Everything below the root is injected.
+- **Testability is the proof.** If a module cannot be handed a fake/stub/mock at its boundary, the design is not DI-compliant — fix the design, not the test.
+- **No service locators or global singletons as a substitute for DI.** Implicit dependency is worse than explicit construction.
+
+### ✅ The Modularity & DI Verification — run on every design and every review
+
+1. Can I replace any concrete dependency with a fake without touching the consumer? → if no, DI is broken.
+2. Does each module have exactly one responsibility and a narrow public interface? → if no, modularity is broken.
+3. Do dependencies point inward, with no cycles? → if no, the boundary is wrong.
+4. Is there exactly one composition root? → if no, wiring is scattered.
+5. Does any module reach into another's internals? → if yes, that's a boundary violation.
+
+---
+
 ## ⚠️ COMPLIANCE DIRECTIVE — NON-NEGOTIABLE
 
 **These rules are MANDATORY. No exceptions. No context size excuses.**
@@ -748,6 +780,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - Write tests **proportional to the change** — full verification for features, minimal for trivial fixes (see ⚖️ VERIFICATION IS PROPORTIONAL)
 - **Prove every T3/T4 feature from the user's side: Playwright user-behavior flows, mock-or-cleanup for integration tests (see 🚨 MANDATORY PROTOCOL — FEATURES (T3/T4) ARE TESTED AS USER BEHAVIOR)**
 - Follow SOLID, SSOT, DRY, UNIX
+- **Architect for modularity with dependency injection** — boundaries by dependency direction, inject don't instantiate, one composition root (see 🏛️ SYSTEM DESIGN PRINCIPLES — THE ARCHITECTURE LAW)
 - Use pnpm, never npm or npx
 - Check Justfile before manual commands
 - Commit only VERIFIED work, at feature boundaries: `git add -A && git commit -m "<type>: <summary>"` — NEVER commit unverified code that will need a follow-up fix. A `fix:` commit means the previous commit shipped unverified work. That is a failure.
@@ -821,30 +854,68 @@ After any response, ask:
 
 ---
 
-## 🗣️ REASONING PROTOCOLS — FIRCAC, ABC & SOROTIC (LOAD THE SKILL FIRST)
+## 🗣️ REASONING PROTOCOLS — FIRCAC, ABC, SOROTIC & SOLID (LOAD THE SKILL FIRST)
 
-**🚫 HARD RULE — NO FIRCAC/ABC WITHOUT THE SKILL:** You may NEVER run FIRCAC or ABC unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. Reasoning without the skill is an unauthorized, incomplete protocol — it will drift into the wrong order or skip steps. **Load the skill → then reason. Every time. No exceptions.** *(The Sorotic method needs no skill — it's a question loop, run it anytime.)*
+**🚫 HARD RULE — NO FIRCAC/ABC/SOLID WITHOUT THE SKILL:** You may NEVER run FIRCAC, ABC, or SOLID unless you have FIRST loaded the `fircac-out-loud` skill via `skill(name="fircac-out-loud")`. Reasoning without the skill is an unauthorized, incomplete protocol — it will drift into the wrong order or skip steps. **Load the skill → then reason. Every time. No exceptions.** *(The Sorotic method needs no skill — it's a question loop, run it anytime.)*
 
 - **FIRCAC** = Facts, Issue, Rules, Cases, Application, Consequences. A structured reasoning framework for designing, implementing, debugging, and reviewing software. The skill holds the full protocol, checklist, and worked example.
 - **ABC** = Assume Nothing, Believe Nobody, Confirm Everything. A verification method that forces you to prove claims with evidence. The skill holds the full method.
+- **SOLID** = Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion. A design-quality protocol verbalized over every design, module boundary, and implementation — the SOLID equivalent of FIRCAC. The skill holds the full protocol, checklist, and worked example.
 
 **When:** Bugs, test failures, unexpected behavior, complex decisions, before trusting any information. Every time.
 
 ### VERBALIZATION RULE — NON-NEGOTIABLE
 
-**FIRCAC and ABC MUST be spoken out loud. Every time. No exceptions.**
+**FIRCAC, ABC, and SOLID MUST be spoken out loud. Every time. No exceptions.**
 
 | Situation | What to Say |
 |-----------|-------------|
 | Bug found | Full FIRCAC out loud |
 | Complex decision | Full FIRCAC + Sorotic out loud |
-| Code review | ABC out loud + Sorotic on the verdict |
+| Code review | ABC out loud + Sorotic on the verdict + SOLID out loud |
+| Designing a module/class/function | SOLID out loud |
+| Architecture / module boundaries / dependency wiring | SOLID (especially D) + FIRCAC out loud |
 | Testing claims | ABC out loud |
 | Before trusting | ABC out loud |
 | Solution "feels too easy" / too-obvious assumption | Sorotic loop out loud |
 
 **NO SILENT THINKING. NO JUMPING TO CONCLUSIONS.**
 **SPEAK YOUR REASONING. EVERY TIME.**
+
+### 🧱 THE SOLID PROTOCOL — REASON THE DESIGN OUT LOUD
+
+**SOLID is not a checklist you silently pass. It is a protocol you verbalize — the design equivalent of FIRCAC. Every design, module boundary, and implementation is argued through the five principles, out loud, before it ships.**
+
+**Trigger it when:** designing a module/class/function, defining interfaces or boundaries, wiring dependencies, or reviewing any of the above.
+
+#### The SOLID Question Loop — RUN IT OUT LOUD
+
+For each principle, state the answer in one line. A principle you cannot answer is a RED flag — fix it before proceeding.
+
+1. **S — Single Responsibility.** State the ONE reason this module/class/function changes. If it changes for more than one actor, split it. Name the responsibility out loud.
+2. **O — Open/Closed.** Say how this code is extended WITHOUT editing it. What is the extension point — an interface, a strategy, a plugin slot? If the only way to change behavior is to edit existing code, the design fails O.
+3. **L — Liskov Substitution.** Say which implementations can be swapped at this interface without breaking callers. Contracts hold: preconditions not strengthened, postconditions not weakened, invariants preserved. If a swap breaks a caller, L is violated.
+4. **I — Interface Segregation.** Say which clients depend on which interface, and that each interface contains ONLY what its clients use. Fat interfaces = forced dependencies on unused methods = I violation.
+5. **D — Dependency Inversion.** Say what abstraction this module depends on, and where that dependency is injected from. High-level policy never imports low-level detail. If a module constructs its own dependencies or imports concrete implementations, D is violated — and with it the 🏛️ ARCHITECTURE LAW.
+
+#### SOLID Output — VERBALIZE IT
+
+```
+Starting SOLID review...
+S: [module] exists for one reason — [reason]. Verdict: PASS / SPLIT.
+O: Extended by [extension point]; no edit needed for new behavior. Verdict: PASS / NEEDS EXTENSION POINT.
+L: Swappable implementations: [list]. Contracts held. Verdict: PASS / CONTRACT BROKEN.
+I: Interfaces [X] serve [clients]; no client depends on unused members. Verdict: PASS / FAT INTERFACE.
+D: Depends on [abstraction], injected at [composition root]. Verdict: PASS / INSTANTIATES OWN DEPS.
+SOLID complete. [summary sentence]
+```
+
+#### SOLID Discipline
+
+- **One principle at a time** — never blend two into one vague sentence.
+- **Say the concrete name** — "this class" not "the thing"; "the HttpClient interface" not "it".
+- **A silent SOLID is a skipped SOLID.** If the reasoning isn't spoken, it didn't happen.
+- **D is the architect's law** — for any module boundary or dependency wiring, Dependency Inversion and the composition root are non-negotiable (see 🏛️ SYSTEM DESIGN PRINCIPLES).
 
 ### 🧠 THE SOROTIC METHOD — QUESTION EVERY ANSWER
 
@@ -878,7 +949,7 @@ Challenge any assertion with the five questions until each has a real answer (no
 
 ### The Rule
 
-**FIRCAC decides *how* to reason, ABC decides *what* to believe, the Sorotic Method decides *whether you're even standing on the right belief.* A senior engineer uses all three — and the Sorotic loop is the one that catches the assumption you never realized you'd made.**
+**FIRCAC decides *how* to reason, ABC decides *what* to believe, the Sorotic Method decides *whether you're even standing on the right belief*, and SOLID keeps the design itself honest — modular, extensible, testable, dependency-clean. A senior engineer uses all four — and the Sorotic loop is the one that catches the assumption you never realized you'd made.**
 
 ---
 
@@ -899,7 +970,7 @@ Challenge any assertion with the five questions until each has a real answer (no
 
 | Skill | Load When |
 |-------|-----------|
-| `fircac-out-loud` | Any FIRCAC/ABC reasoning (mandatory, before reasoning) |
+| `fircac-out-loud` | Any FIRCAC/ABC/SOLID reasoning (mandatory, before reasoning) |
 | `testing-patterns` | Writing or fixing tests |
 | `api-patterns` | Designing APIs, endpoints, contracts |
 | `error-patterns` | Error handling, Result types, boundaries |

@@ -74,7 +74,9 @@ When the user says **"Implement all recommendations"** (or "Implement all prior 
 
 ```
 ① SCAN      — list every `pending` recommendation across the directory, by domain. Only `pending` items are candidates.
-② ALREADY-IMPLEMENTED CHECK — verify each candidate against the CURRENT codebase (CodeGraph). Change already present? → REMOVE the file, no spawn. Record "already present."
+② PRE-EXISTING SCOUT — a quick, cheap check for FULL or PARTIAL implementation before ANY spawn. One CodeGraph call / one targeted grep, never a deep dive; if it's not obvious fast, note what you found and move on.
+- **FULLY present** → REMOVE the file, no spawn. Record "already present."
+- **PARTIALLY present** → do NOT implement the whole recommendation. Trim the file's Recommendation to the REMAINING GAP (note what already exists and where), keep Status `pending`, implement only the gap. Never re-implement existing functionality.
 ③ CONTRADICTION SCAN — run the CONTRADICTION DETECTION SYSTEM (below): signal cards → pairwise matrix → resolve every conflict. NEVER start implementing with a live contradiction.
 ④ GROUP BY DOMAIN — bundle non-conflicting candidates.
 ⑤ SPAWN — one specialist per domain/item. Verification proportional to tier.

@@ -1,6 +1,6 @@
 ---
 name: fircac-out-loud
-description: "Makes the AI verbalize its FIRCAC reasoning process step-by-step as it works through problems. Use when you want transparent, auditable problem-solving. Also contains the ABC verification method (Assume Nothing, Believe Nobody, Confirm Everything). Triggers: 'think out loud', 'ficrac out loud', 'show your thinking', 'walk me through', 'explain your reasoning'."
+description: "Makes the AI verbalize its FIRCAC reasoning process step-by-step as it works through problems. Use when you want transparent, auditable problem-solving. Also contains the ABC verification method (Assume Nothing, Believe Nobody, Confirm Everything) and the SOLID design protocol (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion), both verbalized. Triggers: 'think out loud', 'ficrac out loud', 'solid out loud', 'show your thinking', 'walk me through', 'explain your reasoning', 'reason the design'."
 ---
 
 # FIRCAC Protocol for Software Engineering
@@ -247,3 +247,96 @@ VERDICT: CONFIRMED / DISPROVEN / UNVERIFIED
 3. **Confirm independently** — don't accept a claim on the strength of its source
 4. **State the falsification test** — what would disprove this? Then run it.
 5. **UNVERIFIED is a valid verdict** — better than a wrong CONFIRMED.
+
+---
+
+# SOLID Design Protocol
+
+**SOLID = Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion. A design-quality protocol you verbalize over every design, module boundary, and implementation — the SOLID equivalent of FIRCAC. No silent design. Every principle argued out loud before it ships.**
+
+## When to Use
+
+- Designing a module, class, function, or service
+- Defining interfaces, module boundaries, or dependency wiring
+- Before reviewing any design or implementation
+- When a design "looks fine" — SOLID is the structured way to prove it
+- Whenever the 🏛️ SYSTEM DESIGN PRINCIPLES (modularity + dependency injection) are in play
+
+## The Protocol
+
+### S — Single Responsibility
+
+**Goal:** Name the ONE reason this module/class/function changes.
+
+**Questions:**
+- What actor requests changes to this code?
+- How many different reasons exist to modify it?
+- Can I name its responsibility in one sentence?
+
+**Verdict:** PASS — one clear reason to change. **SPLIT** — two or more actors pull it in different directions.
+
+### O — Open/Closed
+
+**Goal:** Show how the code is extended WITHOUT editing it.
+
+**Questions:**
+- Where is the extension point — an interface, a strategy, a plugin slot, a strategy?
+- Can I add a new behavior by adding new code rather than changing existing code?
+- Are there switch/if-chains that will grow every time a new variant appears?
+
+**Verdict:** PASS — new behavior lands through an extension point. **NEEDS EXTENSION POINT** — editing existing code is the only way to change behavior.
+
+### L — Liskov Substitution
+
+**Goal:** Prove any implementation can be swapped at the interface without breaking callers.
+
+**Questions:**
+- Which concrete implementations sit behind this interface?
+- If I swap implementation X for Y, does every caller still behave correctly?
+- Are contracts honored — preconditions not strengthened, postconditions not weakened, invariants preserved?
+- Does a subclass throw where the base contract promises success?
+
+**Verdict:** PASS — contracts hold across all implementations. **CONTRACT BROKEN** — a swap changes behavior for existing callers.
+
+### I — Interface Segregation
+
+**Goal:** Show each client depends only on the interface members it actually uses.
+
+**Questions:**
+- Which clients consume this interface?
+- Does any client depend on methods it never calls?
+- Should the fat interface be split into narrow, role-specific interfaces?
+
+**Verdict:** PASS — each client sees only what it uses. **FAT INTERFACE** — clients are forced to depend on unused surface.
+
+### D — Dependency Inversion
+
+**Goal:** Name the abstraction the module depends on and where that dependency is injected.
+
+**Questions:**
+- Does high-level policy depend on low-level detail, or on an abstraction of it?
+- Where is the dependency constructed — injected at a composition root, or `new`-ed inside the consumer?
+- Can I hand this module a fake/stub/mock at its boundary without touching its code?
+- Are there service locators or global singletons hiding dependencies?
+
+**Verdict:** PASS — depends on an abstraction, injected at the composition root. **INSTANTIATES OWN DEPS** — the module constructs its own concrete dependencies (violates the 🏛️ ARCHITECTURE LAW).
+
+## Output — VERBALIZE IT
+
+```
+Starting SOLID review...
+S: [module] exists for one reason — [reason]. Verdict: PASS / SPLIT.
+O: Extended by [extension point]; no edit needed for new behavior. Verdict: PASS / NEEDS EXTENSION POINT.
+L: Swappable implementations: [list]. Contracts held. Verdict: PASS / CONTRACT BROKEN.
+I: Interfaces [X] serve [clients]; no client depends on unused members. Verdict: PASS / FAT INTERFACE.
+D: Depends on [abstraction], injected at [composition root]. Verdict: PASS / INSTANTIATES OWN DEPS.
+SOLID complete. [summary sentence]
+```
+
+## Rules
+
+1. **Always verbalize** — a silent SOLID is a skipped SOLID
+2. **One principle at a time** — never blend two into one vague sentence
+3. **Say the concrete name** — "this class" not "the thing"; "the HttpClient interface" not "it"
+4. **A principle you cannot answer is a RED flag** — fix the design before proceeding
+5. **D is the architect's law** — for any module boundary or dependency wiring, Dependency Inversion and the composition root are non-negotiable

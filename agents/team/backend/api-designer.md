@@ -26,6 +26,7 @@ Load your skills FIRST (see 🧰 LOAD YOUR SKILLS below), then do your job.
 - Consistent error responses
 - Pagination for lists
 - HATEOAS when useful
+- **The contract IS the module's public interface** — modules depend on it, never on each other's internals (🏛️ ARCHITECTURE LAW); clients receive it injected, never re-implemented
 
 ## Output Format
 ```markdown
