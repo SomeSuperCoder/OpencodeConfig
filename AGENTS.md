@@ -779,6 +779,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - Use the Sorotic method when a solution feels too easy or a belief goes unquestioned (see REASONING PROTOCOLS — no skill needed)
 - Write tests **proportional to the change** — full verification for features, minimal for trivial fixes (see ⚖️ VERIFICATION IS PROPORTIONAL)
 - **Declare the change's COMPLEXITY out loud for every task and inject it into every spawn prompt** (see 🗣️ COMPLEXITY DECLARATION — ⚖️ VERIFICATION IS PROPORTIONAL)
+- **Use nushell as the PRIMARY data tool** — grep, file search, reading file parts, parsing, and output-processing go through `nu -c "..."`; bash & builtins only as fallback; prefer `--json`/`-o json`/YAML output when a command supports it (see 🧠 INTELLIGENCE AMPLIFIERS — 5. NUSHELL)
 - **Prove every T3/T4 feature from the user's side: Playwright user-behavior flows, mock-or-cleanup for integration tests (see 🚨 MANDATORY PROTOCOL — FEATURES (T3/T4) ARE TESTED AS USER BEHAVIOR)**
 - Follow SOLID, SSOT, DRY, UNIX
 - **Architect for modularity with dependency injection** — boundaries by dependency direction, inject don't instantiate, one composition root (see 🏛️ SYSTEM DESIGN PRINCIPLES — THE ARCHITECTURE LAW)
@@ -1035,11 +1036,11 @@ Routing: no argument → read `reference/routing.md` and present its context-awa
 
 **Use these tools. Every time. No excuses.**
 
-### 1. CodeGraph First — NEVER Grep
-- **Any code question** → `codegraph_explore`. NOT grep. NOT read. NOT search.
-- Architecture, call chains, data flow, symbol lookup — CodeGraph answers all.
-- `read` only after CodeGraph surfaces the file.
-- **grep is BANNED.** It wastes tokens, misses context, lies.
+### 1. CodeGraph First — NEVER Raw Grep for Code
+- **Any CODE question** (symbols, architecture, call chains, data flow, blast radius) → `codegraph_explore`. NOT grep. NOT read. NOT search.
+- **`read` only after CodeGraph surfaces the file.**
+- **Raw `grep` on code is BANNED as a code-intelligence tool** — it wastes tokens, misses context, lies. CodeGraph gives the exact symbol in ~1k tokens.
+- **When a text search really is the right tool** (logs, configs, non-indexed files, data files) → run it through **nushell**, not a bare bash grep chain: `rg 'PAT' **/*.ts | lines | parse '{f}:{l}:{t}'` (see #5 — Nushell).
 - **CodeGraph is UNLIMITED (use freely).** It's ~1k tokens per call, targeted, and gives you the exact symbol. Use it as many times as you need — it's cheaper than reading a single file.
 
 ### 2. Search Before Guessing — Use Tavily
@@ -1094,38 +1095,65 @@ Routing: no argument → read `reference/routing.md` and present its context-awa
 
 **If it would waste 5+ min re-discovering → save it. If not → don't.**
 
-### 5. Nushell for Data Processing — MANDATORY
-**Any data processing on the command line → nushell (`nu -c "..."`), NOT bash pipes/awk/grep/sed.** Nushell is a structured-data shell: JSON, CSV, tables, and streaming come native. Bash text-pipe archaeology is banned for data work.
+### 5. Nushell — THE PRIMARY DATA GATHERING & PROCESSING TOOL (MANDATORY)
 
-**When to reach for nushell:**
-- Parsing/transforming/filtering JSON or CSV output (test reports, API responses, lockfiles, config dumps)
-- Joining, grouping, counting, aggregating data across files
-- Building pipelines that output structured data for another agent or for analysis
-- Column selection, renames, sorts, uniques, dedup — anything you'd reach for awk/grep/sed/jq for
+**nushell (`nu -c "..."`) is the system's DEFAULT for gathering and processing data on the command line. Use it to its MAXIMUM potential: greping, searching files, reading parts of files, processing command output, and all structured-data work (JSON/CSV/YAML/tables). bash and the builtin `grep`/`glob`/`read` tools are the FALLBACK — used ONLY when nushell cannot do the job. nushell is an ASSET, not a liability: if nushell makes a task harder than a direct bash one-liner would, use the bash one-liner.**
 
-**Why:** one `nu -c` call does in seconds what a 6-stage bash `grep | awk | cut | sort | uniq | head` chain does in 15 fragile minutes. Structured input in, structured output out — no regex escape-room.
+**📊 THE HIERARCHY — WHAT TO REACH FOR, IN ORDER:**
+
+| Task type | PRIMARY | FALLBACK (only if nushell can't) |
+|-----------|---------|----------------------------------|
+| Code structure (symbols, call chains, blast radius) | **CodeGraph** (see #1 — not a shell task) | `read` after CodeGraph surfaces the file |
+| Grepping / searching file CONTENTS | nushell: `rg 'PAT' **/*.ts \| lines \| parse '{f}:{l}:{t}'` | `grep` |
+| Searching / listing FILES | nushell: `ls **/*.ts`, `glob "**/*.json"`, `ls \| where type == dir` | builtin `glob`/`find` |
+| Reading parts of files | nushell: `open f \| first 50`, `open f \| lines \| range 100..150`, `open log \| lines \| range -50..` | builtin `read` (offset/limit) |
+| Processing command output | nushell: `cmd --json \| from json \| where ... \| select ...` | bash pipes |
+| Structured data (JSON/CSV/YAML/tables) | nushell native: `open`, `from json/csv/yaml`, `to json/csv/yaml`, `select`, `where`, `group-by`, `uniq` | jq/awk |
+| Test reports, lockfiles, config dumps | nushell: `open package-lock.json \| get packages \| columns` | — |
+
+**🎯 MAKE COMMANDS RETURN DATA (JSON/YAML) — MANDATORY EFFORT:**
+- **Agents SHALL try to make every command that supports it return JSON or YAML** — check `--json`, `--format json`, `-o json`, `--output-format`, `-J` on the command FIRST, before falling back to text.
+- Then pipe straight into nushell: `cmd --json | from json | select ... | where ...`. Structured in → structured out. No regex on raw text when structured data exists.
+- **Examples:** `pnpm outdated --format json`, `jest --json`, `npm ls --json`, `gh api -H "Accept: application/json"`, `kubectl -o json`, `cargo metadata --format-version 1`, `pip list --format=json`, `ls --json` (where supported), `nix eval --json`, `git ls-files -z | ...`.
+- If a command does NOT support JSON/YAML → still run its text through nushell first (`cmd | lines | parse '{a} | {b}'`), never a raw bash grep chain.
+
+**🗂️ nushell = DEFAULT for these (what bash/grep used to do):**
+- **Grep** → `rg 'PAT' **/*.ts | lines | parse '{file}:{line}:{text}'`; count matches with `| length` (replaces `grep -c`).
+- **Find files** → `ls **/*.spec.ts`, `glob "**/Makefile"`, filter with `| where name =~ 'foo'`.
+- **Read a slice of a file** → `open f | first 50`, `open log | lines | range -50..` (last 50 lines — replaces `head`/`tail`/`sed -n`).
+- **Count / dedup / sort / group** → `... | length`, `... | uniq`, `... | sort-by`, `... | group-by`.
+- **Convert formats** → `open data.json | to yaml`, `open data.csv | to json`, `open lock.json | get packages`.
 
 **Patterns:**
 ```bash
-# JSON in, table out (e.g. inspect test results)
-nu -c "open report.json | select name status | where status == 'failed'"
+# Grep file contents, structured (replaces grep -n)
+nu -c "rg 'foo' src/**/*.ts | lines | parse '{file}:{line}:{text}'"
 
-# CSV aggregation without awk
-nu -c "open data.csv | group-by department | each {|g| {dept: $g.name, count: ($g.group | length)}}"
+# List + filter + sort files (replaces find | sort)
+nu -c "ls **/*.ts | where size > 10kb | select name size | sort-by size --reverse"
 
-# Filter + count in one line (replaces grep -c chains)
-nu -c "ls **/*.ts | where size > 10kb | length"
+# Read a slice of a file (replaces head/tail/sed -n)
+nu -c "open app.log | lines | range 100..150"
 
-# Parse command output into structured data
+# Parse JSON command output into a table (replaces jq)
 nu -c "pnpm outdated --format json | from json | select package current latest"
+
+# Convert formats
+nu -c "open package.json | to yaml"
 ```
+
+**🔙 FALLBACK — WHEN BASH / BUILTIN TOOLS ARE CORRECT:**
+- nushell is NOT installed, or errors on the construct → use bash/builtins.
+- Plain command execution with no data-shaping (`git status`, `pnpm install`, `docker ps`) → run directly, no nushell wrapping.
+- nushell makes the task HARDER than the direct tool (nushell is an asset, not a liability) → use the direct tool.
+- Code-structure questions → CodeGraph, not nushell (that is code STRUCTURE, not data).
 
 **Rules:**
 - **`nu -c "..."` is the default for data work.** If your command is a bash pipe chain over structured data, you chose wrong.
-- **`from json` / `from csv` / `to json` / `to csv`** are your converters — parse, transform, emit.
-- Use `--format json` on commands that support it (pnpm, jest, npm, etc.) then pipe into nushell.
+- **`from json` / `from csv` / `from yaml` / `to json` / `to csv` / `to yaml`** are your converters — parse, transform, emit.
+- **Use `--format json` / `-o json` / YAML on every command that supports it**, then pipe into nushell. Data output first, always.
 - When in doubt, check `help commands` or `help <command>` — nushell self-documents.
-- Raw text grepping for LOGS is still fine — nushell owns *structured* data.
+- nushell's `ls`/`glob`/`open`/`lines`/`parse`/`find`/`rg` cover grep+find+head/tail+awk+jq in one shell.
 
 ---
 
@@ -1458,7 +1486,7 @@ Deadline: [when I need it / what I'll do if no answer]
 | **Task runner** | Check Justfile first. `just <recipe>` over raw commands. |
 | **Commit** | Only VERIFIED work, at feature boundaries. `fix:` commits = previous commit shipped unverified work = FAILURE. Never commit broken code. |
 | **Tests before commit** | **MANDATORY.** Run lint/typecheck/tests and see them PASS before any commit. "They don't exist" is not an excuse — write them. |
-| **Data processing** | Use `nu -c ""` for nushell. Better for structured data, CSV, JSON, pipes. |
+| **Data gathering & processing** | **nushell first** (`nu -c ""`) for grep, file search, reading file parts, parsing output, JSON/CSV/YAML. bash/builtin tools = fallback only. Try `--json`/`-o json`/YAML on every command that supports it. |
 | **🚫 FORBIDDEN: `todowrite` tool** | **NEVER use the builtin `todowrite` tool.** It is banned. All task tracking goes to `data/ops_board.md` (the Ops Board). Using `todowrite` = VIOLATION. |
 | **📋 Ops Board is MANDATORY** | The Tech Lead MUST maintain `data/ops_board.md` for every active directive. Every wave start, every microtask assignment, every completion — update the board. If the board is stale, the pipeline is broken. |
 | **📋 OpenSpec tasks.md MUST be marked** | Every completed task MUST be marked `- [x]` in the OpenSpec `tasks.md` file with agent name, verdict, and evidence. Unmarked completed tasks = lost records. Committing without updating tasks.md = VIOLATION. |

@@ -54,9 +54,16 @@ Your output is ONE artifact: a **context report** — facts, call chains, blast 
 - Load `find-skills`, search task's domain.
 - Report: skill exists (name + coverage) or no skill found.
 
-### 5. Nushell — structured data (MANDATORY for data work)
-- `nu -c "..."` for JSON/CSV/tables. NOT bash pipes/awk/grep/sed.
-- Converters: `from json` / `from csv` / `to json` / `to csv`.
+### 5. Nushell — THE PRIMARY DATA GATHERING TOOL (MANDATORY)
+
+**You are the data-gathering specialist — nushell is YOUR default workbench. `nu -c "..."` for greping, file search, reading file parts, and parsing command output. NOT bash pipes/awk/grep/sed. bash + builtin `grep`/`glob`/`read` are the fallback ONLY when nushell can't do it (nushell is an asset, not a liability).**
+
+- **Grep contents** → `nu -c "rg 'PAT' **/*.ts | lines | parse '{file}:{line}:{text}'"`
+- **Find files** → `nu -c "ls **/*.spec.ts"`, `nu -c "glob '**/Makefile'"`
+- **Read a slice of a file** → `nu -c "open f | first 50"`, `nu -c "open log | lines | range -50.."`
+- **Parse command output** → `nu -c "cmd --json | from json | select ... | where ..."`
+- **Converters** → `from json` / `from csv` / `from yaml` / `to json` / `to csv` / `to yaml`
+- **Prefer JSON/YAML output:** try `--json`, `-o json`, `--format json` on every command before falling back to text.
 
 ## Context Report Rules
 - Dense, not padded. Facts and citations, no filler.

@@ -107,7 +107,7 @@ Cualquiera puede lanzar 30 agentes. El caos es fácil. **La verificación es la 
 | 🧪 **Test de UNA ejecución** | Ejecuta la suite una vez, captúralo todo. Nunca vuelvas a ejecutar para "pescar" salida. |
 | 🔴🟢 **ROJO-VERDE** | Un cambio recibe COMO MÁXIMO 2 ejecuciones de test, nunca más. Corrige por tandas, no a chorritos. |
 | 🏓 **Una especialidad es dueña de los tests** | El Test Engineer ejecuta la suite. Todos los demás consumen el veredicto. Nadie re-ejecuta el verde de otro. |
-| 🧠 **Amplificadores de Inteligencia** | CodeGraph primero (nunca grep). Tavily antes de adivinar. Navegador para VER la interfaz. AgentMemory para memoria persistente. Nushell para datos estructurados. |
+| 🧠 **Amplificadores de Inteligencia** | CodeGraph primero para código. Tavily antes de adivinar. Navegador para VER la interfaz. AgentMemory para memoria persistente. **Nushell como herramienta de datos PRINCIPAL** — grep, búsqueda de archivos, lectura de archivos, JSON/CSV/YAML (bash solo como respaldo). |
 | 🚦 **Escalada** | Las decisiones humanas suben con opciones + plazo. Las decisiones de implementación se quedan en casa. El Jefe de Equipo escala, nunca adivina. |
 | 📤 **CONTRATO DE ENTREGA** | Cada entregable termina con Veredicto + Evidencia + Archivos + Siguiente responsable. Nadie vuelve a parsear texto libre. |
 | ✅ **Definición de Terminado** | Probado, documentado, sin errores de tipos, sin código muerto, contrato de entrega cumplido. El trabajo sin testear NO está terminado. |

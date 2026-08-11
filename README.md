@@ -107,7 +107,7 @@ Anyone can spawn 30 agents. Chaos is easy. **Verification is the hard part** —
 | 🧪 **ONE-RUN testing** | Run the suite once, capture everything. Never re-run to "fish" for output. |
 | 🔴🟢 **RED-GREEN** | A change gets AT MOST 2 test runs, ever. Fix in batches, not dribbles. |
 | 🏓 **One lane owns tests** | The Test Engineer runs the suite. Everyone else consumes the verdict. Nobody re-runs someone else's green. |
-| 🧠 **Intelligence Amplifiers** | CodeGraph first (never grep). Tavily before guessing. Browser to actually SEE the UI. AgentMemory for persistent memory. Nushell for structured data. |
+| 🧠 **Intelligence Amplifiers** | CodeGraph first for code. Tavily before guessing. Browser to actually SEE the UI. AgentMemory for persistent memory. **Nushell as the PRIMARY data tool** — grep, file search, reading files, JSON/CSV/YAML (bash only as fallback). |
 | 🚦 **Escalation** | Human decisions go UP with options + deadline. Implementation decisions stay in-house. The Team Lead escalates, never guesses. |
 | 📤 **HANDOFF CONTRACT** | Every deliverable ends with Verdict + Evidence + Files + Next owner. Nobody re-parses free-form. |
 | ✅ **Definition of Done** | Tested, documented, type-clean, no dead code, handoff filled out. Untested work is NOT done. |
