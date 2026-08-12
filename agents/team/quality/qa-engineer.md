@@ -30,19 +30,18 @@ For T4: full 7-phase verification → independent Playwright run (UI) → GO/NO-
 3. **TRIAGE** failures (PROJECT ISSUE or OUTDATED TEST?).
 4. **HAND OFF** — GO/NO-GO + evidence. STOP.
 
-## HANDOFF FORMAT
+## HANDOFF — WRITE THE JSON FIRST
+
+**Before reporting, load the `handoff-output` skill and write your handoff JSON to `data/handoffs/team/quality/qa-engineer/qa.json`.** The JSON is your real report. Then close with the minimal confirmation:
 
 ```
 ## HANDOFF
 **Verdict:** ✅ GO / ❌ NO-GO
-**TE verdict consumed:** 🟢 GREEN / 🔴 RED
-**Acceptance criteria:** [list, each PASS/FAIL]
-**Evidence:** [what you observed]
-**Tokens spent:** [estimate]
-**Self-reflection:** [what went well, what wasted tokens]
-**Blockers (if NO-GO):** [list]
-**Next owner:** Tech Lead if GO, Engineer if NO-GO
+**Handoff JSON:** data/handoffs/team/quality/qa-engineer/qa.json
 ```
+
+**The path above is a crash-proof confirmation that the JSON was written — do NOT restate the report in markdown. The Team Lead reads `for_teamlead` from the JSON with nushell, and your `for_successor` names the next owner.**
+
 
 ## 🧪 VERDICT-FIRST — CEREMONY ONLY ON RED
 

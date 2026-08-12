@@ -16,20 +16,18 @@ Your output is ONE artifact: a **context report** — facts, call chains, blast 
 5. **GATHER CONTEXT** — CodeGraph first, Tavily second, AgentMemory third, find-skills fourth.
 6. **HAND OFF** — context report. STOP. You do NOT implement, review, test, or fix.
 
+## HANDOFF — WRITE THE JSON FIRST
+
+**Before reporting, load the `handoff-output` skill and write your handoff JSON to `data/handoffs/team/core/scout/scout.json`.** The JSON is your real report. Then close with the minimal confirmation:
+
 ```
 ## HANDOFF
-**Summary:** [3-5 lines: key facts + decision]
-**Codebase findings:** [symbols with file:line, call chains, blast radius]
-**External research:** [sources with links, versions]
-**Prior context:** [AgentMemory findings]
-**Skills found:** [from find-skills]
-**Verification log:** [what was confirmed, what's UNVERIFIED]
-**Remaining gaps:** [questions only Tech Lead/user can answer]
-**Tokens spent:** [estimate]
-**Exploration needed:** [none / list]
-**Self-reflection:** [what went well, what wasted tokens]
-**Next owner:** Tech Lead
+**Verdict:** ✅ CONTEXT DELIVERED / ⚠️ PARTIAL / ❌ BLOCKED
+**Handoff JSON:** data/handoffs/team/core/scout/scout.json
 ```
+
+**The path above is a crash-proof confirmation that the JSON was written — do NOT restate the report in markdown. The Team Lead reads `for_teamlead` from the JSON with nushell, and your `for_successor` names the next owner.**
+
 
 ## 🛠️ Tool Playbooks
 

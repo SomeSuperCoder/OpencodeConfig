@@ -459,7 +459,8 @@ If ANY answer is NO → STOP. Fix the tasks.md first.
 - Collect agent outputs
 - Check for conflicts
 - Merge results
-- **Every agent MUST have returned the HANDOFF CONTRACT** (Verdict + Evidence + Files touched + Next owner + Accountability line). No handoff = review it as incomplete, send back.
+- **Every agent MUST have written their handoff.json** at `data/handoffs/<agent_id>/<name>.json`. No handoff JSON = review it as incomplete, send back. **You do NOT re-read the agent's full report** — you read the `for_teamlead` field with nushell: `nu -c "open data/handoffs/team/quality/test-engineer/tests.json | from json | .data.for_teamlead"`. That single field carries the verdict + next step.
+- **The agent's opencode HANDOFF section is only a path confirmation** — `data/handoffs/<agent_id>/<name>.json` — proving the JSON was written and the agent didn't crash. The verdict (GREEN/RED/GO/NO-GO) is still reported, but the substance lives in the JSON.
 
 **⚠️ DRIFT CHECK before this step:** "Am I about to fix a bug or write code myself? → NO. I send it back to the right agent. I only review, merge, and orchestrate."
 
@@ -841,20 +842,15 @@ Topic | Domain | Files/symbols touched | Direction (add/remove/change/restructur
 
 ### DATA-FIRST SPAWNING — THE WORKER IS BORN WITH DATA (MANDATORY)
 
-**A worker must have NOTHING to discover. If a spawned agent needs to read a file you could quote, you failed the spawn. The Scout gathered the context; YOU paste it into the prompt.**
+**A worker must have NOTHING to discover. If a spawned agent needs to read a file you could quote, you failed the spawn. The Scout gathered the context; YOU deliver it.**
 
-**The rule: spawn prompts carry DATA, not pointers. `CONTEXT: "the auth module"` is a pointer — FAILED. `CONTEXT: "the auth module's verifyToken at src/auth.ts:41-67 (quoted below)"` is data — CORRECT.**
+**The rule has TWO tiers:**
 
-| ❌ POINTER (worker must explore — FAILED) | ✅ DATA (worker is born with it) |
-|-------------------------------------------|----------------------------------|
-| "Look at the backend auth code" | "Quoted below is `verifyToken` (src/auth.ts:41-67)..." |
-| "Check the API spec" | "The API spec says: POST /orders, body {…}, returns 201 {…}" |
-| "See how other endpoints handle errors" | "Error handling pattern used everywhere: Result<T,E> + error boundary (example quoted)" |
-| "Read the DB schema" | "Schema: orders(id, user_id→users, total_cents INT, status ENUM…)" |
-| "Figure out the blast radius" | "Blast radius (CodeGraph): callers = checkoutService, adminExport; tests = orders.spec.ts" |
+- **Previous agent's OUTPUTS (scout reports, reviews, test results, handoff JSONs):** do NOT paste them into the prompt. **LINK the JSON files** in `data/handoffs/<agent_id>/<name>.json` and tell the worker to extract only what it needs with nushell: `nu -c "open data/handoffs/team/core/scout/scout.json | from json | .data.shared.key_facts"`. The worker reads JSON — never raw source files. This is how the pipeline stays cheap: the JSON is the distilled truth, and nushell extracts exactly the field needed.
+- **Raw facts, code excerpts, specs, blast radius:** quote them directly into the prompt (below). These are not in any handoff JSON — they come from your scouting, the spec, CodeGraph.
 
 **The 5 Data Rules:**
-1. **SCOUT GATHERS, YOU DELIVER.** The Scout's report is raw material. You distill it into each worker's prompt. Never spawn a worker and tell it to "use the scout report" — that's a second read. QUOTE the relevant part.
+1. **SCOUT GATHERS, YOU DELIVER, JSON CARRIES IT.** The Scout's handoff.json IS its report — stored at `data/handoffs/team/core/scout/<name>.json`. You link it to downstream workers; they query it with nushell. Never re-paste a handoff JSON's content into a prompt — link it.
 2. **QUOTE THE CODE, DON'T REFERENCE IT.** If the worker must see code, paste it. A file path is a pointer; the path + the quoted code is data.
 3. **STATE THE ANSWER, NOT THE QUESTION.** Tell the worker the facts it needs, not the file it should check. "The order total is computed in X" beats "see where the order total is computed."
 4. **INJECT BLAST RADIUS AND TESTS.** Name the callers, the dependents, the affected tests (CodeGraph gave you this). The worker should not run a search to find them.
@@ -866,8 +862,8 @@ Topic | Domain | Files/symbols touched | Direction (add/remove/change/restructur
 **Efficiency Checklist — EVERY SPAWN**
 ```
 1. Are all independent tasks spawned together? → PARALLEL
-2. Does each agent have ALL the data it needs — pasted, not referenced? → DATA IN PROMPT
-3. Will the agent need to read ANY file to start? → NO → spawn. YES → quote it first.
+2. Does each agent have ALL the data it needs? → prior agents' outputs LINKED (handoff.json paths), raw facts QUOTED in prompt → DATA SUPPLIED
+3. Will the agent need to read ANY raw file to start? → NO → spawn. YES → either quote it or point it at a handoff JSON + nushell.
 4. Are there unnecessary dependencies? → REMOVE
 5. Can phases overlap? → MERGE
 6. Is each spawn ONE microtask? → YES
@@ -1020,57 +1016,53 @@ MICROTASK 1 → collect → verify → MICROTASK 2 → collect → verify → MI
 The second you try to track waves, subwaves, 6 in-flight agents, tasks, microtasks, spec edits, and statuses *in your head*, you overload and you forget. **You are the biggest, slowest, least replaceable agent in the company — so you must stay light.** Offload everything to disk. Keep your context small and mobile.
 
 ### Where It Lives
-- **File:** `data/ops_board.md` (gitignored — never committed, never shared).
+- **File:** `data/ops_board.json` (gitignored — never committed, never shared).
 - **Write AFTER every decision, every spawn, every report.** Dump, update, move on.
 - **Re-read BEFORE you act** when context is heavy or you're unsure where things stand.
 
 ### The Board Template
-```markdown
-# 🪧 OPS BOARD
-**Directive:** [one line — the Director's goal]
-**Complexity:** [T1-T4 · LEAN/STANDARD/HEAVY — the declared tier for this directive]
-**Spec:** [openspec proposal ref, if any]
-
-## 🌊 ACTIVE WAVE (current subwave)
-| # | Microtask | Agent | Status | Next owner |
-|---|-----------|-------|--------|------------|
-| 1 | createOrder service | backend-engineer | SPAWNED | test-engineer |
-| 2 | order form | frontend-engineer | DONE ✅ | test-engineer |
-| 3 | unit tests | test-engineer | QUEUED | — |
-
-## ⏳ PIPELINE (rest of the plan, one line per microtask, in order)
-- [x] Scout → context (DONE)
-- [ ] Backend → createOrder service
-- [ ] Frontend → order form
-- [ ] Test Engineer → unit tests
-- [ ] Code Reviewer → review
-- [ ] QA → GO/NO-GO
-
-## 🔵 IN-FLIGHT (background agents not yet reported)
-- integration-engineer: still running — expected report next
-
-## 🚦 BLOCKERS / ESCALATIONS
-- (none)
-
-## 📜 DECISIONS MADE
-- (log each decision + why — the audit trail)
+```json
+{
+  "directive": "the Director's goal — one line",
+  "vector": "vector-id — changes when the task set switches to a new directive",
+  "spec": "openspec proposal ref, if any",
+  "active_wave": "backend-engineer",
+  "microtasks": {
+    "A1": { "agent": "backend-engineer", "status": "IN_PROGRESS", "next_owner": "test-engineer" },
+    "A2": { "agent": "frontend-engineer", "status": "DONE", "next_owner": "test-engineer" },
+    "A3": { "agent": "test-engineer", "status": "QUEUED", "next_owner": "" }
+  },
+  "pipeline": [
+    { "step": "Scout — context", "status": "done" },
+    { "step": "Backend — createOrder service", "status": "pending" },
+    { "step": "Frontend — order form", "status": "pending" },
+    { "step": "Test Engineer — unit tests", "status": "pending" },
+    { "step": "Code Reviewer — review", "status": "pending" },
+    { "step": "QA — GO/NO-GO", "status": "pending" }
+  ],
+  "in_flight": ["integration-engineer"],
+  "blockers": [],
+  "decisions_made": ["log each decision + why — the audit trail"]
+}
 ```
 
-### The Succession Loop — A MICROTASK ENTERS, ITS REPORT SUPPLIES THE NEXT ONE
+Read/write with nushell (the ONLY way): `nu -c "open data/ops_board.json | get microtasks"` / `nu -c "open data/ops_board.json | update microtasks.A1.status DONE | save data/ops_board.json -f"`.
+
+### The Succession Loop — A MICROTASK ENTERS, ITS HANDOFF JSON SUPPLIES THE NEXT ONE
 ```
 1. READ the board (reorient in one glance — do NOT rebuild from memory)
 2. Choose the NEXT QUEUED microtask whose deps are met
-3. SPAWN it (1 agent, 1 microtask, data + LANE BOUNDARY + skill)
+3. SPAWN it (1 agent, 1 microtask, data + LANE BOUNDARY + skill, prior JSON outputs LINKED not pasted)
 4. UPDATE the board the moment it's spawned (add row, status SPAWNED)
-5. On report: lane-check → UPDATE the board (status DONE + verdict) → pick the NEXT OWNER
-6. The handoff's "Next owner" IS your next spawn — read it from the report, not your head
+5. On report: lane-check → read `for_teamlead` from the handoff JSON with nushell → UPDATE the board (status DONE + verdict) → pick the NEXT OWNER
+6. The handoff JSON's "Next owner" IS your next spawn — read it from `data/handoffs/<agent_id>/<name>.json`, not your head
 7. REPEAT — something must ALWAYS be flowing
 ```
-**Succession, not supervision:** you do not babysit agents. Each agent's **HANDOFF CONTRACT names the next owner** (AGENTS.md 📤). You read it, you write it to the board, you spawn them. The pipeline drives *itself*; you just keep the board from going stale.
+**Succession, not supervision:** you do not babysit agents. Each agent's **handoff.json names the next owner** in its `data.for_successor` (AGENTS.md 📁). You read `for_teamlead` with nushell, you write the successor to the board, you spawn them. The pipeline drives *itself*; you just keep the board from going stale.
 
 ### When Context Gets Large
 ```
-1. DUMP — append/overwrite the full pipeline + in-flight + blockers to data/ops_board.md
+1. DUMP — append/overwrite the full pipeline + in-flight + blockers to data/ops_board.json
 2. RE-READ the board to reorient
 3. CONTINUE — the board carries the memory you dropped
 ```
@@ -1081,14 +1073,14 @@ The second you try to track waves, subwaves, 6 in-flight agents, tasks, microtas
 2. **One row = one microtask.** No mega-rows. A giant task is not a row, it's many rows — split it.
 3. **The board is the single source of truth.** Your context is a cache, not the authority.
 4. **You don't remember — you READ.** Keep your working set = the current batch, not the whole plan.
-5. **Copy the `# 🪞 OPS BOARD` block exactly as a scaffold when you need it.** Write it into `data/ops_board.md` or a temp file, fill it live as you spawn.
+5. **Copy the `# 🪞 OPS BOARD` block exactly as a scaffold when you need it.** Write it into `data/ops_board.json` or a temp file, fill it live as you spawn.
 
-### 🚪 SESSION END — CLEAR THE BOARD (MANDATORY)
-**When the session ends, WIPE `data/ops_board.md` — reset it to an empty scaffold or delete it. NEVER leave stale state behind.**
+### 🚪 SESSION END — CLEAR THE DATA DIR (MANDATORY)
+**When the session ends, WIPE `data/` — `rm -rf data/ && mkdir -p data/handoffs`, then reset `ops_board.json` to the empty scaffold. NEVER leave stale state behind.**
 
-- **Why:** the next session must not inherit your in-flight rows, decisions, or blockers. A stale board leaks this session's context into the next one — the next leader reads it, thinks it's their pipeline, and acts on ghosts.
-- **When:** on final report to the Director, or when you know the session is done. If the work is genuinely incomplete for the next session, that's what **SESSION START → RECALL** (agentmemory) is for — memory survives; the board does not.
-- **What survives instead:** decisions go to AgentMemory (agentmemory_memory_save, type=architecture/decision) and any unfinished spec stays in openspec. The board is ONLY the live in-session working file — cleared on exit.
+- **Why:** the next session must not inherit your in-flight rows, decisions, handoff JSONs, or blockers. Stale data leaks this session's context into the next one — the next leader reads it, thinks it's their pipeline, and acts on ghosts.
+- **When:** on final report to the Director, or when you know the session is done. If the work is genuinely incomplete for the next session, that's what **SESSION START → RECALL** (agentmemory) is for — memory survives; `data/` does not.
+- **What survives instead:** decisions go to AgentMemory (agentmemory_memory_save, type=architecture/decision) and any unfinished spec stays in openspec. `data/` is ONLY the live in-session coordination layer — cleared on exit and on vector change.
 
 ---
 
@@ -1183,7 +1175,7 @@ After parallel scouting:
 
 ## 📋 OPS BOARD — YOUR SINGLE SOURCE OF TRUTH
 
-**The Ops Board (`data/ops_board.md`) replaces ALL other task tracking. Not OpenCode todos. Not chat history. Not memory. The board.**
+**The Ops Board (`data/ops_board.json`) replaces ALL other task tracking. Not OpenCode todos. Not chat history. Not memory. The board.**
 
 ### Why This Exists
 OpenCode's builtin `todowrite` tool is:
@@ -1200,7 +1192,7 @@ The Ops Board solves all of this: persistent, shared, audible, visible.
 
 | ❌ BANNED | ✅ MANDATORY |
 |-----------|-------------|
-| `todowrite` tool | `data/ops_board.md` |
+| `todowrite` tool | `data/ops_board.json` |
 | Session-only tracking | Persistent, auditable tracking |
 | Isolated per-agent | Shared across all agents |
 | Invisible to Director | Visible at a glance |
@@ -1250,12 +1242,12 @@ The Ops Board solves all of this: persistent, shared, audible, visible.
 
 ```
 BEFORE spawning any agent:
-  → READ data/ops_board.md
+  → READ data/ops_board.json
   → UPDATE the ACTIVE WAVE table
   → SET status to IN PROGRESS
 
 AFTER receiving a work report:
-  → READ data/ops_board.md
+  → READ data/ops_board.json
   → SET completed microtask to DONE
   → SET next microtask status
   → UPDATE PIPELINE checkboxes
@@ -1538,11 +1530,13 @@ This requires your immediate attention.
 
 ```
 1. RECALL — agentmemory_memory_recall / memory_smart_search on project + recent work
-2. SESSIONS — agentmemory_memory_sessions for prior sessions touching this area
+2. ORIENT — read data/ops_board.json (vector, microtasks, in_flight, blockers) with nushell: nu -c "open data/ops_board.json | get vector"
 3. STATE THE WORLD — one paragraph: what we built, what's in-flight, what's broken
 4. CHECK OPENSPEC — active spec/proposal to continue? Load openspec-context-loading
 5. ANNOUNCE — tell the user what you found and what you're doing first
 ```
+
+**🧭 VECTOR GATE — the data/ erasure rule:** if the Director's new directive differs from `data/ops_board.json` → `vector`, the task set has switched to a NEW vector. **Wipe `data/` (rm -rf data/ && mkdir -p data/handoffs) and reset `ops_board.json` to the scaffold — old handoffs must never leak into a new directive.** Same vector → keep the board and handoffs and continue from the last `next_owner`.
 
 **The Rule: Never start a session cold. Recall first, orient, then act. Drift loves a cold start.**
 
