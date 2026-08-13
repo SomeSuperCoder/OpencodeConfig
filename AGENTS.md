@@ -40,6 +40,91 @@
 - **Think about edge cases** — null, empty, malformed, concurrent, adversarial
 - **Consider the user** — they don't care about your architecture, they care about it working
 - **Think about the future** — will this scale? Will this be maintainable? Will this regret?
+## 📁 DATA DIRECTORY — ORCHESTRATION METADATA (MANDATORY)
+
+The `data/` directory is the central coordination hub for the Tech Lead and all spawned agents. It persists across sessions and is erased only when a new clean session starts or when the task vector switches to a completely new directive (as indicated by a change in `data/ops_board.json` → `vector`).
+
+The `data/` structure is:
+
+```
+data/
+- ops_board.json
+- handoffs/
+-- <agent_id>/
+--- <name>.json
+```
+
+### 📋 ops_board.json
+
+Resides at `data/ops_board.json`. Contains the current directive's metadata and wave state. The Tech Lead reads this at session start to orient the team. Example:
+
+```json
+{
+  "directive": "migrate memory system to @chiaboon/opencode-agent-memory",
+  "vector": "memory-migration-v1",
+  "active_wave": "platform/devops-engineer",
+  "microtasks": {
+    "A1": { "agent": "platform/devops-engineer", "status": "QUEUED", "next_owner": "B1 config" },
+    "A2": { "agent": "core/scout", "status": "QUEUED", "next_owner": "B2-B8 remap" }
+  },
+  "blockers": ["host has NO pip", "host Python 3.14-only"],
+  "decisions_made": ["migrated memory system", "updated namespace config"]
+}
+```
+
+The board is reset to a scaffold on session start and on vector change. Manual cleanup: `rm -rf data/`.
+
+### 📁 handoffs/ `<agent_id>/` `<name>.json`
+
+Each agent outputs a standardized handoff JSON at the end of their microtask. The file is placed at:
+
+```
+data/handoffs/<agent_id>/<name>.json
+```
+
+**handoff.json schema:**
+
+```json
+{
+  "headers": {
+    "timestamp": "ISO-8601 UTC string",
+    "agent_id": "team/quality/code-reviewer",
+    "session_start": "ISO-8601 UTC string",
+    "session_end": "ISO-8601 UTC string",
+    "vector": "identifier matching ops_board.json vector field"
+  },
+  "data": {
+    "shared": {
+      "key_facts": ["fact1", "fact2"],
+      "call_chains": ["import A -> B -> C"],
+      "blast_radius": ["files modified"],
+      "research_sources": ["link1", "link2"]
+    },
+    "for_teamlead": "verdict summary: root cause proven, fix recommended, tests green. Ready for Engineer to implement.",
+    "for_successor": "link to JSON outputs from this agent that the next agent should reference, never re-read raw files"
+  }
+}
+```
+
+**How the workflow uses it:**
+
+- **When a subagent finishes work:** The Tech Lead reads the `for_teamlead` field from the agent's handoff.json at `data/handoffs/<agent_id>/<name>.json`. This contains a concise summary and the key information needed to decide the next step — no need to re-read the entire report or re-discover context.
+
+- **When summoning a new subagent:** The Tech Lead links to the relevant JSON output files from previously completed agents, rather than flooding the new agent's prompt with context. The new agent uses `nushell` to effectively read and parse these JSON outputs. Example: `nu -c "open data/handoffs/team/quality/code-reviewer/review.json | from json | .data.shared.call_chains"`. The subagent should never read raw files outside the spawn prompt — use nushell to extract only what's needed.
+
+- **Standard opencode handoffs:** The traditional HANDOFF section in agent reports still includes the path to the handoff JSON file (`data/handoffs/<agent_id>/<name>.json`) as confirmation that the JSON output was written and the agent didn't crash or silently fail. The verdict (GREEN/RED/GO/NO-GO) is still reported in the standard way. This is a minimal inclusion solely for crash-proof verification; the actual data is in the handoff JSON.
+
+- **data/ erasure:** The `data/` directory is automatically cleared when:
+  - A new session starts (fresh vector)
+  - The task vector changes (different directive, different ops_board.json vector field)
+  - Manual cleanup: `rm -rf data/`
+
+- **Nushell integration:** All handoff JSON files are designed for `nushell` querying. The primary mode of data exchange is `from json` / `to json`. Example: `nu -c "open data/handoffs/team/quality/code-reviewer/review.json | from json | .data.shared.call_chains"`. Agents must use nushell to extract fields from handoff JSONs rather than reading raw files.
+
+- **Agent output protocol:** Every agent MUST output their handoff.json following the schema above. Skills may be loaded to ensure structured output (e.g., `skills/fircac-out-loud` for root-cause summaries, `skills/testing-patterns` for test evidence).
+
+- **Verification:** The Tech Lead confirms the handoff.json exists and is non-empty before considering the microtask delivered. If the file is missing or empty, the agent is considered to have FAILED and is respawned.
+
 
 ### Engineering Mindset
 ```
@@ -973,6 +1058,7 @@ Challenge any assertion with the five questions until each has a real answer (no
 | Skill | Load When |
 |-------|-----------|
 | `fircac-out-loud` | Any FIRCAC/ABC/SOLID reasoning (mandatory, before reasoning) |
+| `handoff-output` | **At the END of every microtask** — writes your handoff.json to `data/handoffs/<agent_id>/<name>.json` (mandatory for every specialist) |
 | `testing-patterns` | Writing or fixing tests |
 | `api-patterns` | Designing APIs, endpoints, contracts |
 | `error-patterns` | Error handling, Result types, boundaries |
@@ -1375,26 +1461,29 @@ Workflow size: ONE-WAVE quick pass / TWO-WAVE standard / FULL PIPELINE
 
 ## 📤 AGENT OUTPUT / HANDOFF CONTRACT — EVERY DELIVERABLE
 
-**Every agent delivers a standardized handoff, so the Tech Lead never has to re-parse free-form output.**
+**Every agent delivers a structured handoff JSON, so the Tech Lead never has to re-parse free-form output. The JSON IS the deliverable.**
+
+```
+data/handoffs/<agent_id>/<name>.json     ← THE work report (schema in 📁 DATA DIRECTORY)
+```
+
+**The opencode HANDOFF section is ONLY a crash-proof path confirmation:**
 
 ```
 ## HANDOFF
-**Verdict:** DONE / DONE-WITH-ISSUES / FAILED
-**Evidence:** what proves it (tests run, files, output, screenshots)
-**Files touched:** [paths]
-**Next owner:** [who handles what remains — if any]
-**Blockers / open questions:** [none, or list]
-**Recommendations:** [improvement suggestions — save to recommendations/ directory]
+**Verdict:** 🟢 GREEN
+**Handoff JSON:** data/handoffs/team/quality/test-engineer/tests.json
 ```
 
 **Rules:**
-- **Verdict must be explicit.** No "looks done". DONE, DONE-WITH-ISSUES (list issues), or FAILED (with reason).
-- **Evidence is not optional.** "I did it" is worthless; attach proof.
-- **Next owner names a specific agent.** No "someone needs to..." — who, exactly.
-- **Agents that produce a review/verdict artifact (Code Reviewer, QA, Security, Critique) still add a HANDOFF at the end of their report.**
+- **The JSON is the report.** Load the `handoff-output` skill and write `data/handoffs/<agent_id>/<name>.json` (headers + shared + for_teamlead + for_successor). A missing or empty handoff JSON = FAILED microtask.
+- **Verdict must be explicit.** No "looks done". 🟢 GREEN / 🔴 RED / ✅ GO / ❌ NO-GO — in the JSON `for_teamlead`.
+- **Evidence is not optional.** "I did it" is worthless; attach proof (in `shared` + `for_teamlead`).
+- **`for_successor` names a specific agent.** No "someone needs to..." — who, exactly.
+- **Agents that produce a review/verdict artifact (Code Reviewer, QA, Security, Critique) write the same handoff JSON at the end of their microtask.**
 - **Recommendations are saved, not lost.** Non-blocking improvements go to `recommendations/` directory.
 
-**🏃 HANDOFF IS SUCCESSION, NOT A REPORT:** your handoff is the *trigger* for the next agent. The Tech Lead does NOT re-derive what's next — it reads your **Next owner** and spawns them. So make Next owner **specific and actionable** ("test-engineer → write unit tests for createOrder, scope = the service + its callers"), never vague ("someone should test this"). A good handoff hands over the baton; a vague one stalls the pipeline.
+**🏃 HANDOFF IS SUCCESSION, NOT A REPORT:** your handoff JSON is the *trigger* for the next agent. The Tech Lead does NOT re-derive what's next — it reads your **`for_successor`** and spawns them. So make `for_successor` **specific and actionable** ("test-engineer → write unit tests for createOrder, scope = the service + its callers"), never vague ("someone should test this"). A good handoff hands over the baton; a vague one stalls the pipeline.
 
 ---
 
@@ -1487,15 +1576,17 @@ Deadline: [when I need it / what I'll do if no answer]
 | **Commit** | Only VERIFIED work, at feature boundaries. `fix:` commits = previous commit shipped unverified work = FAILURE. Never commit broken code. |
 | **Tests before commit** | **MANDATORY.** Run lint/typecheck/tests and see them PASS before any commit. "They don't exist" is not an excuse — write them. |
 | **Data gathering & processing** | **nushell first** (`nu -c ""`) for grep, file search, reading file parts, parsing output, JSON/CSV/YAML. bash/builtin tools = fallback only. Try `--json`/`-o json`/YAML on every command that supports it. |
-| **🚫 FORBIDDEN: `todowrite` tool** | **NEVER use the builtin `todowrite` tool.** It is banned. All task tracking goes to `data/ops_board.md` (the Ops Board). Using `todowrite` = VIOLATION. |
-| **📋 Ops Board is MANDATORY** | The Tech Lead MUST maintain `data/ops_board.md` for every active directive. Every wave start, every microtask assignment, every completion — update the board. If the board is stale, the pipeline is broken. |
+| **🚫 FORBIDDEN: `todowrite` tool** | **NEVER use the builtin `todowrite` tool.** It is banned. All task tracking goes to `data/ops_board.json` (the Ops Board). Using `todowrite` = VIOLATION. |
+| **📋 Ops Board is MANDATORY** | The Tech Lead MUST maintain `data/ops_board.json` for every active directive. Every wave start, every microtask assignment, every completion — update the board. If the board is stale, the pipeline is broken. |
 | **📋 OpenSpec tasks.md MUST be marked** | Every completed task MUST be marked `- [x]` in the OpenSpec `tasks.md` file with agent name, verdict, and evidence. Unmarked completed tasks = lost records. Committing without updating tasks.md = VIOLATION. |
+| **📋 handoff.json is THE report** | Every specialist writes `data/handoffs/<agent_id>/<name>.json` (load `handoff-output` skill). The opencode HANDOFF section is only the path + verdict. The Tech Lead reads `for_teamlead` via nushell — never re-reads full reports. |
+| **🧹 data/ erasure** | Wipe `data/` on session start with a NEW vector, on vector change, and at session end (`rm -rf data/ && mkdir -p data/handoffs` + reset ops_board.json scaffold). Stale handoffs leak context into the wrong directive. |
 
 ---
 
 ## 📋 OPS BOARD — MANDATORY TASK TRACKING (NON-NEGOTIABLE)
 
-**The Ops Board (`data/ops_board.md`) is the SINGLE SOURCE OF TRUTH for all active work. Not OpenCode todos. Not chat history. Not memory. The board.**
+**The Ops Board (`data/ops_board.json`) is the SINGLE SOURCE OF TRUTH for all active work. Not OpenCode todos. Not chat history. Not memory. The board.**
 
 ### Why This Exists
 OpenCode's builtin `todowrite` tool is:
@@ -1508,29 +1599,27 @@ The Ops Board solves all of this: persistent, shared, audible, visible.
 
 ### The Format — Every Directive Gets One
 
-```markdown
-# 🪧 OPS BOARD
-**Directive:** [one-line description of what we're building]
-**Spec:** [link or brief]
+The board lives at `data/ops_board.json` and is read/written with nushell:
 
-## 🌊 ACTIVE WAVE (current subwave)
-| # | Microtask | Agent | Status | Next owner |
-|---|-----------|-------|--------|------------|
-| A1 | [task] | [agent] | QUEUED/IN PROGRESS/DONE | [who gets it next] |
-
-## ⏳ PIPELINE
-- [x] Step description — DONE
-- [ ] Step description
-
-## 🔵 IN-FLIGHT (background agents not yet reported)
-- (none) or [agent] — [status]
-
-## 🚦 BLOCKERS / ESCALATIONS
-- ⚠️ [blocker description]
-
-## 📜 DECISIONS MADE
-- [decision and rationale]
+```json
+{
+  "directive": "[one-line description of what we're building]",
+  "vector": "[identifier — changes when the task set switches to a new directive]",
+  "spec": "[openspec proposal ref or link]",
+  "active_wave": "[agent_id]",
+  "microtasks": {
+    "A1": { "agent": "[agent]", "status": "QUEUED|IN_PROGRESS|DONE|BLOCKED|FAILED", "next_owner": "[who gets it next]" }
+  },
+  "pipeline": [
+    { "step": "[description]", "status": "done|pending" }
+  ],
+  "in_flight": [],
+  "blockers": ["⚠️ [blocker description]"],
+  "decisions_made": ["[decision and rationale]"]
+}
 ```
+
+Read/write pattern (nushell): `nu -c "open data/ops_board.json | get microtasks"`, `nu -c "open data/ops_board.json | update microtasks.A1.status DONE | save data/ops_board.json -f"`.
 
 ### Status Values
 | Status | Meaning |
@@ -1559,12 +1648,12 @@ The Ops Board solves all of this: persistent, shared, audible, visible.
 
 ```
 BEFORE spawning any agent:
-  → READ data/ops_board.md
+  → READ data/ops_board.json
   → UPDATE the ACTIVE WAVE table with the agent's microtask
   → SET status to IN PROGRESS
 
 AFTER receiving a work report:
-  → READ data/ops_board.md
+  → READ data/ops_board.json
   → SET the completed microtask to DONE
   → SET the next microtask to QUEUED or IN PROGRESS
   → UPDATE PIPELINE checkboxes

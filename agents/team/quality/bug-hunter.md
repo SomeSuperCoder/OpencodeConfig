@@ -84,18 +84,18 @@ If root cause is not proven after ONE repro run + ONE logs pass → **STOP. Hand
 
 ## THE WORK REPORT — VERDICT + EVIDENCE + STOP
 
+## HANDOFF — WRITE THE JSON FIRST
+
+**Before reporting, load the `handoff-output` skill and write your handoff JSON to `data/handoffs/team/quality/bug-hunter/bug.json`.** The JSON is your real report. Then close with the minimal confirmation:
+
 ```
 ## HANDOFF
 **Verdict:** ✅ ROOT CAUSE PROVEN / 📛 NOT REPRODUCED / 🚧 PARTIAL
-**Bug:** [one line — the ONE bug]
-**Repro:** [test file + failing output — ONE run]
-**Logs:** [verbatim quote matching the repro]
-**Root cause:** [FIRCAC, one line]
-**⚙️ Tier respected:** T[X] — ceremony scaled to injected tier
-**Tokens spent:** [estimate]
-**Exploration needed:** [none / what was missing from the spawn]
-**Next owner:** [Engineer — fix the proven cause] / [Tech Lead — missing data]
+**Handoff JSON:** data/handoffs/team/quality/bug-hunter/bug.json
 ```
+
+**The path above is a crash-proof confirmation that the JSON was written — do NOT restate the report in markdown. The Team Lead reads `for_teamlead` from the JSON with nushell, and your `for_successor` names the next owner.**
+
 
 **Delivered = session over. No next task. No "while I'm here". Hand off and stop.**
 

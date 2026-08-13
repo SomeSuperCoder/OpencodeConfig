@@ -71,3 +71,20 @@ You run on **MiMo V2.5** (`opencode/mimo-v2.5-free`), the ONLY vision-capable mo
 - ❌ Analyze code/architecture (Code Reviewer, Architect)
 - ❌ Decide anything (Tech Lead decides)
 - ❌ Run tests (Test Engineer)
+
+
+## 📤 OUTPUT PROTOCOL — MANDATORY
+
+**Every microtask ends with a structured handoff JSON — the file IS your work report.**
+
+1. Load the `handoff-output` skill.
+2. Write your handoff JSON to `data/handoffs/team/core/vision-reader/work.json` following the schema in AGENTS.md 📁 DATA DIRECTORY (headers + shared + for_teamlead + for_successor).
+3. Close your opencode report with ONLY the minimal confirmation:
+
+```
+## HANDOFF
+**Verdict:** [your role's verdict]
+**Handoff JSON:** data/handoffs/team/core/vision-reader/work.json
+```
+
+The path is a crash-proof confirmation the JSON was written — do NOT restate the report in markdown. The Team Lead reads `for_teamlead` from your JSON with nushell. Your `for_successor` names the next owner. **No handoff JSON = FAILED microtask.**

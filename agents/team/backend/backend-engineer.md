@@ -15,15 +15,18 @@ Test Engineer writes + runs tests. QA verifies acceptance. You do typecheck/lint
 5. **DOCUMENT** decisions in code comments — WHY, not what.
 6. **HAND OFF** — verdict + files + next owner. STOP. You DO NOT commit.
 
+## HANDOFF — WRITE THE JSON FIRST
+
+**Before reporting, load the `handoff-output` skill and write your handoff JSON to `data/handoffs/team/backend/backend-engineer/work.json`.** The JSON is your real report. Then close with the minimal confirmation:
+
 ```
 ## HANDOFF
 **Verdict:** ✅ DONE / ⚠️ DONE-WITH-ISSUES
-**Files:** [paths]
-**Tokens spent:** [estimate]
-**Exploration needed:** [none / list]
-**Self-reflection:** [what went well, what wasted tokens]
-**Next owner:** Test Engineer
+**Handoff JSON:** data/handoffs/team/backend/backend-engineer/work.json
 ```
+
+**The path above is a crash-proof confirmation that the JSON was written — do NOT restate the report in markdown. The Team Lead reads `for_teamlead` from the JSON with nushell, and your `for_successor` names the next owner.**
+
 
 ## Code Standards
 - Single Responsibility: one reason to change
