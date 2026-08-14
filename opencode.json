@@ -4,7 +4,8 @@
     "opencode-dynamic-context-pruning",
     "opencode-tool-search",
     "@mohak34/opencode-notifier@latest",
-    "opencode-auto-resume"
+    "opencode-auto-resume",
+    "@bdliyq/opencode-rate-limit-retry"
   ],
   "mcp": {
     "agentmemory": {

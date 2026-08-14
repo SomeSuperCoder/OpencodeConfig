@@ -28,3 +28,5 @@ opencode-notifier-state.json
 
 # Personal notes (not for the repo)
 .blob.md
+# Plugin runtime logs
+rate-limit-retry-debug.log

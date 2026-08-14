@@ -1825,7 +1825,7 @@ Is the change backend-only? → Skip Playwright. Unit tests are enough.
 | **🧑‍💼 LEAD: Product** | `team/lead/product-lead` | Plans requirements/architecture/refactoring work | Requirements or architecture ambiguity |
 | **🧑‍💼 LEAD: Research** | `team/lead/research-lead` | Plans research/domain/documentation work | Knowledge work needing orchestration |
 | **🧑‍💼 LEAD: Telegram** | `team/lead/telegram-lead` | Plans Telegram bot / Mini App / integration work | Any Telegram bot, Mini App, or bot-integration work |
-| **🧑‍💼 LEAD: PineScript** | `team/lead/pinescript-lead` | Plans PineScript indicator / strategy / quant work | Any TradingView indicator, strategy, or quant validation |
+| **🧑‍💼 LEAD: PineScript** | `team/lead/pinescript-lead` | Plans the PineScript pipeline: merge indicators + rules → `.pine` at user-instructed path → user-provided CLI backtest → param tuning for universal profitability | Any directive combining indicators + strategy rules into a backtested, tuned PineScript strategy |
 | **🧑‍💼 LEAD: Mobile** | `team/lead/mobile-lead` | Plans cross-platform/native mobile app work | Any mobile app work (React Native, Flutter, native) |
 | **🧑‍💼 LEAD: Web3** | `team/lead/web3-lead` | Plans smart contract / dApp / DeFi work | Any blockchain, contract, wallet, or DeFi work |
 | **🧑‍💼 LEAD: SEO & Marketing** | `team/lead/seo-lead` | Plans technical SEO / content / analytics work | Search visibility, content strategy, growth |
@@ -1893,9 +1893,10 @@ Is the change backend-only? → Skip Playwright. Unit tests are enough.
 | 🎛️ **Telegram Integration Engineer** 🚨 | `team/telegram/telegram-integration-engineer` | Payments, third-party integrations, channels/groups automation, webhook wiring | Any bot needing payments, external APIs, or channel automation |
 
 **PINESCRIPT field:**
-| 📊 **PineScript Indicator Developer** 🚨 | `team/pinescript/pinescript-indicator-developer` | Indicators — calculations, plots, alerts, repaint-free logic | Any TradingView indicator / study |
-| 📐 **PineScript Strategy Developer** 🚨 | `team/pinescript/pinescript-strategy-developer` | Strategies — entries/exits, sizing, backtests, realistic fills | Any TradingView strategy / bot signal rules |
-| 🧮 **Pro Quant** 🚨 | `team/pinescript/pro-quant` | Quant research — statistical validation, walk-forward, overfitting detection, GO/NO-GO verdicts | Any claim "this strategy works" that needs proof |
+| 🧬 **PineScript Strategy Merger** 🚨 | `team/pinescript/pinescript-strategy-merger` | Merge user indicators + strategy rules into ONE coherent strategy | Merging indicators + rules into a strategy |
+| 📄 **PineScript Pine File Writer** 🚨 | `team/pinescript/pinescript-pine-writer` | Write the merged strategy as a `.pine` file at the user-instructed path | Placing a `.pine` file at an instructed location |
+| 🧪 **PineScript Backtest Engineer** 🚨 | `team/pinescript/pinescript-backtest-engineer` | Run the user-provided CLI backtest utility; extract verifiable metrics | Running the user's backtest CLI and parsing results |
+| 🎛️ **PineScript Param Optimizer** 🚨 | `team/pinescript/pinescript-param-optimizer` | Tune params via the backtest CLI toward universal profitability without overfitting | Tuning strategy params to generalize, not overfit |
 
 **MOBILE field:**
 | 📱 **Mobile Engineer** 🚨 | `team/mobile/mobile-engineer` | Cross-platform (React Native / Flutter) — screens, state, navigation | Any cross-platform mobile work |

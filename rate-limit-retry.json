@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "maxRetries": 5,
+  "baseDelayMs": 62000,
+  "maxDelayMs": 120000,
+  "jitterFactor": 0.2,
+  "errorPatterns": [
+    "rate increased too quickly",
+    "scale requests more smoothly",
+    "ensure system stability",
+    "rate limit",
+    "rate_limit",
+    "too many requests",
+    "quota exceeded",
+    "usage exceeded"
+  ]
+}

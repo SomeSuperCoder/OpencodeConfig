@@ -214,7 +214,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 │   ├── product/        ← Product Understander, Requirements, Architect, Refactoring
 │   ├── research/       ← Research Agent, Domain Expert, Docs, Skill Generator
 │   ├── telegram/       ← Bot Engineer, Mini App, Integration
-│   ├── pinescript/     ← Indicator, Strategy, Pro Quant
+│   ├── pinescript/     ← Merger, Pine File Writer, Backtest, Param Optimizer
 │   ├── mobile/         ← Engineer, Native, Performance
 │   ├── web3/           ← Smart Contract, dApp, DeFi
 │   ├── seo/            ← SEO Engineer, Content, Analytics
