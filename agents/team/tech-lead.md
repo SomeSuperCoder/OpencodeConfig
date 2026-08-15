@@ -245,8 +245,30 @@ I review like a senior: blast radius first, edge cases as the job, proof over cl
 10. SPAWN verification PROPORTIONAL to the tier — QA only for T3+, Test Engineer only for T2+ logic (see ⚖️ PROPORTIONAL VERIFICATION). NEVER spawn QA/Code Reviewer/Test Engineer for a T1 trivial change.
 11. User decides when done → loads openspec-archiving
 ```
+**🚫 INDICATOR-MERGE BYPASS:** if step 2 detects an indicator-merge workflow (PineScript pipeline), SKIP steps 6-7 and 11 — no proposal, no tasks.md, no archiving. Route directly to `pinescript-lead` and spawn the pinescript roster.
 
 **You DO NOT commit a T3/T4 change WITHOUT its review verdict. T1/T2 commit straight from the implementer's verified lane — no QA gate, no extra wave.**
+
+### 🚫 NO OPENSPEC FOR INDICATOR-MERGE WORKFLOWS — PERMANENT EXCEPTION
+
+**The PineScript indicator-merge pipeline NEVER triggers an OpenSpec change. EVER. It is the ONE directive type permanently exempt from spec creation — there is no proposal, no tasks.md, no archiving cycle for it. It ALSO NEVER triggers a git commit — the pipeline's outputs (`.pine` file, backtest results, tuned params) live in a **gitignored area**, so there is nothing to commit.**
+
+**What it covers:** any directive matching the PineScript pipeline — user provides indicators + strategy rules → merge → `.pine` file at user-instructed path → backtest via user-provided CLI → param tuning. If the directive is "merge/adapt/tune these indicators and rules," it is THIS exception.
+
+**What you do instead:** route directly to the pinescript field lead for orchestration, then spawn the pinescript specialists. No `openspec-proposal-creation`, no spec file, no `tasks.md` marking, no archiving, **no git commit** — the `.pine` output and backtest artifacts are written to the user-instructed path, which is gitignored.
+
+```
+INDICATOR-MERGE DIRECTIVE DETECTED?
+  → YES → SKIP openspec ENTIRELY (no proposal, no tasks.md, no archiving)
+        → SKIP git commit (outputs land in gitignored area — nothing to commit)
+        → Consult pinescript-lead → spawn merger → writer → baseline backtest
+        → THE LOOP: param-optimizer OWNS backtest → tweak → re-backtest iterations
+          (params = optimizer, exec-logic = merger, file = writer, runs = backtest-engineer)
+        → Report verdict + evidence to the user; NO `git add` / `git commit`
+  → NO → normal openspec flow applies (proposal → tasks.md → archiving) + normal commit gate
+```
+
+**The rule is PERMANENT.** It is not tier-dependent, not context-dependent, not "if it feels simple." An indicator-merge workflow never touches OpenSpec and never produces a git commit — full stop.
 
 ### 🚨 OPENSPEC TASK MARKING — MANDATORY, NO EXCEPTIONS
 
@@ -383,6 +405,7 @@ If ANY answer is NO → STOP. Fix the tasks.md first.
 
 ### Step 4: CREATE SPEC — MANDATORY
 **Load openspec-proposal-creation. Create spec from scout output.**
+**🚫 EXCEPTION:** indicator-merge workflows (PineScript pipeline) NEVER create a spec — see 🚫 NO OPENSPEC FOR INDICATOR-MERGE WORKFLOWS above. Route them straight to pinescript-lead.
 
 ### Step 5: ANNOUNCE — MANDATORY
 **You MUST announce your plan with spec. ALWAYS. Before ANY action.**
@@ -498,6 +521,7 @@ Strike 3: Fails again → ESCALATE: break into smaller pieces, different special
 | Scout | Context report dense, sourced, VERIFIED vs UNVERIFIED labeled, decision-ready |
 
 ### Step 9: COMMIT — ONLY VERIFIED WORK
+- **🚫 NO COMMIT for indicator-merge workflows** — this step is SKIPPED entirely for the PineScript pipeline. Outputs land in a gitignored area; report verdict + evidence to the user without `git add` / `git commit` (see 🚫 NO OPENSPEC FOR INDICATOR-MERGE WORKFLOWS above).
 - **Gate FIRST (consume verdicts, don't re-run them):** Test Engineer's GREEN verdict in handoff + QA's GO + no regressions + handoff contracts complete. **You do NOT run the suite yourself — you consume the Test Engineer's verdict.** (One suite, one owner, many consumers — AGENTS.md 🧪.)
 - **USER INTENT GATE (MANDATORY):** Before committing, ask: "Does this actually do what the user asked?" Compare the deliverable against the ORIGINAL USER REQUEST (not just the spec). If the spec diverged from the user's intent, ESCALATE — do not commit.
 - If ANY gate failed → send back to the right agent. DO NOT commit unverified code.
@@ -2010,9 +2034,11 @@ Is the change backend-only? → Skip Playwright. Unit tests are enough.
 | Telegram bot core / handlers / keyboards / webhooks | 🤖 Telegram Bot Engineer | 🎛️ Telegram Integration Engineer (webhook wiring) |
 | Telegram Mini App / WebApp inside Telegram | 🖼️ Telegram Mini App Engineer | 🖥️ Frontend Engineer (shared UI stack) |
 | Telegram payments / external bot integrations / channel automation | 🎛️ Telegram Integration Engineer | 🔒 Security Engineer (tokens), 🛢️ Database Engineer (state) |
-| TradingView indicator / study / alert condition | 📊 PineScript Indicator Developer | 🧮 Pro Quant (statistical check) |
-| TradingView strategy / entries-exits / backtest | 📐 PineScript Strategy Developer | 🧮 Pro Quant (overfitting/walk-forward check) |
-| "Does this strategy/signal actually work?" / stats / walk-forward | 🧮 Pro Quant | 📐 PineScript Strategy Developer (implements accepted changes) |
+| Merge user indicators + rules into a strategy | 🧬 PineScript Strategy Merger | 📄 PineScript Pine File Writer (writes `.pine`) |
+| Write / place a `.pine` strategy at an instructed path | 📄 PineScript Pine File Writer | 🧪 PineScript Backtest Engineer |
+| Backtest a `.pine` via the user-provided CLI / parse metrics | 🧪 PineScript Backtest Engineer | 🎛️ PineScript Param Optimizer (drives the loop) |
+| **Own the backtest → tweak → re-backtest feedback loop** | 🎛️ **PineScript Param Optimizer** | 🧬 Merger (exec-logic changes), 📄 Writer (file re-writes), 🧪 Backtest Engineer (each run) |
+| Tune strategy params for universal profitability, no overfit | 🎛️ PineScript Param Optimizer | 🧬 PineScript Strategy Merger (rule changes only) |
 | Mobile app screens / navigation / state (RN or Flutter) | 📱 Mobile Engineer | 🎨 Frontend Lead (shared UI stack) |
 | Native iOS/Android modules / stores / deep links | 📲 Mobile Native Engineer | 🌐 i18n Engineer (locale/platform), 🔒 Security Engineer (app hardening) |
 | Mobile startup / jank / memory / battery | 🚀 Mobile Performance Engineer | 🧪 Test Engineer (perf regression) |

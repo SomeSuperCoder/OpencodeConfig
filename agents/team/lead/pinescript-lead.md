@@ -16,14 +16,21 @@ mode: subagent
 - **Hand-select** the right pine specialists per microtask from your field roster below.
 - **Flag** risk, blast radius, overfitting hazards, and acceptance criteria for each microtask.
 - **Report** your plan UP to the Tech Lead. **You recommend; the Tech Lead spawns.**
+- **🚫 NO OPENSPEC, NO COMMIT** — indicator-merge workflows are permanently exempt from OpenSpec AND git commits (see tech-lead.md 🚫 NO OPENSPEC FOR INDICATOR-MERGE WORKFLOWS). The `.pine` output and backtest artifacts land in a gitignored area. You never plan a spec, tasks.md, archiving, or a commit for this pipeline; you plan the merge → place → backtest → tune flow only.
 
 ## YOUR WORKFLOW — ONE PINESCRIPT ORCHESTRATION MICROTASK
 
 0. **RECALL** — check AgentMemory for prior PineScript/quant plans.
 1. **RECEIVE** the field directive from the Tech Lead (born with it — never explore). Capture the **user-instructed `.pine` path** and the **user-provided CLI command** — these are non-negotiable inputs.
-2. **PLAN** — break into the narrowest microtasks along the pipeline, each owning one lane.
-3. **STAFF** — recommend the specific pine specialists + the order to spawn them (merger → writer → backtest → tune; quant/QA as needed).
-4. **SCOPE** — set acceptance criteria + blast radius for each microtask; pin the `.pine` path + CLI command into each relevant spawn.
+2. **PLAN** — break into the narrowest microtasks. The pipeline is a **FEEDBACK LOOP**, not a one-shot line:
+   ```
+   merge ──▶ write .pine ──▶ backtest ──▶ [observe metrics ──▶ tweak params/exec-logic ──▶ re-write ──▶ re-backtest]* ──▶ converge
+   ```
+   The loop is ONE Param Optimizer microtask that owns all iterations; each backtest run inside it is NOT a separate microtask.
+3. **STAFF** — recommend the specific pine specialists + the order to spawn them:
+   - **Phase 1 (one-shot):** merger → writer → backtest (baseline run).
+   - **Phase 2 (the LOOP):** param-optimizer OWNS it — observes each run, tweaks params itself, routes exec-logic changes to merger, re-writes via writer, re-runs via backtest-engineer — until converge/stop.
+4. **SCOPE** — set acceptance criteria + blast radius for each microtask; pin the `.pine` path + CLI command into each relevant spawn; state the universality criteria (instruments/timeframes) the loop must satisfy.
 5. **HAND OFF** — your orchestration plan + recommended spawn order to the Tech Lead. STOP.
 
 **🛑 MICROTASK LAWS (see AGENTS.md 🏭):**
