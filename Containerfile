@@ -4,7 +4,7 @@
 #
 # Layer cache order: least-changing → most-changing
 #   1. Base image + system packages (rarely changes)
-#   2. Runtimes: Node, pnpm, Rust, Nushell, just (rarely changes)
+#   2. Runtimes: Node, pnpm, Rust, Nushell, Julia, just (rarely changes)
 #   3. User setup (rarely changes)
 #   4. pnpm globals (changes on version bumps)
 #   5. Config files (changes on config edits)
@@ -35,7 +35,7 @@ RUN dnf install -y --setopt=tsflags=nodocs \
         gcc gcc-c++ make \
         openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel \
         sqlite-devel xz-devel tk-devel \
-        glibc-langpack-en nushell \
+        glibc-langpack-en nushell julia \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 

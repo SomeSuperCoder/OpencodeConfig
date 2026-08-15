@@ -864,7 +864,7 @@ CONTEXT → DESIGN → IMPLEMENT → TEST → VERIFY → DELIVER
 - Use the Sorotic method when a solution feels too easy or a belief goes unquestioned (see REASONING PROTOCOLS — no skill needed)
 - Write tests **proportional to the change** — full verification for features, minimal for trivial fixes (see ⚖️ VERIFICATION IS PROPORTIONAL)
 - **Declare the change's COMPLEXITY out loud for every task and inject it into every spawn prompt** (see 🗣️ COMPLEXITY DECLARATION — ⚖️ VERIFICATION IS PROPORTIONAL)
-- **Use nushell as the PRIMARY data tool** — grep, file search, reading file parts, parsing, and output-processing go through `nu -c "..."`; bash & builtins only as fallback; prefer `--json`/`-o json`/YAML output when a command supports it (see 🧠 INTELLIGENCE AMPLIFIERS — 5. NUSHELL)
+- **Use nushell as the PRIMARY data tool** — grep, file search, reading file parts, parsing, and output-processing go through `nu -c "..."`; **use Julia when the primary objective is complex math** (statistics, matrix math, signal processing, optimization — see 5b); bash & builtins only as fallback; prefer `--json`/`-o json`/YAML output when a command supports it (see 🧠 INTELLIGENCE AMPLIFIERS — 5. NUSHELL / 5b. JULIA)
 - **Prove every T3/T4 feature from the user's side: Playwright user-behavior flows, mock-or-cleanup for integration tests (see 🚨 MANDATORY PROTOCOL — FEATURES (T3/T4) ARE TESTED AS USER BEHAVIOR)**
 - Follow SOLID, SSOT, DRY, UNIX
 - **Architect for modularity with dependency injection** — boundaries by dependency direction, inject don't instantiate, one composition root (see 🏛️ SYSTEM DESIGN PRINCIPLES — THE ARCHITECTURE LAW)
@@ -1185,6 +1185,8 @@ Routing: no argument → read `reference/routing.md` and present its context-awa
 
 **nushell (`nu -c "..."`) is the system's DEFAULT for gathering and processing data on the command line. Use it to its MAXIMUM potential: greping, searching files, reading parts of files, processing command output, and all structured-data work (JSON/CSV/YAML/tables). bash and the builtin `grep`/`glob`/`read` tools are the FALLBACK — used ONLY when nushell cannot do the job. nushell is an ASSET, not a liability: if nushell makes a task harder than a direct bash one-liner would, use the bash one-liner.**
 
+**🚀 WHEN TO SWITCH TO JULIA (see 5b below):** when the PRIMARY OBJECTIVE is MATH — complex numerical analysis, statistics, matrix/array math, signal processing, optimization. Julia REPLACES nushell for math-heavy work; nushell stays for everything else. The rule: *just parse some JSON and tables, do some grepping? → nushell. Complex math / number analysis? → Julia.*
+
 **📊 THE HIERARCHY — WHAT TO REACH FOR, IN ORDER:**
 
 | Task type | PRIMARY | FALLBACK (only if nushell can't) |
@@ -1196,6 +1198,7 @@ Routing: no argument → read `reference/routing.md` and present its context-awa
 | Processing command output | nushell: `cmd --json \| from json \| where ... \| select ...` | bash pipes |
 | Structured data (JSON/CSV/YAML/tables) | nushell native: `open`, `from json/csv/yaml`, `to json/csv/yaml`, `select`, `where`, `group-by`, `uniq` | jq/awk |
 | Test reports, lockfiles, config dumps | nushell: `open package-lock.json \| get packages \| columns` | — |
+| **Complex math / number analysis** (statistics, matrix/array math, signal processing, optimization, Monte Carlo) | **Julia** (see 5b) | nushell `math` commands for trivial arithmetic |
 
 **🎯 MAKE COMMANDS RETURN DATA (JSON/YAML) — MANDATORY EFFORT:**
 - **Agents SHALL try to make every command that supports it return JSON or YAML** — check `--json`, `--format json`, `-o json`, `--output-format`, `-J` on the command FIRST, before falling back to text.
@@ -1240,6 +1243,36 @@ nu -c "open package.json | to yaml"
 - **Use `--format json` / `-o json` / YAML on every command that supports it**, then pipe into nushell. Data output first, always.
 - When in doubt, check `help commands` or `help <command>` — nushell self-documents.
 - nushell's `ls`/`glob`/`open`/`lines`/`parse`/`find`/`rg` cover grep+find+head/tail+awk+jq in one shell.
+
+### 5b. Julia — THE MATH PROCESSING TOOL (REPLACES NUSHELL WHEN MATH IS THE OBJECTIVE)
+
+**When the PRIMARY OBJECTIVE of the task is MATH — complex numerical analysis, statistics, matrix/array math, signal processing, optimization, Monte Carlo — Julia (`julia`) REPLACES nushell as the data tool. nushell is the table/grep tool; Julia is the math engine. Never grind out heavy math in nushell; never reach for Julia to grep a file.**
+
+**The split rule:**
+| Objective | Tool |
+|-----------|------|
+| Grep / parse JSON & tables / read file slices / process command output | **nushell** |
+| Statistics, distributions, matrix/array math, signal processing, optimization, Monte Carlo, numerical analysis | **Julia** |
+
+**Why Julia:** it is built for numeric computation — first-class matrices/arrays, IEEE-754 correctness, fast linear algebra (BLAS/LAPACK), rich statistical packages, no shell-string math hacks. nushell's `math` commands are for trivial arithmetic only.
+
+**When to reach for Julia:**
+- Computing Sharpe/PF/drawdown/volatility across trade series or backtest results
+- Distributions, confidence intervals, significance tests, Monte Carlo
+- Matrix/array operations, linear algebra, signal processing (FFT, filters)
+- Optimization loops, root finding, numerical integration, parameter sweeps over numeric grids
+- Any analysis where the answer IS a number (or a set of numbers) and the pipeline around it is data plumbing
+
+**Patterns:**
+```bash
+# Statistics over a numeric column from a backtest CSV
+julia -e 'using Statistics; d = readdlm("metrics.csv", ",", skipstart=1); println("mean=", mean(d[:,2]), " std=", std(d[:,2]))'
+
+# Sharpe ratio from returns in a JSON array (via nushell for extraction, Julia for math)
+nu -c "open backtest.json | get returns" | julia -e 'r = parse.(Float64, readlines(stdin)); μ=sum(r)/length(r); println(μ / (std(r) + 1e-12) * sqrt(252))'
+```
+
+**Fallback:** if Julia is NOT installed, or the "math" is trivial (`sum`, `avg`, one ratio), nushell's `math` commands are fine — do not build a Julia pipeline for a one-liner. The rule is about the OBJECTIVE, not ceremony: heavy math → Julia, light math → nushell.
 
 ---
 
@@ -1575,7 +1608,7 @@ Deadline: [when I need it / what I'll do if no answer]
 | **Task runner** | Check Justfile first. `just <recipe>` over raw commands. |
 | **Commit** | Only VERIFIED work, at feature boundaries. `fix:` commits = previous commit shipped unverified work = FAILURE. Never commit broken code. |
 | **Tests before commit** | **MANDATORY.** Run lint/typecheck/tests and see them PASS before any commit. "They don't exist" is not an excuse — write them. |
-| **Data gathering & processing** | **nushell first** (`nu -c ""`) for grep, file search, reading file parts, parsing output, JSON/CSV/YAML. bash/builtin tools = fallback only. Try `--json`/`-o json`/YAML on every command that supports it. |
+| **Data gathering & processing** | **nushell first** (`nu -c ""`) for grep, file search, reading file parts, parsing output, JSON/CSV/YAML. **Julia for math-heavy work** (complex number analysis — see 5b). bash/builtin tools = fallback only. Try `--json`/`-o json`/YAML on every command that supports it. |
 | **🚫 FORBIDDEN: `todowrite` tool** | **NEVER use the builtin `todowrite` tool.** It is banned. All task tracking goes to `data/ops_board.json` (the Ops Board). Using `todowrite` = VIOLATION. |
 | **📋 Ops Board is MANDATORY** | The Tech Lead MUST maintain `data/ops_board.json` for every active directive. Every wave start, every microtask assignment, every completion — update the board. If the board is stale, the pipeline is broken. |
 | **📋 OpenSpec tasks.md MUST be marked** | Every completed task MUST be marked `- [x]` in the OpenSpec `tasks.md` file with agent name, verdict, and evidence. Unmarked completed tasks = lost records. Committing without updating tasks.md = VIOLATION. |
