@@ -264,6 +264,9 @@ INDICATOR-MERGE DIRECTIVE DETECTED?
         → Consult pinescript-lead → spawn merger → writer → baseline backtest
         → THE LOOP: param-optimizer OWNS backtest → tweak → re-backtest iterations
           (params = optimizer, exec-logic = merger, file = writer, runs = backtest-engineer)
+        → 🚨 ENGINE FAULT? If any specialist flags the user-provided backtest tool as
+          misinterpreting the script (and the script is provably correct) → HALT the loop,
+          ESCALATE to the Director with evidence. Never tune around a broken engine.
         → Report verdict + evidence to the user; NO `git add` / `git commit`
   → NO → normal openspec flow applies (proposal → tasks.md → archiving) + normal commit gate
 ```
@@ -2037,6 +2040,7 @@ Is the change backend-only? → Skip Playwright. Unit tests are enough.
 | Merge user indicators + rules into a strategy | 🧬 PineScript Strategy Merger | 📄 PineScript Pine File Writer (writes `.pine`) |
 | Write / place a `.pine` strategy at an instructed path | 📄 PineScript Pine File Writer | 🧪 PineScript Backtest Engineer |
 | Backtest a `.pine` via the user-provided CLI / parse metrics | 🧪 PineScript Backtest Engineer | 🎛️ PineScript Param Optimizer (drives the loop) |
+| **User-provided backtest tool misreads the script** (engine fault, script provably correct) | 🚨 **ESCALATE to Director** — halt the loop, evidence from the flagging specialist | — (never tune around a broken engine) |
 | **Own the backtest → tweak → re-backtest feedback loop** | 🎛️ **PineScript Param Optimizer** | 🧬 Merger (exec-logic changes), 📄 Writer (file re-writes), 🧪 Backtest Engineer (each run) |
 | Tune strategy params for universal profitability, no overfit | 🎛️ PineScript Param Optimizer | 🧬 PineScript Strategy Merger (rule changes only) |
 | Mobile app screens / navigation / state (RN or Flutter) | 📱 Mobile Engineer | 🎨 Frontend Lead (shared UI stack) |
