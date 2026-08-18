@@ -197,6 +197,29 @@ else
     echo ""
 fi
 
+# --- Handle Context7 API key ---
+CONTEXT7_KEY_FILE="${SECRETS_DIR}/context7.key"
+
+if [[ -f "$CONTEXT7_KEY_FILE" ]]; then
+    VOLUME_MOUNTS+=("--volume" "${CONTEXT7_KEY_FILE}:${CONTAINER_HOME}/.config/opencode/.secrets/context7.key:ro")
+else
+    echo "🔑 Context7 API key not found."
+    echo "   Context7 is needed for documentation lookup in opencode."
+    echo ""
+    read -rp "   Enter your Context7 API key (or press Enter to skip): " CONTEXT7_KEY
+
+    if [[ -n "$CONTEXT7_KEY" ]]; then
+        mkdir -p "$SECRETS_DIR"
+        echo -n "$CONTEXT7_KEY" > "$CONTEXT7_KEY_FILE"
+        chmod 600 "$CONTEXT7_KEY_FILE"
+        VOLUME_MOUNTS+=("--volume" "${CONTEXT7_KEY_FILE}:${CONTAINER_HOME}/.config/opencode/.secrets/context7.key:ro")
+        echo "   ✅ Key saved to ${CONTEXT7_KEY_FILE}"
+    else
+        echo "   ⚠️  Skipping — Context7 documentation lookup won't work without a key."
+    fi
+    echo ""
+fi
+
 # --- Handle X11 clipboard support ---
 X11_MOUNTS=()
 if [[ -n "${DISPLAY:-}" ]]; then

@@ -10,7 +10,9 @@
   "mcp": {
     "agentmemory": {
       "type": "local",
-      "command": ["agentmemory-mcp"],
+      "command": [
+        "agentmemory-mcp"
+      ],
       "enabled": true
     },
     "codegraph": {
@@ -25,6 +27,14 @@
     "tavily": {
       "type": "remote",
       "url": "https://mcp.tavily.com/mcp/?tavilyApiKey={file:.secrets/tavily.key}"
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {file:.secrets/context7.key}"
+      }
     }
   },
   "default_agent": "team/tech-lead",
