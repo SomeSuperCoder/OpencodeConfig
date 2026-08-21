@@ -36,6 +36,7 @@ RUN dnf install -y --setopt=tsflags=nodocs \
         openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel \
         sqlite-devel xz-devel tk-devel \
         glibc-langpack-en nushell julia \
+        fd-find bat eza git-delta hyperfine tokei pre-commit \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
@@ -95,6 +96,7 @@ RUN export PATH="$PNPM_HOME:$PATH" \
         @agentmemory/agentmemory@0.9.28 \
         @agentmemory/mcp@0.9.28 \
         @fission-ai/openspec@1.7.0 \
+        @ast-grep/cli \
         --allow-build=opencode-ai
 
 # ---- Config files (changes on config edits) -------------------------------

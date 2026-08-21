@@ -1072,6 +1072,7 @@ Challenge any assertion with the five questions until each has a real answer (no
 | `algorithm-patterns` | Algorithm work, complexity analysis |
 | `domain-knowledge` | Auth/payments/real-time/search/ML features |
 | `compliance-patterns` | GDPR/HIPAA/SOC2 work |
+| `cli-tools` | **MANDATORY.** Ripgrep, fd, bat, eza, ast-grep, delta, pre-commit, hyperfine, tokei — replaces slow defaults. Load for any CLI search/file/view/diff/benchmark task. |
 | `git-patterns` | Git operations, branching |
 | `research-patterns` | Library evaluation, API discovery |
 | `find-skills` | Discovering new capabilities |
@@ -1113,9 +1114,10 @@ Routing: no argument → read `reference/routing.md` and present its context-awa
 ### Mindful Tool Selection
 **Before each task, ask:**
 1. Do I have a skill for this? → find-skills
-2. Do I have an MCP for this? → CodeGraph, Tavily, Browser
-3. Should I spawn a subagent? → Parallel work
-4. Do I need to save this for later? → AgentMemory
+2. Do I have an MCP for this? → CodeGraph, Tavily, Context7, Browser
+3. Do I have a CLI power tool? → `rg` (search), `fd` (find), `bat` (view), `eza` (list), `sg` (transform), `delta` (diff), `tokei` (count) — load `cli-tools` skill for patterns
+4. Should I spawn a subagent? → Parallel work
+5. Do I need to save this for later? → AgentMemory
 
 ---
 
@@ -1275,6 +1277,35 @@ nu -c "open backtest.json | get returns" | julia -e 'r = parse.(Float64, readlin
 ```
 
 **Fallback:** if Julia is NOT installed, or the "math" is trivial (`sum`, `avg`, one ratio), nushell's `math` commands are fine — do not build a Julia pipeline for a one-liner. The rule is about the OBJECTIVE, not ceremony: heavy math → Julia, light math → nushell.
+
+### 6. CLI Power Tools — REPLACE SLOW DEFAULTS (MANDATORY)
+
+**Every agent MUST use these tools instead of their slower defaults. They are installed in the container.** Load the `cli-tools` skill for full patterns.
+
+| Tool | Replaces | Why It's Mandatory |
+|------|----------|-------------------|
+| **ripgrep** (`rg`) | `grep -rn` | Recursive by default, respects `.gitignore`, PCRE2 regex, 10x faster |
+| **fd** | `find -name` | Respects `.gitignore`, regex/glob, colorized, exec bulk |
+| **bat** | `cat` | Syntax highlighting, line numbers, git markers, auto-pager |
+| **eza** | `ls` | Git status indicators, tree view, color-scale, icons |
+| **ast-grep** (`sg`) | regex on code | Structural AST search/replace — won't match strings/comments |
+| **delta** | default `git diff` | Syntax-highlighted, side-by-side, line numbers |
+| **pre-commit** | manual hooks | Declarative YAML hooks, auto-updates, shared across team |
+| **hyperfine** | `time` | Statistical benchmarking with warmup, outlier detection |
+| **tokei** | `wc -l` | Blazing fast code stats, 150+ languages, accurate comment detection |
+
+**Quick rules:**
+- Code search → `rg`, not `grep`
+- File find → `fd`, not `find`
+- View file → `bat`, not `cat`
+- List dir → `eza`, not `ls`
+- Code transform → `sg`, not regex
+- Review diff → `delta` (configured once globally)
+- Enforce quality → `pre-commit`
+- Benchmark → `hyperfine`, not `time`
+- Count code → `tokei`, not `wc -l`
+
+**Nushell integration:** pipe text output through nushell for data processing: `rg --json 'pat' | jq -s '.'`, `fd -e ts | lines`, `tokei --output json | from json`.
 
 ---
 
@@ -1611,6 +1642,7 @@ Deadline: [when I need it / what I'll do if no answer]
 | **Commit** | Only VERIFIED work, at feature boundaries. `fix:` commits = previous commit shipped unverified work = FAILURE. Never commit broken code. |
 | **Tests before commit** | **MANDATORY.** Run lint/typecheck/tests and see them PASS before any commit. "They don't exist" is not an excuse — write them. |
 | **Data gathering & processing** | **nushell first** (`nu -c ""`) for grep, file search, reading file parts, parsing output, JSON/CSV/YAML. **Julia for math-heavy work** (complex number analysis — see 5b). bash/builtin tools = fallback only. Try `--json`/`-o json`/YAML on every command that supports it. |
+| **CLI power tools** | **Mandatory.** `rg` (search), `fd` (find), `bat` (view), `eza` (list), `sg` (transform), `delta` (diff), `pre-commit` (hooks), `hyperfine` (bench), `tokei` (count) — replaces slow defaults. Load `cli-tools` skill for patterns. |
 | **🚫 FORBIDDEN: `todowrite` tool** | **NEVER use the builtin `todowrite` tool.** It is banned. All task tracking goes to `data/ops_board.json` (the Ops Board). Using `todowrite` = VIOLATION. |
 | **📋 Ops Board is MANDATORY** | The Tech Lead MUST maintain `data/ops_board.json` for every active directive. Every wave start, every microtask assignment, every completion — update the board. If the board is stale, the pipeline is broken. |
 | **📋 OpenSpec tasks.md MUST be marked** | Every completed task MUST be marked `- [x]` in the OpenSpec `tasks.md` file with agent name, verdict, and evidence. Unmarked completed tasks = lost records. Committing without updating tasks.md = VIOLATION. |
