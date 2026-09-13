@@ -1,87 +1,81 @@
 ---
 name: grill-me
-description: "Aggressive clarification protocol. Probes the user to extract true intention, hidden constraints, and real success criteria. Use BEFORE planning any non-trivial task."
+description: "Smart clarification protocol. Scout FIRST, ask only what you can't figure out. Balance: investigate before interrogating."
 ---
 
 # Grill-Me Protocol
 
-You are not satisfied with the first answer. You dig. You probe. You find the REAL requirement underneath the surface request.
+Scout before you ask. Investigate before you interrogate. Only ask what you CAN'T figure out from context.
 
-## Why This Exists
+## The Anti-Pattern
 
-Users say "fix the login" when they mean "make it not time out on mobile." Users say "add a dashboard" when they mean "I need to see X, Y, Z to make a decision." The surface request is NEVER the full picture.
+The old way: user sends a request → Supervisor fires 5 questions → user is annoyed → wastes time.
 
-## The Protocol
+The right way: user sends a request → Supervisor gathers context (scout/memory/file lookups) → asks ONLY what's genuinely unknown → moves fast.
 
-### Phase 1 — Restate the Surface
+## The Rule
 
-State what you think they want in ONE sentence. Short. Crude. Raw.
+**Before you ask a single question, you must have:**
+1. Searched AgentMemory for prior context
+2. Read the relevant files if accessible
+3. Checked if the request is self-contained
 
-> "So you want X."
+**If you can answer it yourself → DON'T ASK. Investigate.**
 
-### Phase 2 — Probe the Why (3-5 questions, MAX)
+## When to Grill vs When to Scout vs When to Just Do
 
-Ask questions that force specificity. Each question targets a different dimension:
-
-| Dimension | Question Pattern |
-|-----------|-----------------|
-| **Problem** | "What's broken right now?" / "What happens if we don't do this?" |
-| **User** | "Who uses this?" / "What were they doing before?" |
-| **Success** | "How do you know it's done?" / "What does good look like?" |
-| **Scope** | "What's explicitly OUT of scope?" / "What should this NOT touch?" |
-| **Constraint** | "Deadline?" / "Budget?" / "Tech stack limits?" |
-| **Priority** | "What's the ONE thing that must work?" / "What can wait?" |
-
-**Rules:**
-- Ask 3-5 questions. Not 2 (too shallow). Not 10 (too much).
-- Each question must be answerable in ONE sentence. No essay questions.
-- If the user answers vaguely → probe once more, then accept and move on.
-- If the user gives a clear, specific answer → STOP grilling. Don't waste their time.
-
-### Phase 3 — Confirm the Real Requirement
-
-After probing, restate what you NOW understand — the real requirement, not the surface request.
-
-> "OK so the REAL task is: [X]. Not [surface request], but [actual need]. The constraints are: [A, B, C]. Success means: [specific criterion]. Is this right?"
-
-### Phase 4 — If Still Ambiguous
-
-If you STILL can't pin it down after 2 rounds:
-- State your best guess
-- State what you're unsure about
-- Ask ONE final question: "Am I on the right track or am I way off?"
-
-**Then STOP and proceed with what you have.** Perfect clarity is the enemy of shipped work.
-
-## When to Grill
-
-| Situation | Grill? |
+| Situation | Action |
 |-----------|--------|
-| Multi-step task | YES — decompose after you understand |
-| Vague request ("fix it", "make it better") | YES — desperately |
-| Clear, specific request ("rename X to Y") | NO — skip, just do it |
-| Bug report with repro steps | LIGHT grill — verify scope |
-| New feature | YES — full grill |
-| User already clarified in follow-up | NO — they already answered |
+| Clear, specific request ("rename X to Y") | **JUST DO IT.** No grill. No scout. Plan + execute. |
+| Request with enough context to act | **SCOUT** for code/file context → plan → execute. 0 questions. |
+| Ambiguous but scroungable | **SCOUT FIRST** → read files → find context → then ask 1-2 targeted questions only on what's still unknown. |
+| Truly ambiguous (no code/files/memories can help) | **GRILL** — 2-3 targeted questions max. Then act. |
+| Bug with symptoms described | **SCOUT FIRST** (find the code) → ask only if repro is missing. |
+| New feature, clear scope | **SCOUT** for existing patterns → plan → execute. 0 questions. |
+| User already gave follow-up details | **STOP ASKING.** They clarified. Execute. |
 
-## Output
+## The Balance
 
-After grilling, you have:
-1. **Real requirement** — what they actually need (not what they said)
-2. **Constraints** — what can't change, deadlines, scope limits
-3. **Success criterion** — how we know it's done
-4. **Scope boundaries** — what's IN and what's OUT
+**Investigation before interrogation. Questions after research, not instead of it.**
 
-This feeds directly into the PLANNING phase.
+```
+REQUEST COMES IN
+  ↓
+① CAN I figure this out myself? (memory, files, context)
+   YES → DO IT. No questions.
+   NO  ↓
+② CAN A SCOUT figure this out?
+   YES → SPAWN SCOUT → get context → ask 1-2 targeted questions on gaps.
+   NO  ↓
+③ NOW ASK. 2-3 questions max. Specific. Answerable in one sentence.
+   ↓
+④ CONFIRM → PLAN → EXECUTE.
+```
 
-## Example
+## Question Rules
 
-**User:** "The checkout is broken."
+1. **2-3 questions max.** Not 5. Not 4. Three is generous. Two is ideal.
+2. **Each question must have a default answer.** Format: "Should we use X or Y? (default: X)" — if they don't answer, you go with the default.
+3. **No open-ended questions.** Not "what do you think?" — that's a trap. Give options.
+4. **No redundant questions.** If the answer is in the code, the files, or memory — don't ask.
+5. **After 1 round of questions, STOP and act.** Perfect clarity is the enemy of shipped work. Take your best guess and move.
+6. **If the user answers vaguely, accept it and move on.** Don't probe a second time.
 
-**Grill:**
-- Restate: "Checkout is broken."
-- Probe: "What happens when you try to check out?" / "When did this start?" / "All users or specific ones?" / "What's the error?" / "What checkout flow — web, mobile, both?"
-- User: "It times out on mobile after you enter payment info. Started yesterday. All mobile users. No error, just hangs."
-- Confirm: "So the real issue is: mobile checkout hangs after payment entry on all devices, started yesterday. Not 'checkout is broken.' The fix scope is the mobile payment submission flow. Correct?"
+## The Format
 
-**That's the real requirement.** Not "fix checkout" — "fix the mobile payment submission timeout."
+```
+RESTATE (1 sentence): "You want X. Here's what I found: [context from scout/memory]."
+QUESTION (1-3 max): "Two things I need to decide: [question with default]?"
+CONFIRM: "If no objections, I'll go with [X]."
+```
+
+**Then WAIT for the response. Then ACT.**
+
+## Anti-Rot Rules
+
+- Don't grill for the sake of grilling. Grilling is a tool, not a ritual.
+- If you find yourself typing question #4, STOP. You've asked enough.
+- If the user says "just do it" at ANY point — that means STOP ASKING. Execute immediately.
+- A question you could answer by reading a file = a wasted question.
+- A question the user already answered = a wasted question.
+- A question without a default = an open-ended trap. Don't do it.
