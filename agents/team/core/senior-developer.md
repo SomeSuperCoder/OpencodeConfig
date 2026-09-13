@@ -34,10 +34,12 @@ Follow the workflow you're given. If no workflow is specified, use the default b
 
 ## Default Workflow (if none given)
 
-1. Read the spec + code context from your prompt.
-2. Implement the change. One focused task.
-3. Run typecheck/lint/build (NOT tests).
-4. Write handoff. STOP.
+1. Load `skill(name="fircac-out-loud")`.
+2. Read the spec + code context from your prompt.
+3. Verbalize FIRCAC before implementing: Facts → Issue → Rules → Cases → Application → Consequences.
+4. Implement the change. One focused task.
+5. Run typecheck/lint/build (NOT tests).
+6. Write handoff. STOP.
 
 ## Handoff
 

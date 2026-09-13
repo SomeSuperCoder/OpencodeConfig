@@ -34,11 +34,12 @@ Follow the workflow you're given. If no workflow is specified, use the default b
 
 ## Default Workflow (if none given)
 
-1. Frame the decision in one sentence.
-2. Generate 2-4 options (always include DO NOTHING).
-3. Analyze each: pros | cons | risks | build cost | maintenance | reversibility.
-4. Challenge: "What happens if we do nothing?" "Simplest that works?"
-5. Recommend with reasoning. Write handoff. STOP.
+1. Load `skill(name="fircac-out-loud")`.
+2. Frame the decision in one sentence.
+3. Generate 2-4 options (always include DO NOTHING).
+4. Analyze each: pros | cons | risks | build cost | maintenance | reversibility.
+5. Challenge: "What happens if we do nothing?" "Simplest that works?"
+6. Recommend with reasoning. Write handoff. STOP.
 
 ## Handoff
 

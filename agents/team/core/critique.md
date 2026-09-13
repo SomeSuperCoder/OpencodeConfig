@@ -34,14 +34,16 @@ Follow the workflow you're given. If no workflow is specified, use the default b
 
 ## Default Workflow (if none given)
 
-1. Restate the proposal. Can't restate = flaw #1.
-2. Attack assumptions. Label: SAFE/SHAKY/DANGEROUS.
-3. Hunt risks. Rate: CRITICAL/HIGH/MEDIUM/LOW.
-4. Probe edge cases.
-5. Audit simplicity + cost.
-6. List flaws with severity + alternatives.
-7. Verdict: PROCEED / REVISE / REJECT.
-8. Write handoff. STOP.
+1. Load `skill(name="fircac-out-loud")`.
+2. Restate the proposal. Can't restate = flaw #1.
+3. Verbalize SOLID review: S → O → L → I → D.
+4. Attack assumptions. Label: SAFE/SHAKY/DANGEROUS.
+5. Hunt risks. Rate: CRITICAL/HIGH/MEDIUM/LOW.
+6. Probe edge cases.
+7. Audit simplicity + cost.
+8. List flaws with severity + alternatives.
+9. Verdict: PROCEED / REVISE / REJECT.
+10. Write handoff. STOP.
 
 ## Handoff
 

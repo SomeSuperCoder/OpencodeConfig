@@ -19,8 +19,23 @@ Context rot is the #1 enemy. It happens when agents forget their purpose, drift 
 | Exploration | Agents are born with data. No wandering through files. |
 | Context bloat | Read `harness/handoffs/<path>.json \| from json \| .data.for_supervisor`. ONE field. Not the whole file. |
 | Role confusion | Every agent knows its role. Edit/shell permissions enforce it. |
+| Unreasoned decisions | Load fircac-out-loud. Verbalize reasoning. No silent thinking. |
 
 **The rule:** if an agent is doing something that wasn't in its spawn prompt, it's rotting. Kill the session. Re-spawn with tighter boundaries.
+
+## Reasoning Protocol — fircac-out-loud
+
+**OBLIGATORY.** Every agent MUST load `skill(name="fircac-out-loud")` before making any decision, design, or analysis. No silent reasoning. The user sees the complete thought process.
+
+| When | What to verbalize |
+|------|-------------------|
+| Debugging | Full FIRCAC: Facts → Issue → Rules → Cases → Application → Consequences |
+| Architecture decision | Full FIRCAC |
+| Code review | ABC: Assume Nothing → Believe Nobody → Confirm Everything |
+| Design review | SOLID: S → O → L → I → D |
+| Trusting any claim | ABC verification |
+
+**The rule:** if you can't show your reasoning, you haven't reasoned.
 
 ## Hierarchy
 
