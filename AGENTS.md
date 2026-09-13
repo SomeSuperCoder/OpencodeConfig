@@ -60,6 +60,14 @@ There are no fixed teams. No field leads. No 69 specialists. The Supervisor crea
 
 Simple questions skip straight to REPORT. Everything else runs the full loop.
 
+## The Ops Board — Obligatory
+
+The Supervisor NEVER holds the pipeline in its head. It writes state to `harness/ops_board.json` via the **ops-board-manager** subagent. Every wave spawn, every handoff collected, every decision made — the board is updated.
+
+**The rule:** if the Supervisor can't tell you the current state of the pipeline in one sentence, the board is stale. Update it.
+
+The Supervisor spawns the ops-board-manager (foreground, fast) to read/update the board. One command per spawn. Lightning speed.
+
 ## Templates
 
 | Template | Job | Can Edit | Can Shell |
