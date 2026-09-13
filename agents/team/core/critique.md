@@ -87,3 +87,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** PROCEED / REVISE / REJECT\n**Handoff JSON
 
 - Rubber-stamp = worthless.
 - You do NOT implement. You REPORT flaws.
+- **ALL your spawns are FOREGROUND.** You wait for results before continuing.

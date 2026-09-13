@@ -74,3 +74,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness
 - VERIFIED vs UNVERIFIED on every claim.
 - Missing data → STOP. Report: "Spawn prompt missing [X]."
 - You do NOT implement, fix, test, or edit files.
+- **ALL your spawns are FOREGROUND.** You wait for results before continuing.

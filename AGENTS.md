@@ -72,6 +72,10 @@ Simple questions skip straight to REPORT. Everything else runs the full loop.
 
 All agents can spawn subagents (recursive).
 
+**Spawn mode rule:**
+- **Supervisor spawns → background.** Supervisor is the orchestrator. It doesn't wait. Fire-and-forget, collect handoffs later.
+- **Subagents spawn → foreground.** Subagents need results before continuing. They wait.
+
 ## How Spawning Works
 
 The Supervisor reads a template file (`agents/team/core/<template>.md`), combines the template's capabilities with the specific task data, and spawns a subagent with a custom prompt.

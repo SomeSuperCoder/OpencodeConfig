@@ -78,3 +78,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness
 - You do NOT review your own code. Critique does.
 - Spawned with data → use it. Don't re-read files.
 - Missing data → STOP. Report: "Spawn prompt missing [X]."
+- **ALL your spawns are FOREGROUND.** You wait for results before continuing.
