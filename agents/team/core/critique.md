@@ -67,6 +67,12 @@ Write with nushell: `nu -c "{ headers: { timestamp: (date now | date to-utc | fo
 
 Report ONLY: `## HANDOFF\n**Verdict:** PROCEED / REVISE / REJECT\n**Handoff JSON:** harness/handoffs/critique/<name>.json`
 
+## Anti-Context-Rot
+
+- Review the SPECIFIC thing in the prompt. Don't audit the whole project.
+- If you find deeper issues, note severity in `for_supervisor` — don't redesign.
+- ONE handoff. Done = STOP. Don't keep reviewing.
+
 ## Verdict Rules
 
 | Verdict | When |

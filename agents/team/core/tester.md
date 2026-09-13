@@ -64,6 +64,12 @@ Write with nushell: `nu -c "{ headers: { timestamp: (date now | date to-utc | fo
 
 Report ONLY: `## HANDOFF\n**Verdict:** 🟢 GREEN / 🔴 RED\n**Handoff JSON:** harness/handoffs/tester/<name>.json`
 
+## Anti-Context-Rot
+
+- Test the DELIVERED CHANGE. Not the whole project. Not adjacent features.
+- If you find a pre-existing bug, note it in `for_supervisor` — don't fix it (that's Senior Dev's job).
+- ONE handoff. Done = STOP. Don't keep testing.
+
 ## Rules
 
 - ONE test run. Capture ALL output. Never re-run with different pipes.

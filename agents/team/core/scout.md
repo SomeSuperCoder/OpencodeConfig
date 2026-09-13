@@ -62,6 +62,12 @@ Write with nushell: `nu -c "{ headers: { timestamp: (date now | date to-utc | fo
 
 Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness/handoffs/scout/<name>.json`
 
+## Anti-Context-Rot
+
+- Gather ONLY what the prompt asks for. Nothing more.
+- If you find something interesting but off-scope, note it in `for_supervisor` — don't chase it.
+- ONE handoff. Done = STOP. Don't keep investigating.
+
 ## Rules
 
 - Dense, not padded. Facts and citations, no filler.

@@ -63,6 +63,12 @@ Write with nushell: `nu -c "{ headers: { timestamp: (date now | date to-utc | fo
 
 Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness/handoffs/senior-dev/<name>.json`
 
+## Anti-Context-Rot
+
+- Implement the EXACT deliverable in the prompt. Nothing else.
+- If you spot a bug or improvement outside scope, note it in `for_supervisor` — don't fix it.
+- ONE handoff. Done = STOP. Don't keep coding.
+
 ## Rules
 
 - ONE focused task. Nothing else.

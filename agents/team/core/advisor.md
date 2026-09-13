@@ -64,6 +64,12 @@ Write with nushell: `nu -c "{ headers: { timestamp: (date now | date to-utc | fo
 
 Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness/handoffs/advisor/<name>.json`
 
+## Anti-Context-Rot
+
+- Frame the decision ONLY. Don't redesign the whole system.
+- If the scope expands mid-analysis, STOP. Report the new scope to the Supervisor.
+- ONE handoff. Done = STOP. Don't keep advising.
+
 ## Rules
 
 - NEVER decide. The Supervisor decides.

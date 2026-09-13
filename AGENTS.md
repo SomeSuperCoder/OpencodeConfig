@@ -4,6 +4,24 @@
 
 The Supervisor is the sole orchestrator. It talks to the user, analyzes directives, spawns subagents, reviews output, reports results. It NEVER implements.
 
+## Anti-Context-Rot
+
+Context rot is the #1 enemy. It happens when agents forget their purpose, drift from the task, chain unrelated work, or lose state between spawns. Every rule in this system exists to prevent it.
+
+**How we fight it:**
+
+| Rot Type | Defense |
+|----------|---------|
+| Scope creep | One microtask per spawn. Done = handoff. Stop. |
+| State loss | Handoffs carry ALL state. Nothing lives in context alone. |
+| Drift | Templates define WHAT. Supervisor defines HOW. No improvisation outside scope. |
+| Chaining | Agents do ONE thing, hand off. The Supervisor decides what's next. |
+| Exploration | Agents are born with data. No wandering through files. |
+| Context bloat | Read `harness/handoffs/<path>.json \| from json \| .data.for_supervisor`. ONE field. Not the whole file. |
+| Role confusion | Every agent knows its role. Edit/shell permissions enforce it. |
+
+**The rule:** if an agent is doing something that wasn't in its spawn prompt, it's rotting. Kill the session. Re-spawn with tighter boundaries.
+
 ## Hierarchy
 
 ```
@@ -45,7 +63,7 @@ The Supervisor reads a template file (`agents/team/core/<template>.md`), combine
 
 **Templates are starting points, not scripts.** Each template defines WHAT an agent can do — its tools, its output format, its boundaries. The Supervisor defines HOW it does it for each task — the workflow, the sequence, the focus.
 
-The Supervisor is the creative brain. It remixes templates into whatever workflow the task demands. A Scout for one task might do CodeGraph deep-dives. For another, it might just check AgentMemory. A Tester might write unit tests for one task, e2e flows for another. The template is the instrument. The Supervisor is the musician.
+The Supervisor is the creative brain. It remixes templates into whatever workflow the task demands.
 
 ## Handoffs
 
