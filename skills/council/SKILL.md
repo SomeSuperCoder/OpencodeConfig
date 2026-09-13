@@ -1,128 +1,113 @@
 ---
 name: council
-description: "Convene a council of specialists for complex decisions. Multiple perspectives in parallel, synthesized by the Supervisor. Use when one advisor isn't enough — when the decision touches multiple domains or needs diverse viewpoints."
+description: "Convene a council of Advisors and Critiques. Each brings their own opinion on the same decision. Multiple viewpoints, synthesized by the Supervisor. Use for complex decisions that need diverse expert opinions."
 ---
 
 # Council Protocol
 
-When a decision is too complex for one advisor, convene a council. Multiple specialists give their perspective in parallel. You synthesize. You decide.
+Convene multiple Advisors and Critiques. Each gets the same decision. Each gives their own opinion. You synthesize. You decide.
 
 ## When to Convene
 
 | Situation | Council? |
 |-----------|----------|
-| Decision touches multiple domains (security + performance + UX) | YES |
-| Architecture decision with competing tradeoffs | YES |
-| "Should we build or buy?" | YES |
-| Risk assessment before a big change | YES |
-| One advisor already gave advice, but you need more viewpoints | YES |
-| Simple implementation detail | NO — just decide |
-| Decision with clear precedent in the codebase | NO — follow the pattern |
-| Urgent and reversible | NO — decide fast, fix later |
+| Complex decision with competing tradeoffs | YES |
+| Architecture choice, build vs buy, direction change | YES |
+| Risk assessment before a big move | YES |
+| One perspective isn't enough | YES |
+| Simple implementation detail | NO |
+| Clear precedent exists | NO |
+| Urgent and reversible | NO |
 
 ## The Protocol
 
 ### Step 1: Define the Decision
 
-State the decision in ONE sentence. What are we choosing between?
+ONE sentence. What are we choosing?
 
-> "Should we use WebSocket or polling for real-time updates?"
+> "Should we rewrite the auth module or patch it?"
 
-### Step 2: Pick the Council (2-4 members max)
+### Step 2: Spawn the Council (2-4 members)
 
-Choose specialists whose domain touches the decision. Each member brings ONE perspective.
-
-| Domain | Who | What they advise on |
-|--------|-----|---------------------|
-| Code quality | Critique | Maintainability, simplicity, technical debt |
-| Implementation | Senior Dev | Build cost, complexity, existing patterns |
-| Testing | Tester | Testability, regression risk, coverage |
-| Research | Scout | Prior art, community practices, existing solutions |
-| Architecture | Advisor | Long-term implications, reversibility, tradeoffs |
-
-**Pick 2-4.** Not 1 (defeats the purpose). Not 5+ (too many voices).
-
-### Step 3: Spawn in Parallel
-
-Spawn all council members at once. Each gets:
-- The decision (same question)
-- Their domain lens (what to focus on)
-- What to deliver (recommendation + reasoning)
+Spawn 2-4 Advisors and/or Critiques. Each gets the same decision but forms their OWN opinion.
 
 ```
+task(subagent_type="team/core/advisor", background=true, prompt="
+  You are Council Member 1 — an Advisor.
+  DECISION: [the decision]
+  CONTEXT: [relevant facts — what the codebase looks like, constraints, goals]
+  FORM YOUR OWN OPINION. Analyze tradeoffs. Recommend.
+  DELIVER: Your recommendation + reasoning. 5 sentences max.
+")
+
+task(subagent_type="team/core/advisor", background=true, prompt="
+  You are Council Member 2 — an Advisor.
+  DECISION: [the decision]
+  CONTEXT: [same facts]
+  FORM YOUR OWN OPINION. Think independently. Don't assume the other member is right.
+  DELIVER: Your recommendation + reasoning. 5 sentences max.
+")
+
 task(subagent_type="team/core/critique", background=true, prompt="
-  COUNCIL MEMBER: You are the quality voice.
+  You are Council Member 3 — a Critique.
   DECISION: [the decision]
-  YOUR LENS: What does this mean for code quality and maintainability?
-  DELIVER: One recommendation + reasoning. 3 sentences max.
+  CONTEXT: [same facts]
+  ATTACK THIS DECISION. Find the risks, the hidden costs, the failure modes.
+  DELIVER: Your critique + risks. 5 sentences max.
 ")
 
-task(subagent_type="team/core/senior-developer", background=true, prompt="
-  COUNCIL MEMBER: You are the implementation voice.
+task(subagent_type="team/core/critique", background=true, prompt="
+  You are Council Member 4 — a Critique.
   DECISION: [the decision]
-  YOUR LENS: What does this mean for build cost and complexity?
-  DELIVER: One recommendation + reasoning. 3 sentences max.
-")
-
-task(subagent_type="team/core/scout", background=true, prompt="
-  COUNCIL MEMBER: You are the research voice.
-  DECISION: [the decision]
-  YOUR LENS: What do existing codebases and community practices say?
-  DELIVER: One recommendation + reasoning. 3 sentences max.
+  CONTEXT: [same facts]
+  ATTACK THIS DECISION from a different angle. What are they missing?
+  DELIVER: Your critique + risks. 5 sentences max.
 ")
 ```
 
-### Step 4: Collect Perspectives
+### Step 3: Collect Opinions
 
 Read each handoff. Each gives:
-- **Recommendation** — what they'd choose
-- **Reasoning** — why from their domain lens
-- **Risk** — what they're worried about
+- **Recommendation or critique** — what they think
+- **Reasoning** — why
+- **Risks or concerns** — what could go wrong
 
-### Step 5: Synthesize and Decide
+### Step 4: Synthesize and Decide
 
-You are the tiebreaker. You weigh the perspectives. You decide.
+You weigh the opinions. You decide.
 
-**Synthesis framework:**
-1. List each recommendation
-2. Note where they AGREE (strong signal — probably right)
-3. Note where they DISAGREE (tension — this is where the real decision lives)
-4. Weigh by: what matters MOST for this specific task?
+**Synthesis:**
+1. List each opinion
+2. Where they AGREE → strong signal
+3. Where they DISAGREE → this is where the real decision lives
+4. Weigh by: what matters MOST for this task?
 5. Make the call. State WHY.
 
-**Example output:**
+**Example:**
 ```
 COUNCIL SYNTHESIS:
-- Critique: WebSocket — simpler long-term, but more upfront work.
-- Senior Dev: Polling — faster to build, patterns exist in codebase.
-- Scout: WebSocket — community consensus for real-time, polling is legacy.
+- Advisor 1: Rewrite — patching adds debt, rewrite is cleaner long-term.
+- Advisor 2: Patch — rewrite is 3x the effort, patch fixes the immediate issue.
+- Critique 1: Rewrite risk — we might break things that work. Patch is safer.
+- Critique 2: Patch risk — the auth module has 47 patches already. Next patch might not fit.
 
-AGREEMENT: Both Critique and Scout favor WebSocket for long-term quality.
-TENSION: Senior Dev wants faster build, but the codebase already has WebSocket infra (Scout found this).
+AGREEMENT: All agree the auth module is in bad shape.
+TENSION: Rewrite (long-term) vs Patch (short-term safety).
 
-DECISION: WebSocket. The infra exists, long-term quality wins, and the build cost is lower than Senior Dev estimated because of existing patterns.
+DECISION: Rewrite. Critique 2's point about 47 patches is the tiebreaker — we're at the limit of patching.
 ```
 
-### Step 6: Act on the Decision
+### Step 5: Act
 
-Proceed with the chosen path. If the decision is high-stakes, note it in memory for future reference.
+Proceed with the chosen path. Note the decision if high-stakes.
 
 ## Council Rules
 
-1. **2-4 members.** More voices ≠ better decision.
-2. **Parallel spawns.** All members start at the same time.
-3. **3 sentences max per member.** Concise advice, not essays.
-4. **You decide.** The council advises. You are the tiebreaker.
-5. **If the council is unanimous, move fast.** No need to over-analyze agreement.
-6. **If the council is split, weigh by what matters most for THIS task.** Not every task values the same things.
-7. **Don't convene a council for reversible decisions.** Decide fast, fix later.
-
-## Anti-Patterns
-
-| Anti-Pattern | Why it's bad |
-|-------------|-------------|
-| Convening a council for a one-liner | Overhead > value |
-| Asking the same question to 5 specialists | Too many voices, no clarity |
-| Letting one loud voice dominate | You weigh, not them |
-| Ignoring disagreement in the council | Disagreement is signal — explore it |
-| Convening a council because you're uncertain | Uncertainty means scout first, council second |
+1. **2-4 members.** Advisors and/or Critiques. Mix and match.
+2. **Same decision, same context, different opinions.** Each member thinks independently.
+3. **Parallel spawns.** All members start at once.
+4. **5 sentences max per member.** Concise opinions, not essays.
+5. **You decide.** The council advises. You are the tiebreaker.
+6. **Unanimous → move fast.** No need to over-analyze agreement.
+7. **Split → weigh by what matters most for THIS task.**
+8. **Don't convene for reversible decisions.** Decide fast, fix later.
