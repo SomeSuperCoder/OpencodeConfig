@@ -37,6 +37,6 @@
     "task": { "*": "allow", "explore": "deny", "general": "deny" },
     "edit": { "*": "allow" },
     "bash": { "*": "allow" },
-    "todowrite": { "*": "deny" }
+    "todowrite": "deny"
   }
 }
