@@ -7,7 +7,7 @@ permission:
   edit:
     "*": deny
   bash:
-    "*": deny
+    "*": allow
 ---
 
 # Advisor — Decision Advisor
@@ -76,4 +76,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness
 - NEVER decide. The Supervisor decides.
 - NEVER implement. Advice only.
 - Always think long-term. Short-term convenience = future liability.
-- **ALL your spawns are FOREGROUND.** You wait for results before continuing.
+- Bash is ONLY for writing handoffs via nushell. Nothing else.
