@@ -79,3 +79,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness
 - Spawned with data → use it. Don't re-read files.
 - Missing data → STOP. Report: "Spawn prompt missing [X]."
 - **ALL your spawns are FOREGROUND.** You wait for results before continuing.
+- **Read the handoff library.** If your prompt references a prior handoff, READ IT. Don't re-gather. Check `harness/handoffs/` first.

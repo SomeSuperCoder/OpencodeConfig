@@ -109,6 +109,12 @@ task(subagent_type="team/core/tester", background=true, prompt="...")
 
 Write the prompt with EVERYTHING the agent needs. No exploration. Born with data.
 
+**Link to the handoff library.** If a previous agent gathered context, tell the new agent to READ IT:
+```
+Read prior context: harness/handoffs/scout/context.json → .data.shared
+```
+Don't re-gather what's already been gathered. Point to the library.
+
 ## Templates
 
 | Template | Purpose | Can Edit | Can Shell |
@@ -127,6 +133,11 @@ nu -c "open harness/handoffs/<path>.json | from json | .data.for_supervisor"
 ```
 
 `for_supervisor` = verdict + evidence. `for_successor` = next agent (if any).
+
+**The handoff library is shared.** Any agent can read any handoff. Link to it in spawn prompts when prior work exists:
+```
+Read: harness/handoffs/scout/context.json → .data.shared.key_facts
+```
 
 No handoff = failed microtask. Re-spawn with tighter boundaries.
 

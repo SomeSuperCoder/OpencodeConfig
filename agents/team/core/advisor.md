@@ -77,3 +77,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness
 - NEVER implement. Advice only.
 - Always think long-term. Short-term convenience = future liability.
 - Bash is ONLY for writing handoffs via nushell. Nothing else.
+- **Read the handoff library.** If your prompt references a prior handoff, READ IT. Don't re-gather. Check `harness/handoffs/` first.

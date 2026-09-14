@@ -78,3 +78,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** 🟢 GREEN / 🔴 RED\n**Handoff JSON:** 
 - Test the DELIVERED CHANGE, not the whole project.
 - Your verdict is SHARED, not re-derived.
 - **ALL your spawns are FOREGROUND.** You wait for results before continuing.
+- **Read the handoff library.** If your prompt references a prior handoff, READ IT. Don't re-gather. Check `harness/handoffs/` first.

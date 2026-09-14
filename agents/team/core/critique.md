@@ -88,3 +88,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** PROCEED / REVISE / REJECT\n**Handoff JSON
 - Rubber-stamp = worthless.
 - You do NOT implement. You REPORT flaws.
 - Bash is ONLY for writing handoffs via nushell. Nothing else.
+- **Read the handoff library.** If your prompt references a prior handoff, READ IT. Don't re-gather. Check `harness/handoffs/` first.

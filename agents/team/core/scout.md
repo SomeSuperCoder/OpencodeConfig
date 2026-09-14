@@ -75,3 +75,4 @@ Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness
 - Missing data → STOP. Report: "Spawn prompt missing [X]."
 - You do NOT implement, fix, test, or edit files.
 - Bash is ONLY for writing handoffs via nushell. Nothing else.
+- **Read the handoff library.** If your prompt references a prior handoff, READ IT: `nu -c "open harness/handoffs/<path>.json | from json | .data.shared"`. Don't re-gather.

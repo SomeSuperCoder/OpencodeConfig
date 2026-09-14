@@ -92,15 +92,58 @@ The Supervisor reads a template file (`agents/team/core/<template>.md`), combine
 
 The Supervisor is the creative brain. It remixes templates into whatever workflow the task demands.
 
-## Handoffs
+## Handoffs — The Shared State Library
 
-Every subagent writes a structured JSON at `harness/handoffs/<agent_id>/<name>.json`. The Supervisor reads these with nushell:
+`harness/handoffs/` is the system's shared memory. Every agent writes to it. Any agent can read from it. It's the library of what everyone has done.
 
+```
+harness/handoffs/
+  scout/context.json
+  senior-dev/auth-refactor.json
+  tester/auth-tests.json
+  critique/auth-review.json
+```
+
+**The rule:** `harness/handoffs/` is the source of truth. If another agent already gathered context, READ IT. Don't re-gather. Don't re-scout. Check the library first.
+
+### Writing Handoffs
+
+Every subagent writes a structured JSON at `harness/handoffs/<agent_id>/<name>.json`:
+
+```json
+{
+  "headers": { "timestamp": "ISO-8601", "agent_id": "scout" },
+  "data": {
+    "shared": {
+      "key_facts": ["fact1", "fact2"],
+      "call_chains": ["A -> B -> C"],
+      "blast_radius": ["files affected"],
+      "research_sources": ["links"]
+    },
+    "for_supervisor": "VERDICT + evidence (1 paragraph)",
+    "for_successor": "next agent + what to do"
+  }
+}
+```
+
+Write with nushell: `nu -c "{ ... } | to json | save harness/handoffs/<agent_id>/<name>.json -f"`
+
+### Reading Handoffs
+
+The Supervisor reads with nushell:
 ```
 nu -c "open harness/handoffs/<path>.json | from json | .data.for_supervisor"
 ```
 
-The `for_supervisor` field has the verdict + evidence. The `for_successor` field names the next agent.
+**Any agent** can read handoffs from previous agents. If your prompt says "read the scout's context from harness/handoffs/scout/context.json" — READ IT. Don't re-gather.
+
+### The Fields
+
+| Field | Who reads it | What it means |
+|-------|-------------|---------------|
+| `for_supervisor` | Supervisor | Verdict + evidence — what happened, what was verified |
+| `for_successor` | Next agent | What to do next — scope, context, instructions |
+| `shared` | Any agent | Facts, call chains, blast radius, sources — reusable context |
 
 No handoff = failed microtask. The Supervisor re-spawns.
 
