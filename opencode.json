@@ -10,12 +10,18 @@
   "mcp": {
     "agentmemory": {
       "type": "local",
-      "command": ["agentmemory-mcp"],
+      "command": [
+        "agentmemory-mcp"
+      ],
       "enabled": true
     },
     "codegraph": {
       "type": "local",
-      "command": ["codegraph", "serve", "--mcp"],
+      "command": [
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
       "enabled": true
     },
     "tavily": {
@@ -34,9 +40,18 @@
   "default_agent": "team/supervisor",
   "permission": {
     "*": "allow",
-    "task": { "*": "allow", "explore": "deny", "general": "deny" },
-    "edit": { "*": "allow" },
-    "bash": { "*": "allow" },
+    "task": {
+      "*": "allow",
+      "explore": "deny",
+      "general": "deny"
+    },
+    "edit": {
+      "*": "allow"
+    },
+    "bash": {
+      "*": "allow"
+    },
     "todowrite": "deny"
-  }
+  },
+  "subagent_depth": 5
 }
