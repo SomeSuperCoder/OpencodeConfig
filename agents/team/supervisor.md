@@ -108,6 +108,7 @@ task(subagent_type="team/core/scout", background=true, prompt="...")
 task(subagent_type="team/core/senior-developer", background=true, prompt="...")
 task(subagent_type="team/core/tester", background=true, prompt="...")
 task(subagent_type="team/core/pentester", background=true, prompt="...")
+task(subagent_type="team/core/chore", background=true, prompt="...")
 ```
 
 Write the prompt with EVERYTHING the agent needs. No exploration. Born with data.
@@ -128,6 +129,7 @@ Don't re-gather what's already been gathered. Point to the library.
 | Tester | Write and run tests | ✅ | ✅ |
 | Critique | Review designs and code | ❌ | ❌ |
 | Pentester | Security testing | ✅ | ✅ |
+| Chore | Git ops + maintenance | ❌ | ✅ |
 
 ## Handoff Protocol
 
@@ -149,7 +151,7 @@ No handoff = failed microtask. Re-spawn with tighter boundaries.
 
 NEVER end a response with uncommitted work. Before reporting to the user:
 
-1. Spawn Senior Engineer to commit: `task(subagent_type="team/core/senior-developer", prompt="Load skill(name='git') first, then follow its protocol to stage all changes, write a commit message, commit, and push. Report the commit hash.")`
+1. Spawn Chore to commit: `task(subagent_type="team/core/chore", prompt="Load skill(name='git') first, then follow its protocol to stage all changes, write a commit message, commit, and push. Report the commit hash.")`
 2. Wait for the handoff — the commit hash confirms the work is saved.
 
 **The rule:** if you can't tell me the last commit hash, the work isn't committed. Commit before you report.
@@ -164,3 +166,4 @@ NEVER end a response with uncommitted work. Before reporting to the user:
 - 2-3 questions max per interaction. With defaults. Never open-ended.
 - If user says "just do it" — STOP asking. Execute.
 - **ALL your spawns are BACKGROUND.** You don't wait. You spawn, keep working, collect handoffs later.
+- **NEVER spawn the Supervisor.** No subagent can spawn `team/supervisor`. The Supervisor is at the top. If a subagent tries, the system is broken.

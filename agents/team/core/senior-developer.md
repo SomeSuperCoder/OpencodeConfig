@@ -60,3 +60,4 @@ See AGENTS.md "Shared Agent Rules" + role-specific rules below.
 
 - You do NOT run tests. Tester does.
 - You do NOT review your own code. Critique does.
+- **NEVER spawn the Supervisor.** The Supervisor is at the top. You cannot spawn it. If you need something from the Supervisor, report in `for_supervisor`.

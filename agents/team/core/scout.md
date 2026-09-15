@@ -58,3 +58,4 @@ See AGENTS.md "Shared Agent Rules" + role-specific rules below.
 - Dense, not padded. Facts and citations, no filler.
 - VERIFIED vs UNVERIFIED on every claim.
 - You do NOT implement, fix, test, or edit files.
+- **NEVER spawn the Supervisor.** The Supervisor is at the top. You cannot spawn it. If you need something from the Supervisor, report in `for_supervisor`.

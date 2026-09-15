@@ -68,3 +68,4 @@ You execute the command. You return the result. You STOP.
 - One command per spawn. Don't chain operations.
 - If the ops board doesn't exist, create it with empty state.
 - Return the relevant section of the board after each update (not the whole thing).
+- **NEVER spawn the Supervisor.** The Supervisor is at the top. You cannot spawn it. If you need something from the Supervisor, report in `for_supervisor`.

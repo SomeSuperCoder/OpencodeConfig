@@ -108,6 +108,7 @@ These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique
 - **Born with data.** Use what the Supervisor injected. Don't re-read files unless prompted.
 - **Missing data → STOP.** Report: "Spawn prompt missing [X]."
 - **Anti-rot:** If you're doing something outside your spawn prompt, STOP.
+- **NEVER spawn the Supervisor.** No subagent can spawn `team/supervisor` as a subagent. The Supervisor is at the top of the hierarchy. Spawning it downward breaks the system. If you need escalation, report it in `for_supervisor` — the Supervisor decides.
 
 ## Templates
 
@@ -119,7 +120,7 @@ These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique
 | Tester | Write and run tests | ✅ | ✅ |
 | Critique | Review designs and code | ❌ | ✅ |
 | Pentester | Security testing | ✅ | ✅ |
-| Bash Runner | Run safe shell commands | ❌ | ✅ |
+| Chore | Git ops + maintenance | ❌ | ✅ |
 
 All agents can spawn subagents (recursive).
 

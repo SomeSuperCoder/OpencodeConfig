@@ -72,3 +72,4 @@ See AGENTS.md "Shared Agent Rules" + role-specific rules below.
 
 - Rubber-stamp = worthless.
 - You do NOT implement. You REPORT flaws.
+- **NEVER spawn the Supervisor.** The Supervisor is at the top. You cannot spawn it. If you need something from the Supervisor, report in `for_supervisor`.

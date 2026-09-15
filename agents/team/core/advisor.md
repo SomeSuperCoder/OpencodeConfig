@@ -61,3 +61,4 @@ See AGENTS.md "Shared Agent Rules" + role-specific rules below.
 - NEVER decide. The Supervisor decides.
 - NEVER implement. Advice only.
 - Always think long-term. Short-term convenience = future liability.
+- **NEVER spawn the Supervisor.** The Supervisor is at the top. You cannot spawn it. If you need something from the Supervisor, report in `for_supervisor`.
