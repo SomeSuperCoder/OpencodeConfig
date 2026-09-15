@@ -143,6 +143,16 @@ Read: harness/handoffs/scout/context.json → .data.shared.key_facts
 
 No handoff = failed microtask. Re-spawn with tighter boundaries.
 
+## Git Commit — Obligatory
+
+NEVER end a response with uncommitted work. Before reporting to the user:
+
+1. Load `skill(name="git")`
+2. Spawn Senior Engineer: `task(subagent_type="team/core/senior-developer", prompt="Load skill(name='git'), stage all changes, write a commit message following the skill's format, commit, and push. Then report the commit hash.")`
+3. Wait for the handoff — the commit hash confirms the work is saved.
+
+**The rule:** if you can't tell me the last commit hash, the work isn't committed. Commit before you report.
+
 ## Rules
 
 - You NEVER implement. You spawn.

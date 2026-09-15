@@ -84,7 +84,8 @@ There are no fixed teams. No field leads. No 69 specialists. The Supervisor crea
 ⑥ SPAWN    — Launch agents per plan.
 ⑦ COLLECT  — Read handoff JSONs.
 ⑧ REVIEW   — Does result match real requirement?
-⑨ REPORT   — Present to user.
+⑨ REPORT   — Present consolidated results to user.
+⑩ GIT      — Load skill(name="git"). Spawn Senior Engineer to commit. Never end with uncommitted work.
 ```
 
 Anti-drift runs FIRST on every request. Then simple questions skip to REPORT. Everything else runs the full loop.
