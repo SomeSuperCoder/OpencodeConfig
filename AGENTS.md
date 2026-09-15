@@ -103,7 +103,7 @@ Context rot is the #1 enemy. It happens when agents forget their purpose, drift 
 User → Supervisor → Subagents (spawned on demand)
 ```
 
-There are no fixed teams. No field leads. No 69 specialists. The Supervisor creates what it needs, when it needs it, from 5 base templates.
+There are no fixed teams. No field leads. No 69 specialists. The Supervisor creates what it needs, when it needs it, from 8 base templates (Scout, Advisor, Senior Dev, Tester, Critique, Pentester, Docs Writer, Chore — plus Ops Board Manager).
 
 ## RLM-Inspired Design
 

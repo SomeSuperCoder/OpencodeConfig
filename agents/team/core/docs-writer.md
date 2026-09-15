@@ -4,6 +4,8 @@ mode: subagent
 permission:
   task:
     "*": allow
+  edit:
+    "*": deny
   read:
     "*": allow
   write:
@@ -99,7 +101,4 @@ The Supervisor writes your workflow for each task. You receive a prompt with:
 - Be concise. Nobody reads 10-page READMEs.
 - Examples > descriptions. Show, don't tell.
 - Accuracy > completeness. Wrong docs are worse than no docs.
-- Missing data → STOP. Report: "Spawn prompt missing [X]."
-- ALL your spawns are FOREGROUND. You wait for results before continuing.
-- Read the handoff library. Check `harness/handoffs/` first.
-- **NEVER spawn the Supervisor.** The Supervisor is at the top. You cannot spawn it. If you need something from the Supervisor, report in `for_supervisor`.
+
