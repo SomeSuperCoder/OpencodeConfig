@@ -120,6 +120,7 @@ These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique
 | Tester | Write and run tests | ✅ | ✅ |
 | Critique | Review designs and code | ❌ | ✅ |
 | Pentester | Security testing | ✅ | ✅ |
+| Docs Writer | Write documentation | ❌ | ✅ |
 | Chore | Git ops + maintenance | ❌ | ✅ |
 
 All agents can spawn subagents (recursive).
