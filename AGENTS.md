@@ -97,15 +97,26 @@ The Supervisor NEVER holds the pipeline in its head. It writes state to `harness
 
 The Supervisor spawns the ops-board-manager (foreground, fast) to read/update the board. One command per spawn. Lightning speed.
 
+## Shared Agent Rules
+
+These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique):
+
+- **ONE microtask.** Do one thing, hand off, stop. No chaining.
+- **FOREGROUND spawns.** If you spawn a subagent, you wait for it.
+- **Read the handoff library.** Check `harness/handoffs/` before re-gathering context.
+- **Born with data.** Use what the Supervisor injected. Don't re-read files unless prompted.
+- **Missing data → STOP.** Report: "Spawn prompt missing [X]."
+- **Anti-rot:** If you're doing something outside your spawn prompt, STOP.
+
 ## Templates
 
-| Template | Job | Can Edit | Can Shell |
+| Template | Job | Can Edit | Can Write |
 |----------|-----|----------|-----------|
-| Scout | Gather context | ❌ | ❌ |
-| Advisor | Advise on decisions | ❌ | ❌ |
+| Scout | Gather context | ❌ | ✅ |
+| Advisor | Advise on decisions | ❌ | ✅ |
 | Senior Developer | Implement code | ✅ | ✅ |
 | Tester | Write and run tests | ✅ | ✅ |
-| Critique | Review designs and code | ❌ | ❌ |
+| Critique | Review designs and code | ❌ | ✅ |
 
 All agents can spawn subagents (recursive).
 

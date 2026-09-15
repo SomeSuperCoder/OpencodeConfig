@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T00:00:00Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [],
+      "call_chains": [],
+      "blast_radius": ["skills/handoff-output/SKILL.md"],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Compressed handoff-output from 94 to 53 lines. Schema, field rules table, and verification checklist preserved. Removed When-to-Use, How Supervisor Reads, and verbose filler.",
+    "for_successor": ""
+  }
+}

@@ -44,27 +44,8 @@ Follow the workflow you're given. If no workflow is specified, use the default b
 
 ## Handoff
 
-Write `harness/handoffs/tester/<name>.json`:
-
-```json
-{
-  "headers": { "timestamp": "ISO-8601", "agent_id": "tester" },
-  "data": {
-    "shared": {
-      "key_facts": ["test results"],
-      "call_chains": [],
-      "blast_radius": ["test files modified"],
-      "research_sources": []
-    },
-    "for_supervisor": "VERDICT: GREEN/RED + evidence (1 paragraph)",
-    "for_successor": "next agent + what to do"
-  }
-}
-```
-
-Write with nushell: `nu -c "{ headers: { timestamp: (date now | date to-utc | format date '%Y-%m-%dT%H:%M:%SZ'), agent_id: 'tester' }, data: { shared: { key_facts: [...], call_chains: [], blast_radius: [...], research_sources: [] }, for_supervisor: '...', for_successor: '...' } } | to json | save harness/handoffs/tester/<name>.json -f"`
-
-Report ONLY: `## HANDOFF\n**Verdict:** 🟢 GREEN / 🔴 RED\n**Handoff JSON:** harness/handoffs/tester/<name>.json`
+Write handoff to `harness/handoffs/tester/<name>.json`.
+Load `skill(name="handoff-output")` for the full schema.
 
 ## Anti-Context-Rot
 
@@ -72,12 +53,12 @@ Report ONLY: `## HANDOFF\n**Verdict:** 🟢 GREEN / 🔴 RED\n**Handoff JSON:** 
 - If you find a pre-existing bug, note it in `for_supervisor` — don't fix it (that's Senior Dev's job).
 - ONE handoff. Done = STOP. Don't keep testing.
 
-## Rules
+See AGENTS.md "Shared Agent Rules" + role-specific rules below.
+
+## Role-Specific Rules
 
 - ONE test run. Capture ALL output. Never re-run with different pipes.
 - RED → fix ALL failures in one pass → GREEN. 2 runs max.
 - GREEN = fast handoff. RED = deep investigation.
 - Test the DELIVERED CHANGE, not the whole project.
 - Your verdict is SHARED, not re-derived.
-- **ALL your spawns are FOREGROUND.** You wait for results before continuing.
-- **Read the handoff library.** If your prompt references a prior handoff, READ IT. Don't re-gather. Check `harness/handoffs/` first.

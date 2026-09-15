@@ -45,27 +45,8 @@ Follow the workflow you're given. If no workflow is specified, use the default b
 
 ## Handoff
 
-Write `harness/handoffs/senior-dev/<name>.json`:
-
-```json
-{
-  "headers": { "timestamp": "ISO-8601", "agent_id": "senior-dev" },
-  "data": {
-    "shared": {
-      "key_facts": ["what was implemented"],
-      "call_chains": ["imports changed"],
-      "blast_radius": ["files modified"],
-      "research_sources": []
-    },
-    "for_supervisor": "VERDICT + what changed + what verified (1 paragraph)",
-    "for_successor": "tester should test [scope]"
-  }
-}
-```
-
-Write with nushell: `nu -c "{ headers: { timestamp: (date now | date to-utc | format date '%Y-%m-%dT%H:%M:%SZ'), agent_id: 'senior-dev' }, data: { shared: { key_facts: [...], call_chains: [...], blast_radius: [...], research_sources: [] }, for_supervisor: '...', for_successor: '...' } } | to json | save harness/handoffs/senior-dev/<name>.json -f"`
-
-Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness/handoffs/senior-dev/<name>.json`
+Write handoff to `harness/handoffs/senior-dev/<name>.json`.
+Load `skill(name="handoff-output")` for the full schema.
 
 ## Anti-Context-Rot
 
@@ -73,12 +54,9 @@ Report ONLY: `## HANDOFF\n**Verdict:** ✅/⚠️/❌\n**Handoff JSON:** harness
 - If you spot a bug or improvement outside scope, note it in `for_supervisor` — don't fix it.
 - ONE handoff. Done = STOP. Don't keep coding.
 
-## Rules
+See AGENTS.md "Shared Agent Rules" + role-specific rules below.
 
-- ONE focused task. Nothing else.
+## Role-Specific Rules
+
 - You do NOT run tests. Tester does.
 - You do NOT review your own code. Critique does.
-- Spawned with data → use it. Don't re-read files.
-- Missing data → STOP. Report: "Spawn prompt missing [X]."
-- **ALL your spawns are FOREGROUND.** You wait for results before continuing.
-- **Read the handoff library.** If your prompt references a prior handoff, READ IT. Don't re-gather. Check `harness/handoffs/` first.
