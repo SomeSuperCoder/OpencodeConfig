@@ -121,6 +121,38 @@ Name waves by purpose, not number:
 
 This makes it clear what each wave DOES, not just when it runs.
 
+## Recursive Verification (RLM-Inspired)
+
+After EVERY wave, verify before proceeding. Don't just hope it worked.
+
+### The Verification Loop
+
+```
+WAVE COMPLETES
+  ↓
+① READ handoffs — what did the agents actually produce?
+② VERIFY — does output match expected output? (what we asked for, not "is it good")
+③ IF MATCH → proceed to next wave
+④ IF MISMATCH → diagnose:
+   a. Was the decomposition wrong? → re-decompose
+   b. Was the prompt bad? → re-write prompt, re-spawn
+   c. Was the scope wrong? → adjust scope
+⑤ FIX root cause → re-spawn failed wave → re-verify
+```
+
+### What to Check
+
+| Check | What to look for | If missing |
+|-------|-----------------|------------|
+| Completeness | All expected deliverables present | Re-spawn with tighter scope |
+| Correctness | Output matches what was asked | Re-spawn with better prompt |
+| Quality | Meets minimum bar (not perfect, not broken) | Re-spawn or fix forward |
+| Dependencies | All prerequisites satisfied | Block next wave, resolve first |
+
+### The Rule
+
+**Never proceed on hope.** "It probably worked" is not verification. Read the handoff. Check the output. Confirm. Then proceed.
+
 ## Anti-Patterns
 
 | Anti-Pattern | Why it's bad |

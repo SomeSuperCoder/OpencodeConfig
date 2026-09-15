@@ -1,0 +1,50 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T00:00:00Z",
+    "agent_id": "scout",
+    "task": "Research Recursive Language Models (RLMs)"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [
+        "Definition: A Recursive Language Model (RLM) is NOT a new neural architecture — it is a new INFERENCE STRATEGY. It wraps a standard LM (e.g., GPT-5, Claude) in a thin wrapper that can spawn recursive LM calls for intermediate computation. From the user's perspective, rlm.completion(messages) is a drop-in replacement for gpt5.completion(messages).",
+        "Core Paper: 'Recursive Language Models' (arXiv:2512.24601, December 2025) by Alex L. Zhang, Tim Kraska, and Omar Khattab from MIT CSAIL.",
+        "Key Insight: RLMs treat context NOT as internal data (tokens in attention window) but as an EXTERNAL STATE VARIABLE in a Turing-complete environment (a Python REPL). The full input prompt is stored as a variable; the model writes code to inspect, decompose, and recursively call sub-RLM instances over selected snippets.",
+        "Architecture: Standard transformer + Python REPL environment. The REPL stores input context as a variable. The model writes Python code to manipulate that variable. Recursion appears as a TRAJECTORY of actions, observations, and subcalls — not hidden-state recurrence.",
+        "Inference Mechanism: (1) User query + full context C stored as variable in REPL. (2) Root model inspects the variable, decides how to decompose. (3) Model spawns RLM_M(q_hat, C_hat) — an isolated sub-instance with a new query and transformed context. (4) Sub-instance processes, returns output to caller's environment. (5) Caller aggregates and decides if done or needs more recursion.",
+        "Context Rot: Standard LLMs suffer 'context rot' — as context length increases, reasoning quality doesn't plateau, it COLLAPSES. The model becomes 'dumber' with more information. RLMs solve this by isolating context into separate sub-calls, each with manageable context.",
+        "The REPL as External Hippocampus: Standard LLMs work like a Prefrontal Cortex trying to hold everything in Working Memory. RLMs use the REPL as an external Hippocampus — persistent, manipulable state. Python tools (regex, split, count) are infallible for symbolic operations where LLMs hallucinate.",
+        "Three Types of Recursion in RLMs: (1) Architecture recursion — transformer blocks repeated (e.g., Universal Transformer). (2) Systems recursion — a standard model wrapped in a REPL environment, creating sub-calls. (3) Both combined. The original RLM paper focuses on systems recursion.",
+        "Benefits: (a) Unbounded context — theoretically infinite, limited only by RAM and budget, not attention window. (b) Zero context rot — each sub-call sees isolated context. (c) Adaptive compute — can recurse more for hard problems, less for easy ones. (d) Inference-time scaling laws — more compute at inference = better results. (e) Cost-variable — scales with task difficulty, not fixed at max.",
+        "Related Concepts: Self-Refine (iterative self-feedback, arXiv 2023), Reflexion (verbal reinforcement learning, NeurIPS 2023), STaR (bootstrapping reasoning), Universal Transformer (Google, 2018 — same layer repeated with adaptive halting), Tree-LSTMs (Socher, 2011), Recursive Neural Networks (RecNNs).",
+        "Training: RLMs can be trained by (1) Using a frontier model as-is in a REPL environment (zero-shot — no training needed). (2) RL fine-tuning smaller models to behave as native RLM controllers — training the policy pi_theta(a_t | q, h_t, E_t, b_t) where a_t is action, q is query, h_t is history, E_t is environment state, b_t is remaining budget. The training target is a TRAJECTORY of actions and observations.",
+        "Limitations: (a) The hard problem moves, not disappears — must choose good computation over external workspace. (b) Central failure mode: BAD CONTROL — poor decomposition, bad sub-calls, wrong aggregation. (c) Multiplied error surface — each recursive call can hallucinate or make wrong decisions. (d) Cost can explode with bad recursion depth. (e) Latency increases with recursion depth. (f) Safety risks from code execution in REPL.",
+        "Applications: Long-document analysis, codebase understanding, legal document processing, scientific paper synthesis, multi-step reasoning chains, tasks with hierarchical structure.",
+        "Economic Analysis: RLMs validate Inference-Time Scaling Laws — compute at inference time scales predictably with quality, unlike standard LLMs where cost is fixed per query.",
+        "Comparison Table: Standard Long-Context LLMs have ~1M-10M context, high degradation, fixed cost. RLMs have unlimited virtual context, zero degradation (context isolation), variable adaptive cost."
+      ],
+      "call_chains": [
+        "User Query → rlm.completion(messages) → REPL Environment stores C as variable → Root Model inspects variable → Root Model writes code to decompose → Root Model spawns RLM_M(q_hat, C_hat) sub-call → Sub-RLM processes → Output returned to caller environment → Root Model aggregates → Final Answer"
+      ],
+      "blast_radius": [
+        "This is a research-only task — no codebase changes"
+      ],
+      "research_sources": [
+        "Paper: arXiv:2512.24601 — 'Recursive Language Models' by Alex L. Zhang, Tim Kraska, Omar Khattab (MIT CSAIL, Dec 2025)",
+        "Official blog: https://alexzhang13.github.io/blog/2025/rlm",
+        "Official codebase: https://github.com/alexzhang13/rlm",
+        "Technical deep-dive: https://medium.com/@comeback01/recursive-language-models-rlms-a-technical-deep-dive-into-the-infinite-context-paradigm-85b5b43373fc",
+        "Recursive Transformers primer: https://aman.ai/primers/ai/recursive-transformers",
+        "Emergent Mind topic page: https://www.emergentmind.com/topics/recursive-transformer",
+        "Self-Refine paper: arXiv 2303.17651 (Madaan et al., NeurIPS 2023)",
+        "Reflexion paper: NeurIPS 2023 — Language Agents with Verbal Reinforcement Learning",
+        "ICLR 2026 Workshop on AI with Recursive Self-Improvement: https://iclr.cc/virtual/2026/workshop/10000796",
+        "HuggingFace model (MoR variant): https://huggingface.co/Girinath11/recursive-language-model-198m",
+        "Awesome Recursive Self-Improvement: https://github.com/natnew/awesome-recursive-self-improvement",
+        "TechRxiv RTM paper: https://www.techrxiv.org/doi/10.36227/techrxiv.176118936.69886233"
+      ]
+    },
+    "for_supervisor": "VERIFIED: Recursive Language Models (RLMs) are an inference strategy, not a neural architecture. The key paper is arXiv:2512.24601 by Zhang, Kraska, and Khattab (MIT CSAIL, Dec 2025). RLMs wrap a standard LM in a Python REPL environment where the full input context is stored as a variable. The model writes code to inspect, decompose, and recursively call sub-RLM instances over context fragments. This bypasses the attention window limit entirely — context becomes external state, not internal tokens. Benefits include unbounded context, zero context rot, adaptive compute, and inference-time scaling laws. Limitations include the problem of 'bad control' (poor decomposition/aggregation), multiplied error surfaces, and increased latency/cost with recursion depth. The concept relates to but is distinct from Self-Refine (iterative refinement), Universal Transformer (architecture-level recursion), and Tree-LSTMs (hierarchical composition). RLMs are systems-level recursion: a standard model wrapped in a REPL, not a model with recursive architecture. Training can be zero-shot (use frontier model in REPL) or RL-fine-tuned for smaller controller models.",
+    "for_successor": "This research is complete. If next steps involve implementation, the key architectural decision is: (1) Use frontier model as RLM controller (zero-shot, simpler) vs. (2) RL-fine-tune a smaller model as native RLM controller (more efficient, requires training). The official codebase at github.com/alexzhang13/rlm is the reference implementation."
+  }
+}

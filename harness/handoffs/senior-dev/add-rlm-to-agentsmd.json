@@ -1,0 +1,8 @@
+{
+  "headers": { "timestamp": "2026-09-15T00:00:00Z", "agent_id": "senior-dev" },
+  "data": {
+    "shared": { "key_facts": [], "call_chains": [], "blast_radius": ["AGENTS.md"], "research_sources": [] },
+    "for_supervisor": "VERDICT: Added RLM-inspired design section to AGENTS.md after the Hierarchy section. References the core paper (arXiv:2512.24601) and explains how our system mirrors RLM concepts: external state, isolated context, recursive decomposition, wave verification, and budget awareness.",
+    "for_successor": ""
+  }
+}

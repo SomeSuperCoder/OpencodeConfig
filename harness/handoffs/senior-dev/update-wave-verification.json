@@ -1,0 +1,8 @@
+{
+  "headers": { "timestamp": "2026-09-15T00:00:00Z", "agent_id": "senior-dev" },
+  "data": {
+    "shared": { "key_facts": [], "call_chains": [], "blast_radius": ["skills/wave-orchestration/SKILL.md"], "research_sources": [] },
+    "for_supervisor": "VERDICT: Added recursive verification to wave-orchestration skill. Verify between every wave — don't proceed on hope.",
+    "for_successor": ""
+  }
+}

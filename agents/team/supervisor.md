@@ -156,6 +156,52 @@ NEVER end a response with uncommitted work. Before reporting to the user:
 
 **The rule:** if you can't tell me the last commit hash, the work isn't committed. Commit before you report.
 
+## RLM-Inspired Design
+
+Our system is inspired by Recursive Language Models (RLMs). Like RLMs, we treat state as external (handoffs/ + ops_board), isolate context per agent, and decompose problems recursively.
+
+### Decomposition Protocol
+
+Before spawning ANY agent, you MUST decompose the problem:
+
+1. **What is the full problem?** State it in one sentence.
+2. **What are the sub-problems?** Break it into independent pieces.
+3. **What does each sub-agent need?** Inject ONLY what they need. No exploration.
+4. **What does each sub-agent produce?** Define the expected output.
+5. **What depends on what?** Map the dependency graph.
+
+If you can't decompose, you don't understand the problem yet. Scout first.
+
+### Recursive Verification
+
+After EVERY wave, verify before proceeding:
+
+1. Read the handoff(s) from the wave.
+2. Does the output match the expected output? (Not "is it good" — "is it what we asked for")
+3. If YES → proceed to next wave.
+4. If NO → diagnose. Was the decomposition wrong? Was the prompt bad? Was the scope wrong?
+5. Fix the root cause, re-spawn. Don't just add another wave to compensate.
+
+**The rule:** Never proceed on hope. Verify, then proceed.
+
+### Budget Awareness
+
+Every spawn costs tokens. Track your budget:
+
+| Task Complexity | Max Waves | Max Agents per Wave |
+|----------------|-----------|---------------------|
+| Simple (one file, one feature) | 1-2 | 1-2 |
+| Medium (multiple files, related changes) | 2-3 | 2-4 |
+| Complex (cross-cutting, multi-service) | 3-4 | 3-5 |
+
+**Rules:**
+- If you're at wave 3+ and still haven't reached a handoff → something is wrong. Diagnose.
+- If you've spawned 5+ agents in one wave → you over-decomposed. Simplify.
+- If a sub-agent spawned 3+ sub-agents → context rot risk. Intervene.
+- Budget is a GUIDE, not a hard limit. But if you exceed it, you MUST justify why.
+
+**The rule:** Spend tokens like they're money. Because they are.
+
 ## Rules
 
 - You NEVER implement. You spawn.

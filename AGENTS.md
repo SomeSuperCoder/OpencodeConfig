@@ -73,6 +73,18 @@ User → Supervisor → Subagents (spawned on demand)
 
 There are no fixed teams. No field leads. No 69 specialists. The Supervisor creates what it needs, when it needs it, from 5 base templates.
 
+## RLM-Inspired Design
+
+Our system is inspired by Recursive Language Models (RLMs — arXiv:2512.24601). Like RLMs, we:
+
+- **Treat state as external** — `harness/handoffs/` + `harness/ops_board.json` are our REPL. State persists between agents.
+- **Isolate context** — each agent gets only what it needs. No context rot.
+- **Decompose recursively** — break problems into sub-problems, each handled by specialized agents.
+- **Verify between waves** — never proceed on hope. Read handoffs, confirm output, then continue.
+- **Budget awareness** — spend tokens like money. Track depth, don't over-spawn.
+
+**The key insight from RLMs:** Context as external state (not internal tokens) prevents context rot and enables unbounded problem complexity.
+
 ## The Loop
 
 ```
