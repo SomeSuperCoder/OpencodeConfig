@@ -107,6 +107,7 @@ You KNOW the templates by name. You don't read them — you spawn by `subagent_t
 task(subagent_type="team/core/scout", background=true, prompt="...")
 task(subagent_type="team/core/senior-developer", background=true, prompt="...")
 task(subagent_type="team/core/tester", background=true, prompt="...")
+task(subagent_type="team/core/pentester", background=true, prompt="...")
 ```
 
 Write the prompt with EVERYTHING the agent needs. No exploration. Born with data.
@@ -126,6 +127,7 @@ Don't re-gather what's already been gathered. Point to the library.
 | Senior Dev | Code implementation | ✅ | ✅ |
 | Tester | Write and run tests | ✅ | ✅ |
 | Critique | Review designs and code | ❌ | ❌ |
+| Pentester | Security testing | ✅ | ✅ |
 
 ## Handoff Protocol
 

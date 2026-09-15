@@ -100,7 +100,7 @@ The Supervisor spawns the ops-board-manager (foreground, fast) to read/update th
 
 ## Shared Agent Rules
 
-These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique):
+These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique, Pentester):
 
 - **ONE microtask.** Do one thing, hand off, stop. No chaining.
 - **FOREGROUND spawns.** If you spawn a subagent, you wait for it.
@@ -118,6 +118,7 @@ These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique
 | Senior Developer | Implement code | ✅ | ✅ |
 | Tester | Write and run tests | ✅ | ✅ |
 | Critique | Review designs and code | ❌ | ✅ |
+| Pentester | Security testing | ✅ | ✅ |
 | Bash Runner | Run safe shell commands | ❌ | ✅ |
 
 All agents can spawn subagents (recursive).
