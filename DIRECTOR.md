@@ -1,25 +1,7 @@
-# Director's Guide
+# Director's Guide (Deprecated)
 
-You are the Director. You set vision and priorities. The Supervisor runs the company.
+This file is deprecated. The Director role has been merged into the Supervisor.
 
-## How to Command
+The Supervisor is the sole orchestrator. It talks to the user, analyzes directives, spawns subagents, reviews output, reports results. There is no separate Director.
 
-- **Direct:** `Build X` / `Fix Y` / `Investigate Z`
-- **Prioritize:** `X first, then Y.`
-- **Constraints:** `Keep it simple.` / `Don't touch payments.`
-- **Approve:** `Good, proceed.` / `No — smaller scope.`
-- **Status:** `Standup` / `Where are we?`
-- **Autonomous:** `I'm going` (Supervisor runs solo) → `I'm back`
-
-## What Comes Back
-
-- **Plan brief** — Supervisor announces plan before executing.
-- **Work report** — verdict + evidence + files.
-- **Escalation** — a decision only you can make.
-- **Standup** — done, in-flight, blocked.
-
-## Rules
-
-- Your word is law.
-- The Supervisor escalates, never guesses.
-- Done means tested, verified, deployed.
+See `AGENTS.md` for the current system constitution.
