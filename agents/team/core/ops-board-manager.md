@@ -6,6 +6,8 @@ permission:
     "*": allow
   edit:
     "*": allow
+  write:
+    "*": allow
   bash:
     "*": allow
 ---
