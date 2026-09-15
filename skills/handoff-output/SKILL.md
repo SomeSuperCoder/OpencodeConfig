@@ -1,6 +1,6 @@
 ---
 name: handoff-output
-description: "The mandatory output protocol for every subagent: write your handoff.json to harness/handoffs/<agent_id>/<name>.json, then report only the path in your opencode HANDOFF section. Structured, predictable, nushell-queryable. Use at the END of every microtask, before reporting to the Supervisor."
+description: "The mandatory output protocol for every subagent: write your handoff.json to harness/handoffs/<agent_id>/<name>.json, then report only the path in your opencode HANDOFF section. Structured, predictable. Use at the END of every microtask, before reporting to the Supervisor."
 ---
 
 # Handoff JSON Output Protocol
@@ -33,7 +33,7 @@ That's it. The path proves the JSON was written and the agent didn't crash. The 
 
 ## The Schema — EXACTLY THIS
 
-Write the file with `to json` if possible, or as raw JSON. The schema:
+Write the file using the `write` tool. The schema:
 
 ```json
 {
@@ -61,7 +61,7 @@ Write the file with `to json` if possible, or as raw JSON. The schema:
 
 | Field | What to put in it | Length |
 |-------|-------------------|--------|
-| `headers.timestamp` | `date -u +"%Y-%m-%dT%H:%M:%SZ"` | — |
+| `headers.timestamp` | Current UTC time in ISO-8601 | — |
 | `headers.agent_id` | your agent id | — |
 | `headers.vector` | copy from `harness/ops_board.json` | — |
 | `data.shared.key_facts` | every hard fact the next agent cannot infer | dense bullets |
@@ -71,26 +71,13 @@ Write the file with `to json` if possible, or as raw JSON. The schema:
 | `data.for_supervisor` | VERDICT + evidence + decision-ready summary | 1 paragraph, max 6 lines |
 | `data.for_successor` | next owner + the exact JSON to read + the next microtask | 1 paragraph |
 
-## How the Supervisor Consumes It
+## How the Supervisor Reads It
 
-The Supervisor NEVER re-reads your full report. It runs:
+The Supervisor uses the `read` tool to read `harness/handoffs/<agent_id>/<name>.json` and extracts `.data.for_supervisor`.
 
-```bash
-nu -c "open harness/handoffs/tester/tests.json | from json | .data.for_supervisor"
+For the next agent's spawn, it links the file:
 ```
-
-And for the next agent's spawn, it links the file and tells the worker to extract fields:
-
-```bash
-nu -c "open harness/handoffs/scout/scout.json | from json | .data.shared.key_facts"
-```
-
-## Nushell Write Pattern (recommended)
-
-When you can build your result as a nushell record, write it directly:
-
-```bash
-nu -c "{ headers: { timestamp: (date now | date to-utc | format date '%Y-%m-%dT%H:%M:%SZ'), agent_id: 'tester' }, data: { shared: { key_facts: ['a', 'b'], call_chains: [], blast_radius: ['x.ts'], research_sources: [] }, for_supervisor: 'verdict...', for_successor: 'next...' } } | to json | save harness/handoffs/tester/tests.json -f"
+Read: harness/handoffs/scout/context.json → .data.shared.key_facts
 ```
 
 ## Verification — DID YOU COMPLY?
@@ -98,7 +85,7 @@ nu -c "{ headers: { timestamp: (date now | date to-utc | format date '%Y-%m-%dT%
 Before ending the session, confirm:
 
 1. ✅ File exists at `harness/handoffs/<agent_id>/<name>.json`
-2. ✅ File is non-empty and valid JSON (`nu -c "open <path> | from json | get data.for_supervisor"`)
+2. ✅ File is non-empty and valid JSON
 3. ✅ `headers.vector` matches `harness/ops_board.json`
 4. ✅ `for_supervisor` contains verdict + evidence
 5. ✅ `for_successor` names the next owner

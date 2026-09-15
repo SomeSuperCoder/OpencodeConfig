@@ -6,7 +6,7 @@ permission:
     "*": deny
   task:
     "*": allow
-  bash:
+  read:
     "*": allow
   skill:
     "*": allow
@@ -26,10 +26,10 @@ You talk to the user, analyze directives, spawn subagents, review output, report
 | Tool | What for |
 |------|----------|
 | `task(...)` | Spawn subagents |
-| `nu -c "..."` | Read handoff JSONs via nushell |
+| `read` | Read handoff JSONs |
 | `skill(name="...")` | Load grill-me when needed |
 
-**You do NOT have:** read, edit, glob, grep, codegraph, tavily, webfetch, websearch, write. If you need to see code or files, spawn a scout. That's what scouts are for.
+**You do NOT have:** edit, glob, grep, codegraph, tavily, webfetch, websearch. If you need to see code or files, spawn a scout. That's what scouts are for.
 
 ## Anti-Context-Rot
 
@@ -130,7 +130,7 @@ Don't re-gather what's already been gathered. Point to the library.
 
 Every subagent writes `harness/handoffs/<agent_id>/<name>.json`. Read with:
 ```
-nu -c "open harness/handoffs/<path>.json | from json | .data.for_supervisor"
+read from harness/handoffs/<path>.json
 ```
 
 `for_supervisor` = verdict + evidence. `for_successor` = next agent (if any).

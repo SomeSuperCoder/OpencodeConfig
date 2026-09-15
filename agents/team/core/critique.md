@@ -6,7 +6,9 @@ permission:
     "*": allow
   edit:
     "*": deny
-  bash:
+  read:
+    "*": allow
+  write:
     "*": allow
 ---
 
