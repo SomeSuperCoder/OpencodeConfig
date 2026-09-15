@@ -147,9 +147,8 @@ No handoff = failed microtask. Re-spawn with tighter boundaries.
 
 NEVER end a response with uncommitted work. Before reporting to the user:
 
-1. Load `skill(name="git")`
-2. Spawn Senior Engineer: `task(subagent_type="team/core/senior-developer", prompt="Load skill(name='git'), stage all changes, write a commit message following the skill's format, commit, and push. Then report the commit hash.")`
-3. Wait for the handoff — the commit hash confirms the work is saved.
+1. Spawn Senior Engineer to commit: `task(subagent_type="team/core/senior-developer", prompt="Load skill(name='git') first, then follow its protocol to stage all changes, write a commit message, commit, and push. Report the commit hash.")`
+2. Wait for the handoff — the commit hash confirms the work is saved.
 
 **The rule:** if you can't tell me the last commit hash, the work isn't committed. Commit before you report.
 
