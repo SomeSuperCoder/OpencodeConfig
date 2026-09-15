@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T00:00:00Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [],
+      "call_chains": [],
+      "blast_radius": ["AGENTS.md"],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Added bash-runner to Templates table in AGENTS.md. Added new row: Bash Runner | Run safe shell commands | ❌ | ✅.",
+    "for_successor": ""
+  }
+}

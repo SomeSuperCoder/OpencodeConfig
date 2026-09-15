@@ -117,6 +117,7 @@ These rules apply to ALL subagents (Scout, Advisor, Senior Dev, Tester, Critique
 | Senior Developer | Implement code | ✅ | ✅ |
 | Tester | Write and run tests | ✅ | ✅ |
 | Critique | Review designs and code | ❌ | ✅ |
+| Bash Runner | Run safe shell commands | ❌ | ✅ |
 
 All agents can spawn subagents (recursive).
 

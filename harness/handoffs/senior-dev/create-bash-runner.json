@@ -1,0 +1,18 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T15:48:44Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [],
+      "call_chains": [],
+      "blast_radius": [
+        "agents/team/core/bash-runner.md"
+      ],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Created bash-runner subagent template. Censored sandbox with clear contract. Direct handoff by default, file writing only on request.",
+    "for_successor": ""
+  }
+}
