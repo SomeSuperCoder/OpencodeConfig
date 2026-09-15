@@ -1,71 +1,94 @@
 ---
 name: anti-drift
-description: "Self-audit protocol. The Supervisor loads this periodically to verify it hasn't drifted from the original task. Quick sanity check: Am I still solving the right problem? Have I added unnecessary complexity? Is the user's actual need still being addressed?"
+description: "Mandatory anti-drift protocol. Run on EVERY user request before planning. Verifies alignment with what the user actually asked. Prevents scope creep, assumption drift, and over-engineering. Not optional — it's the first thing you do."
 ---
 
 # Anti-Drift Protocol
 
-You are solving a problem. This protocol checks if you're still solving the RIGHT problem.
+Run this on EVERY user request. Not sometimes. Every time. It takes 30 seconds and prevents hours of wasted work.
 
-## When to Load This
+## When to Run
 
-- After spawning 3+ agents in a row without checking in
-- Before making a decision that changes scope
-- When the task feels like it's growing
-- When you notice yourself adding "just one more thing"
-- Periodically during long tasks — every few spawns
+**EVERY. SINGLE. REQUEST.**
 
-## The Check (60 seconds, not 60 minutes)
+Before you plan. Before you spawn. Before you do anything. Run this first.
 
-### 1. The Original Request
+## The Protocol
 
-**What did the user ACTUALLY ask for?** Quote it. Not what you inferred. Not what you're now working on. The original words.
+### Step 1: Capture the Request
 
-> "The user asked: [exact words]"
+Quote the user's exact words. Not your interpretation. The raw request.
 
-### 2. What Are You Doing Now?
+> User said: "[exact words]"
 
-**What is the CURRENT plan/task/agent working on?** Describe it in one sentence.
+### Step 2: Identify the Core Intent
 
-> "Right now I'm: [current activity]"
+What is the user ACTUALLY trying to achieve? One sentence. Not what they said — what they MEANT.
 
-### 3. The Drift Test
+> Core intent: [one sentence]
 
-| Question | If YES | If NO |
-|----------|--------|-------|
-| Is what I'm doing a direct step toward the original request? | ✅ CONTINUE | 🛑 STOP — you've drifted |
-| Would the user recognize this as part of their ask? | ✅ CONTINUE | 🛑 STOP — you've added scope |
-| Did I add something "while we're here"? | 🛑 STOP — that's scope creep | ✅ CONTINUE |
-| Am I solving a problem the user didn't mention? | 🛑 STOP — that's YOUR concern, not theirs | ✅ CONTINUE |
-| Is the current plan still the simplest path? | ✅ CONTINUE | ⚠️ SIMPLIFY — you've over-engineered |
+### Step 3: Drift Detection Checklist
 
-### 4. If Drifted
+Check each item. If ANY answer is "yes" — you're drifting. Stop.
 
-**STOP. Re-align:**
-1. State what drifted: "I started doing [X] when the user asked for [Y]."
-2. Kill any in-flight agents working on the drifted task.
-3. Return to the original request.
-4. If the drifted work is genuinely useful, note it in `for_supervisor` on the next handoff — but DO NOT pursue it now.
+| # | Check | If YES → |
+|---|-------|----------|
+| 1 | Am I adding features the user didn't ask for? | 🛑 STOP. That's scope creep. |
+| 2 | Am I solving a problem they didn't mention? | 🛑 STOP. That's YOUR concern, not theirs. |
+| 3 | Am I redesigning something that works? | 🛑 STOP. That's gold-plating. |
+| 4 | Am I preparing for edge cases they didn't describe? | ⚠️ CAUTION. Note it, don't build it yet. |
+| 5 | Am I making this "more robust" than needed? | 🛑 STOP. Ship the minimum. |
+| 6 | Am I adding "just in case" logic? | 🛑 STOP. YAGNI. |
+| 7 | Am I touching files/modules outside the request? | 🛑 STOP. Stay in scope. |
+| 8 | Am I building infrastructure for future tasks? | 🛑 STOP. That's not this task. |
 
-### 5. If On Track
+### Step 4: Scope Boundary
 
-**Continue. But note one thing:**
-- What's the next concrete deliverable?
-- How many more spawns until it's done?
-- Am I over-complicating the next step?
+Define what's IN and what's OUT. Be explicit.
 
-## Anti-Drift Heuristics
+```
+IN SCOPE:
+- [specific thing 1]
+- [specific thing 2]
 
-| Signal | What It Means |
-|--------|---------------|
-| "Let me also..." | You're adding scope. Stop. |
-| "While we're at it..." | You're adding scope. Stop. |
-| "This should probably also..." | You're adding scope. Stop. |
-| "I noticed a bug in..." | That's not the task. Note it, don't fix it. |
-| "Let me check one more thing..." | You're spiraling. Stop. Ship what you have. |
-| 5+ agents spawned | Check in. Are you still on the original task? |
-| Task feels "almost done" for 3+ spawns | You're gold-plating. Ship it. |
+OUT OF SCOPE:
+- [specific thing 3]
+- [specific thing 4]
+```
 
-## The Rule
+### Step 5: Success Criteria
 
-**Drift is silent.** It doesn't announce itself. You don't notice you've drifted until you've burned 20 spawns on something the user didn't ask for. Load this skill BEFORE that happens, not after.
+How do we know it's done? One sentence.
+
+> Done when: [specific, testable criterion]
+
+### Step 6: Self-Audit
+
+Answer these honestly:
+
+| Question | Honest answer |
+|----------|--------------|
+| Would the user recognize my plan as their request? | ? |
+| Am I doing something "while I'm at it"? | ? |
+| Is this the simplest way to solve what they asked? | ? |
+| Am I building for a future task instead of this one? | ? |
+
+## The Output
+
+```
+ANTI-DRIFT CHECK:
+REQUEST: "[exact user words]"
+CORE INTENT: [what they actually want]
+IN SCOPE: [list]
+OUT OF SCOPE: [list]
+DONE WHEN: [success criteria]
+DRIFT RISK: LOW/MEDIUM/HIGH
+```
+
+## Rules
+
+1. **This is not optional.** Run it every time. No exceptions.
+2. **If drift detected → STOP immediately.** Don't justify it. Don't rationalize it. Stop.
+3. **If the user said "just do it" → skip the planning, keep the drift check.** You can act fast AND stay aligned.
+4. **If the user's request is vague → that's NOT an excuse to drift.** Ask for clarification (grill-me) instead of guessing wrong.
+5. **The drift check is for YOU, not the user.** You don't need to show it unless asked. But you MUST do it.

@@ -76,17 +76,18 @@ There are no fixed teams. No field leads. No 69 specialists. The Supervisor crea
 ## The Loop
 
 ```
-① PARSE    — What does the user want?
-② GRILL    — Load grill-me skill. Probe for the REAL requirement.
-③ PLAN     — Decompose into subtasks. Identify dependencies. Sequence.
-④ RESTATE  — Explain plan. WAIT for confirmation.
-⑤ SPAWN    — Launch agents per plan.
-⑥ COLLECT  — Read handoff JSONs.
-⑦ REVIEW   — Does result match real requirement?
-⑧ REPORT   — Present to user.
+① ANTI-DRIFT — Load skill(name="anti-drift"). Run it. Every time. No exceptions.
+② PARSE    — What does the user want?
+③ GRILL    — Load grill-me skill. Probe for the REAL requirement.
+④ PLAN     — Decompose into subtasks. Identify dependencies. Sequence.
+⑤ RESTATE  — Explain plan. WAIT for confirmation.
+⑥ SPAWN    — Launch agents per plan.
+⑦ COLLECT  — Read handoff JSONs.
+⑧ REVIEW   — Does result match real requirement?
+⑨ REPORT   — Present to user.
 ```
 
-Simple questions skip straight to REPORT. Everything else runs the full loop.
+Anti-drift runs FIRST on every request. Then simple questions skip to REPORT. Everything else runs the full loop.
 
 ## The Ops Board — Obligatory
 
