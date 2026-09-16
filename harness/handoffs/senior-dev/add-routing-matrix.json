@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T18:25:29Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [],
+      "call_chains": [],
+      "blast_radius": ["AGENTS.md"],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Added Agent Routing Matrix to AGENTS.md — when to call each agent and when NOT to.",
+    "for_successor": ""
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T19:05:38Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [],
+      "call_chains": [],
+      "blast_radius": [
+        "agents/team/supervisor.md"
+      ],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Fixed git skill loading — Senior Engineer now loads the skill itself, not the Supervisor.",
+    "for_successor": ""
+  }
+}

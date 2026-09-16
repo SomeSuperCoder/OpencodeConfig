@@ -1,0 +1,63 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T21:07:40Z",
+    "agent_id": "scout",
+    "session_start": "2026-09-15T21:07:40Z",
+    "session_end": "2026-09-15T21:07:40Z",
+    "vector": "system-audit"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [
+        "=== DUPLICATIONS (13 found) ===",
+        "D1: NEVER spawn the Supervisor — repeated in AGENTS.md L155 + supervisor.md L215 + ALL 9 templates (scout L61, advisor L64, senior-developer L63, tester L65, critique L75, pentester L85, docs-writer L105, chore L122, ops-board-manager L71). Should be in AGENTS.md only.",
+        "D2: Handoff write instructions — each of 9 templates has a ## Handoff section saying write to harness/handoffs/<agent_id>/<name>.json + load handoff-output skill. Redundant — one reference in AGENTS.md suffices.",
+        "D3: Anti-Context-Rot section — appears in all 9 templates with near-identical content (ONE handoff, Done=STOP, note off-scope in for_supervisor). AGENTS.md already defines the master anti-rot table.",
+        "D4: Read the handoff library — pentester L84, docs-writer L104, chore L121 repeat AGENTS.md Shared Agent Rules L151.",
+        "D5: Missing data → STOP — pentester L82, docs-writer L102, chore L119 repeat AGENTS.md Shared Agent Rules L153.",
+        "D6: ALL your spawns are FOREGROUND — pentester L83, docs-writer L103, chore L120 repeat AGENTS.md Shared Agent Rules L150.",
+        "D7: RLM-Inspired Design — AGENTS.md L108-118 and supervisor.md L159-161 explain the same concept.",
+        "D8: Decompose Before You Act — AGENTS.md L28-30 and supervisor.md L163-173 cover identical decomposition protocol.",
+        "D9: Spend tokens like money / Budget Awareness — AGENTS.md L44-46 and supervisor.md L187-203 cover same concept with different detail levels.",
+        "D10: Never Proceed on Hope — AGENTS.md L36-38 and supervisor.md L175-185 identical concept.",
+        "D11: fircac-out-loud obligation — AGENTS.md L86-98 and supervisor.md L46 both mandate loading the skill.",
+        "D12: Anti-Context-Rot — AGENTS.md L67-84 and supervisor.md L34-48 both define rot rules for the Supervisor.",
+        "D13: Handoff library is shared — AGENTS.md L184-196 and supervisor.md L134-148 both explain handoff reading/writing.",
+        "",
+        "=== CONTRADICTIONS (7 found) ===",
+        "C1: Supervisor BLIND vs read permission — supervisor.md L17 says You are BLIND. You cannot read files. But frontmatter L9-10 grants read: *: allow. And supervisor.md L29 lists read as a tool. CONTRADICTION: which is correct?",
+        "C2: Template count — AGENTS.md L106 says 5 base templates but L159-168 lists 8 templates (Scout, Advisor, Senior Dev, Tester, Critique, Pentester, Docs Writer, Chore). Plus Ops Board Manager = 9. FALSE: there are 8-9, not 5.",
+        "C3: Spawn mode — AGENTS.md L172-174 says Supervisor spawns background, subagents spawn foreground. supervisor.md L104 says ALWAYS background. CONTRADICTION: are subagent spawns foreground or background?",
+        "C4: Template table columns — AGENTS.md L159-168 uses Can Edit / Can Write. supervisor.md L124-132 uses Can Edit / Can Shell. Different schemas for the same data.",
+        "C5: Chore cannot edit but has bash — AGENTS.md L168 says Chore Can Edit: ❌. Chore frontmatter L8-9 has bash: *: allow. Bash can write files via redirection. CONTRADICTION: is bash = edit capability?",
+        "C6: Docs Writer cannot edit but has bash — AGENTS.md L167 says Docs Writer Can Edit: ❌. Docs Writer frontmatter L11-12 has bash: *: allow. Same contradiction as Chore.",
+        "C7: Pentester has bash but no edit — Pentester frontmatter L7-8 has bash: *: allow but no edit permission listed. AGENTS.md L166 says Can Edit: ✅. CONTRADICTION: frontmatter says no edit, AGENTS.md says yes edit.",
+        "",
+        "=== INCONSISTENCIES (6 found) ===",
+        "I1: Handoff JSON schema — AGENTS.md L202-216 shows simplified schema (headers has timestamp + agent_id only). handoff-output skill shows full schema (headers has timestamp, agent_id, session_start, session_end, vector). Templates should follow the skill, not AGENTS.md.",
+        "I2: fircac-out-loud loading — AGENTS.md says OBLIGATORY for EVERY agent. But only 3/9 templates load it in default workflow: advisor L39, senior-developer L39, critique L39. Scout, tester, pentester, docs-writer, chore, ops-board-manager do NOT load it.",
+        "I3: Anti-Context-Rot detail levels — scout has 3 bullet points. advisor has 3. senior-developer has 3. tester has 3. critique has 3. pentester has 3. docs-writer has 3. chore has 2. ops-board-manager has 0 (just rules). Inconsistent depth.",
+        "I4: Role-Specific Rules section — only scout, advisor, senior-developer, tester, critique have a dedicated ## Role-Specific Rules section. pentester, docs-writer, chore, ops-board-manager embed rules inline without the section header.",
+        "I5: Handoff write command — AGENTS.md L218 says use nushell: nu -c { ... } | to json | save .... Templates say Load skill(name=handoff-output) for the full schema. Different instructions for the same action.",
+        "I6: Terminology mix — AGENTS.md uses microtask (L75, L149, L244). Templates use task, handoff, command, spawn interchangeably. No standard term defined."
+      ],
+      "call_chains": [],
+      "blast_radius": [
+        "AGENTS.md",
+        "supervisor.md",
+        "scout.md",
+        "advisor.md",
+        "senior-developer.md",
+        "tester.md",
+        "critique.md",
+        "pentester.md",
+        "docs-writer.md",
+        "chore.md",
+        "ops-board-manager.md"
+      ],
+      "research_sources": []
+    },
+    "for_supervisor": "SYSTEM AUDIT COMPLETE — 13 duplications, 7 contradictions, 6 inconsistencies found across 11 opencode configuration files. MOST CRITICAL: (1) Supervisor claims BLIND but has read permission — runtime behavior ambiguous. (2) Spawn mode contradicts: AGENTS.md says subagents=foreground, supervisor.md says ALL=background. (3) NEVER spawn the Supervisor repeated 11 times — pure noise. (4) fircac-out-loud is obligatory but 6/9 templates dont load it. (5) Template count claimed as 5 but actual count is 8-9. (6) Handoff schema in AGENTS.md is outdated vs handoff-output skill. (7) Chore/DocsWriter have bash permission but marked Cant Edit — bash can write files. Full findings in key_facts.",
+    "for_successor": "Advisor should triage these findings. Priority order: C1 (BLIND vs read — affects Supervisor behavior), C3 (spawn mode — affects runtime), C5/C6/C7 (permission mismatches — security risk), D1 (NEVER spawn duplication — noise reduction), I2 (fircac loading gap — reasoning quality)."
+  }
+}

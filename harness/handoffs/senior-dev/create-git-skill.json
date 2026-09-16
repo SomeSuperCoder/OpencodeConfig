@@ -1,0 +1,18 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T18:58:56Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [],
+      "call_chains": [],
+      "blast_radius": [
+        "skills/git/SKILL.md"
+      ],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Created mandatory git skill. Commit format, rules, and workflow defined. Load before ending every response.",
+    "for_successor": ""
+  }
+}

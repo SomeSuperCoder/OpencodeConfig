@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T16:52:13Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [],
+      "call_chains": [],
+      "blast_radius": ["agents/team/core/chore.md"],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Created chore agent. Git operations + safe shell commands. Inherits bash-runner rules, censored scope. Replaces bash-runner for git commits.",
+    "for_successor": ""
+  }
+}

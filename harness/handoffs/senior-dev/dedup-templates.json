@@ -1,0 +1,28 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T00:00:00Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [
+        "Added Shared Agent Rules section to AGENTS.md before Templates section",
+        "Replaced duplicated rules in all 5 templates with role-specific rules only",
+        "Replaced handoff JSON schemas in all 5 templates with skill reference to handoff-output",
+        "Removed obsolete nushell command from senior-developer.md Handoff section"
+      ],
+      "call_chains": [],
+      "blast_radius": [
+        "AGENTS.md",
+        "agents/team/core/scout.md",
+        "agents/team/core/advisor.md",
+        "agents/team/core/critique.md",
+        "agents/team/core/senior-developer.md",
+        "agents/team/core/tester.md"
+      ],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: All 4 parts complete. (1) Shared Agent Rules added to AGENTS.md before Templates section. (2) Removed duplicated rules from all 5 templates — each now keeps only role-specific rules (e.g., Scout keeps VERIFIED/UNVERIFIED and no-edit rules, Tester keeps RED/GREEN rules). (3) Replaced full handoff JSON schemas (~20 lines each) with 2-line skill reference. (4) Removed obsolete nushell command from senior-developer.md. Total: ~50 lines saved per template, single source of truth for shared rules.",
+    "for_successor": ""
+  }
+}

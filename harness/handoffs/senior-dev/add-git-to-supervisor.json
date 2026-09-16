@@ -1,0 +1,8 @@
+{
+  "headers": { "timestamp": "NOW", "agent_id": "senior-dev" },
+  "data": {
+    "shared": { "key_facts": [], "call_chains": [], "blast_radius": ["agents/team/supervisor.md"], "research_sources": [] },
+    "for_supervisor": "VERDICT: Added mandatory git commit to Supervisor. Loads git skill, spawns Senior Engineer to commit before every report.",
+    "for_successor": ""
+  }
+}

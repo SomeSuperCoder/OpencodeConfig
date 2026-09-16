@@ -1,0 +1,25 @@
+{
+  "headers": {
+    "timestamp": "2026-09-15T00:00:00Z",
+    "agent_id": "senior-dev"
+  },
+  "data": {
+    "shared": {
+      "key_facts": [
+        "chore.md now has 'What You Do NOT Do' section (lines 100-107) with 6 constraints inherited from bash-runner",
+        "chore.md Anti-Context-Rot section simplified to 2 rules (lines 109-112)",
+        "chore.md Rules section now includes 'tool not agent' line (line 123)",
+        "bash-runner.md deleted — chore is now sole bash executor",
+        "AGENTS.md had no references to bash-runner — no changes needed"
+      ],
+      "call_chains": [],
+      "blast_radius": [
+        "agents/team/core/chore.md",
+        "agents/team/core/bash-runner.md"
+      ],
+      "research_sources": []
+    },
+    "for_supervisor": "VERDICT: Fixed chore inheritance — replaced Anti-Context-Rot section with 'What You Do NOT Do' (6 constraints from bash-runner) + simplified Anti-Context-Rot (2 rules). Added 'tool not agent' rule to Rules section. Deleted bash-runner.md. AGENTS.md needed no changes (no references found). Chore now fully replaces bash-runner as the sole bash executor.",
+    "for_successor": ""
+  }
+}

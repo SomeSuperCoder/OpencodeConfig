@@ -37,15 +37,21 @@
       }
     }
   },
-  "default_agent": "team/tech-lead",
+  "default_agent": "team/supervisor",
   "permission": {
-    "external_directory": {
-      "/tmp": "allow",
-      "/tmp/**": "allow"
+    "*": "allow",
+    "task": {
+      "*": "allow",
+      "explore": "deny",
+      "general": "deny"
+    },
+    "edit": {
+      "*": "allow"
     },
     "bash": {
-      "* /tmp*": "allow",
-      "*/tmp*": "allow"
-    }
-  }
+      "*": "allow"
+    },
+    "todowrite": "deny"
+  },
+  "subagent_depth": 5
 }
