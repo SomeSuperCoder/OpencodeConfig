@@ -173,6 +173,91 @@ All agents can spawn subagents (recursive).
 - **Supervisor spawns → background.** Supervisor is the orchestrator. It doesn't wait. Fire-and-forget, collect handoffs later.
 - **Subagents spawn → foreground.** Subagents need results before continuing. They wait.
 
+## Agent Routing Matrix
+
+When to call each agent — and when NOT to.
+
+### Scout
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Need codebase context before asking questions | When the user's request is self-contained |
+| Need to verify assumptions about existing code | When you already have the context from a prior handoff |
+| Need to find call chains, blast radius, related files | When the task is pure implementation (Senior Dev) |
+| Researching external APIs, docs, references | When AgentMemory already has the answer |
+
+### Advisor
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Architecture decision with competing tradeoffs | When the codebase already has a clear pattern — follow it |
+| "Should we build or buy?" | When the decision is reversible — just decide |
+| Risk assessment before a big change | When you need implementation, not advice |
+| Multiple valid approaches, need analysis | When the user already told you what to do |
+
+### Senior Developer
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Implementing a feature, fix, or refactor | When the task is research-only (Scout) |
+| Writing code changes per spec | When you need tests (Tester) |
+| Running builds, typecheck, lint | When you need security review (Pentester) |
+| Creating new files or modules | When you need documentation (Docs Writer) |
+
+### Tester
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Writing unit, integration, or e2e tests | When code isn't written yet (Senior Dev first) |
+| Running test suites and capturing output | When you need implementation, not verification |
+| Checking test coverage | When the task is security testing (Pentester) |
+| Fixing failing tests (in test code only) | When you need code review (Critique) |
+
+### Critique
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Reviewing a design before implementation | When the design is already approved — build it |
+| Attacking assumptions in a proposal | When you need implementation (Senior Dev) |
+| Finding risks, edge cases, failure modes | When you need testing (Tester) |
+| Score severity: PROCEED / REVISE / REJECT | When you need security review (Pentester) |
+
+### Pentester
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Testing for OWASP Top 10 vulnerabilities | When you need regular testing (Tester) |
+| Security audit of auth, API, input validation | When you need code review (Critique) |
+| Scanning dependencies for CVEs | When you need architecture advice (Advisor) |
+| Penetration testing endpoints | When the code isn't deployed yet (deploy first) |
+
+### Docs Writer
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Writing READMEs, API docs, guides | When you need code implementation (Senior Dev) |
+| Creating ADRs (Architecture Decision Records) | When you need architecture decisions (Advisor) |
+| Writing changelogs, release notes | When you need code review (Critique) |
+| Documenting code with JSDoc/docstrings | When you need security review (Pentester) |
+
+### Chore
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Git operations (commit, push, status) | When you need code implementation (Senior Dev) |
+| Safe shell commands (ls, wc, grep, date) | When you need file editing (Senior Dev) |
+| Branch management | When you need security testing (Pentester) |
+| Checking disk space, process status | When you need documentation (Docs Writer) |
+
+### Ops Board Manager
+
+| When to call | When NOT to call |
+|-------------|-----------------|
+| Reading current pipeline state | When you need to read handoffs (use read tool directly) |
+| Updating agent status after handoff | When you need to implement code (Senior Dev) |
+| Adding/removing blockers | When you need to spawn agents (Supervisor does this) |
+| Recording decisions | When you need to read code (Scout) |
+
 ## How Spawning Works
 
 The Supervisor reads a template file (`agents/team/core/<template>.md`), combines the template's capabilities with the specific task data, and spawns a subagent with a custom prompt.
